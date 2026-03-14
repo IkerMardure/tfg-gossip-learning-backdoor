@@ -1,0 +1,14 @@
+# Virtual environments
+.venv/
+.venv-1/
+
+# Datasets and heavy files
+datasets/
+*.tar.gz
+*.pth
+*.pt
+*.zip
+
+# Python cache
+__pycache__/
+*.pyc

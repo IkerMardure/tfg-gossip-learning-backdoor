@@ -1,0 +1,13 @@
+run_name: '0'
+topology: conf/topologies/graph_8_2/graph_3.yaml
+device: GPU
+early_local_train: false
+num_rounds: 1020
+batch_size: 128
+num_classes: 3
+balance_data: false
+seed: 2001
+config_fit:
+  lr: 0.0001
+  momentum: 0.9
+  local_epochs: 32

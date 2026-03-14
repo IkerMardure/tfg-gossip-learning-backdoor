@@ -1,0 +1,24 @@
+# Created by pytest automatically.
+# Ignorar entornos virtuales
+.venv/
+env/
+venv/
+
+# Ignorar datasets
+*.tar.gz
+data/
+datasets/
+*.zip
+*.rar
+
+# Ignorar archivos grandes y binarios
+*.dll
+*.lib
+*.pkl
+*.pt
+*.h5
+
+# Otros comunes
+__pycache__/
+*.pyc
+
