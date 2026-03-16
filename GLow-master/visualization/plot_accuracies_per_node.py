@@ -2,8 +2,8 @@ import re
 import os
 import matplotlib.pyplot as plt
 
-file = r"C:\Users\Iker\unibertsitatea\praktikak\GLow_TFG\GLow-master\outputs\2026-03-15 - 19_51 - Analysis - Ring_5 - 10rounds - 5classes"
-file_path = r"C:\Users\Iker\unibertsitatea\praktikak\GLow_TFG\GLow-master\outputs\2026-03-15 - 19_51 - Analysis - Ring_5 - 10rounds - 5classes\mnist_ring_test_raw.out"
+file = r"C:\Users\Iker\unibertsitatea\praktikak\GLow_TFG\GLow-master\outputs\2026-03-16 - 16_06 - Analysis - FC_5 - 10rounds - 5classes"
+file_path = r"C:\Users\Iker\unibertsitatea\praktikak\GLow_TFG\GLow-master\outputs\2026-03-16 - 16_06 - Analysis - FC_5 - 10rounds - 5classes\mnist_ring_test_raw.out"
 num_nodes = 5
 start_node = 0  # Empieza por el nodo 0
 

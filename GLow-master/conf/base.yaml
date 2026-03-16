@@ -15,6 +15,13 @@ dataset: mnist
 # data_path used by torchvision datasets (if non-default)
 data_path: "../datasets"
 
+simulation:
+  # Lower CPU per client to increase Ray concurrency.
+  num_cpus_per_client: 2
+  # "auto" keeps current heuristic based on topology/concurrent clients.
+  # Set a float (for example 0.25) to force a fixed GPU fraction per client.
+  num_gpus_per_client: 0.25
+
 config_fit:
   lr: 0.0001
   momentum: 0.9

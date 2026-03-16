@@ -14,7 +14,7 @@ import yaml
 import flwr as fl
 
 from dataset import prepare_dataset_iid, prepare_dataset_mnist_iid
-from client import cli_eval_distr_results, cli_val_distr, generate_client_fn#, weighted_average, 
+from client_backdoor import cli_eval_distr_results, cli_val_distr, generate_client_fn#, weighted_average, 
 from server import get_on_fit_config, get_evaluate_fn
 
 from flwr.client import ClientFn
@@ -100,9 +100,14 @@ def main():
     server_config = fl.server.ServerConfig(num_rounds=cfg['num_rounds'])
     server = fl.server.Server(client_manager = SimpleClientManager(), strategy = strategy)
 
+    sim_cfg = cfg.get('simulation', {})
+    num_cpus = float(sim_cfg.get('num_cpus_per_client', 2))
+    gpu_override = sim_cfg.get('num_gpus_per_client', 'auto')
+
     # Divide GPU resources among agents (very high level)
     if _wants_gpu(device):
-        num_gpus = 1.0/tplgy['max_num_clients_per_round']
+        default_num_gpus = 1.0/tplgy['max_num_clients_per_round']
+        num_gpus = default_num_gpus if str(gpu_override).lower() == 'auto' else float(gpu_override)
     else:
         num_gpus = 0.
 
@@ -127,7 +132,7 @@ def main():
         server = server,
         config=server_config,
         strategy=strategy,
-        client_resources={'num_cpus': 4, 'num_gpus': num_gpus}, #num_gpus 1.0 (clients concurrently; one per GPU) // 0.25 (4 clients per GPU) -> VERY HIGH LEVEL
+        client_resources={'num_cpus': num_cpus, 'num_gpus': num_gpus}, #num_gpus 1.0 (clients concurrently; one per GPU) // 0.25 (4 clients per GPU) -> VERY HIGH LEVEL
     )
 
     # 6. SAVE RESULTS
