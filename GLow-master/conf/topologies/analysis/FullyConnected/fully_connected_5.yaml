@@ -1,5 +1,5 @@
 num_clients: 5
-max_num_clients_per_round: 3
+max_num_clients_per_round: 5
 clients_with_no_data: []
 last_connected_client: 4
 pools:

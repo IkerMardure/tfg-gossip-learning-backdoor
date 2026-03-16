@@ -1,4 +1,4 @@
-run_name: '2026-03-15 - 19_51 - Analysis - Ring_5 - 10rounds - 5classes'
+run_name: '2026-03-16 - 16_06 - Analysis - FC_5 - 10rounds - 5classes'
 topology: 'conf/topologies/analysis/Star/pentagram_5.yaml'
 device: cuda
 early_local_train: False
@@ -18,4 +18,5 @@ data_path: "../datasets"
 config_fit:
   lr: 0.0001
   momentum: 0.9
-  local_epochs: 16
+  local_epochs: 5
+  enable_tqdm: true

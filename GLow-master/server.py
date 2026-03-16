@@ -13,7 +13,8 @@ def get_on_fit_config(config):
         lr = config['lr']
         return {'lr': lr,
                 #'momentum': config['momentum'],
-                'local_epochs': config['local_epochs']
+            'local_epochs': config['local_epochs'],
+            'enable_tqdm': config.get('enable_tqdm', False)
                 }
     
     return fit_config_fn

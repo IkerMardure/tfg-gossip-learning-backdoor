@@ -40,13 +40,25 @@ class FlowerClient(fl.client.NumPyClient):
         #Perform local training just in the selected node head
         if config['local_train_cid'] == self.cid or config['local_train_cid'] == -1: # Case for GL or Case for FL
             lr = config['lr']
+            enable_tqdm = bool(config.get('enable_tqdm', False))
             if config['comm_round'] <= config['num_nodes']: #in first n initial rounds
                 epochs = config['local_epochs'] # Option to achieve a faster converge in the first *3 epochs
             else:
                 epochs = config['local_epochs']
             optim = torch.optim.Adam(self.model.parameters(), lr=lr)
             #local training
-            distr_loss_train, metrics_val_distr = train(self.model, self.trainloader, self.validationloader, optim, epochs, self.num_classes, self.device)
+            progress_desc = f"cid {self.cid} - local train"
+            distr_loss_train, metrics_val_distr = train(
+                self.model,
+                self.trainloader,
+                self.validationloader,
+                optim,
+                epochs,
+                self.num_classes,
+                self.device,
+                show_progress=enable_tqdm,
+                progress_desc=progress_desc,
+            )
 
             return self.get_parameters({}), len(self.trainloader), {'acc_val_distr': metrics_val_distr,'cid': self.cid, 'HEAD': 'YES', 'distr_val_loss': '##'}
 

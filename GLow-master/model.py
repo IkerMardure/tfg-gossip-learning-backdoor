@@ -2,6 +2,11 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+try:
+    from tqdm.auto import tqdm
+except ImportError:
+    tqdm = None
+
 # Note the model and functions here defined do not have any FL-specific components.
 
 class Net(nn.Module):
@@ -48,7 +53,7 @@ class LeNet(nn.Module):
       x = self.fc2(x)
       return x
     
-def train(net, trainloader, validationloader, optimizer, epochs, num_classes, device):
+def train(net, trainloader, validationloader, optimizer, epochs, num_classes, device, show_progress=False, progress_desc="train"):
     """Train the network on the training set.
 
     This is a fairly simple training loop for PyTorch.
@@ -61,7 +66,11 @@ def train(net, trainloader, validationloader, optimizer, epochs, num_classes, de
     train_loss = []
     for _ in range(epochs):
         loss_sum = 0.
-        for inputs, labels in trainloader: #INPUTS ARE TUPLES OF DATABASE
+        train_iter = trainloader
+        if show_progress and tqdm is not None:
+            train_iter = tqdm(trainloader, desc=progress_desc, leave=False)
+
+        for inputs, labels in train_iter: #INPUTS ARE TUPLES OF DATABASE
             optimizer.zero_grad(set_to_none=True)
             inputs, labels = inputs.to(device), labels.to(device)
             loss = criterion(net(inputs), labels)
