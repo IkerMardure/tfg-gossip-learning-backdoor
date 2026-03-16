@@ -1,0 +1,21 @@
+run_name: '2026-03-15 - 19_51 - Analysis - Ring_5 - 10rounds - 5classes'
+topology: 'conf/topologies/analysis/Star/pentagram_5.yaml'
+device: cuda
+early_local_train: False
+num_rounds: 10
+# num_clients_per_round_fit: 2 #Doesn't matter - controlled by topology
+# num_clients_per_round_eval: 2 #Doesn't matter - controlled by topology
+batch_size: 128
+num_classes: 5 #5 output layer size
+balance_data: False
+seed: 2001
+
+# dataset options: 'cifar' or 'mnist'
+dataset: mnist
+# data_path used by torchvision datasets (if non-default)
+data_path: "../datasets"
+
+config_fit:
+  lr: 0.0001
+  momentum: 0.9
+  local_epochs: 16

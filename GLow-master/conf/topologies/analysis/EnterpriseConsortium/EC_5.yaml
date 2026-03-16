@@ -1,0 +1,50 @@
+num_clients: 9
+max_num_clients_per_round: 4
+clients_with_no_data: []
+last_connected_client: 8
+pools:
+  # Community A
+  p0:
+    - 0
+    - 1
+    - 2
+  p1:
+    - 1
+    - 0
+    - 2
+  p2:
+    - 2
+    - 0
+    - 1
+    - 3  # Gateway connection to Community B
+  
+  # Community B
+  p3:
+    - 3
+    - 4
+    - 5
+    - 2  # Gateway connection to Community A
+  p4:
+    - 4
+    - 3
+    - 5
+  p5:
+    - 5
+    - 3
+    - 4
+    - 6  # Gateway connection to Community C
+    
+  # Community C
+  p6:
+    - 6
+    - 7
+    - 8
+    - 5  # Gateway connection to Community B
+  p7:
+    - 7
+    - 6
+    - 8
+  p8:
+    - 8
+    - 6
+    - 7

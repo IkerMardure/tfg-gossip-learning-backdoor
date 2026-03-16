@@ -1,0 +1,25 @@
+num_clients: 7
+max_num_clients_per_round: 3
+clients_with_no_data:
+- 6
+last_connected_client: 5
+pools:
+  p0:
+  - 0
+  - 1
+  p1:
+  - 1
+  - 2
+  p2:
+  - 2
+  p3:
+  - 3
+  - 4
+  - 2
+  p4:
+  - 4
+  p5:
+  - 5
+  - 3
+  p6:
+  - 6
