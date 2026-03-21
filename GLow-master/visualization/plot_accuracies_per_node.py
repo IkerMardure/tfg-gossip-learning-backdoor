@@ -1,48 +1,98 @@
+import ast
 import re
-import os
+import sys
+from pathlib import Path
+
 import matplotlib.pyplot as plt
+from matplotlib.ticker import MaxNLocator
 
-file = r"C:\Users\Iker\unibertsitatea\praktikak\GLow_TFG\GLow-master\outputs\2026-03-16 - 16_06 - Analysis - FC_5 - 10rounds - 5classes"
-file_path = r"C:\Users\Iker\unibertsitatea\praktikak\GLow_TFG\GLow-master\outputs\2026-03-16 - 16_06 - Analysis - FC_5 - 10rounds - 5classes\mnist_ring_test_raw.out"
-num_nodes = 5
-start_node = 0  # Empieza por el nodo 0
 
-metrics_centralized_pattern = re.compile(r"\*\*metrics_centralized:((?: \(\d+, [\d\.]+\))+)")
+def extract_list(content: str, name: str):
+    pattern = r"\*\*{}:\s*(\([^)]+\)(?:\s+\([^)]+\))*)".format(re.escape(name))
+    match = re.search(pattern, content)
+    if not match:
+        return []
+    data_str = "[" + match.group(1).replace(") (", "), (") + "]"
+    return ast.literal_eval(data_str)
 
-def parse_metric(tuples_string):
-    return [(int(m[0]), float(m[1])) for m in re.findall(r"\((\d+), ([\d\.]+)\)", tuples_string)]
 
-with open(file_path, "r", encoding="utf-8") as f:
-    text = f.read()
+def build_per_node_series(value_tuples, cid_tuples):
+    # Reconstruct per-node history even when client order changes each round.
+    series = {}
+    for (round_id, values), (cid_round, cids) in zip(value_tuples, cid_tuples):
+        if round_id != cid_round:
+            continue
+        for value, cid in zip(values, cids):
+            series.setdefault(cid, []).append((round_id, value))
 
-metrics_matches = parse_metric(metrics_centralized_pattern.search(text).group(1))
+    return series
 
-# Asociar cada accuracy al nodo correspondiente según el orden cíclico empezando por el nodo 0
-node_acc = {i: [] for i in range(num_nodes)}
-for idx, (round_id, acc) in enumerate(metrics_matches):
-    node_id = (start_node + idx) % num_nodes
-    node_acc[node_id].append((round_id, acc))
 
-# Recorta los valores para que todos los nodos tengan la misma longitud
-min_len = min(len(accs) for accs in node_acc.values())
-for node_id in node_acc:
-    node_acc[node_id] = node_acc[node_id][:min_len]
+def plot_metric(ax, series, ylabel: str, title: str, marker: str):
+    for cid in sorted(series.keys()):
+        points = sorted(series[cid], key=lambda item: item[0])
+        rounds, values = zip(*points)
+        ax.plot(rounds, values, marker=marker, label=f"Client {cid}")
+    # Show only integer rounds on the x-axis.
+    ax.xaxis.set_major_locator(MaxNLocator(integer=True))
+    ax.set_ylabel(ylabel)
+    ax.set_title(title)
+    ax.grid(True)
+    ax.legend(loc="best")
 
-# Asigna colores fijos a cada nodo (el 2 siempre rojo)
-node_colors = {0: 'tab:blue', 1: 'tab:orange', 2: 'red', 3: 'tab:purple', 4: 'tab:green'}
 
-plt.figure(figsize=(10, 6))
-for node_id in range(num_nodes):
-    if node_acc[node_id]:
-        rounds, accs = zip(*node_acc[node_id])
-        color = node_colors.get(node_id, f"C{node_id}")
-        plt.plot(rounds, accs, marker='o', label=f"Client {node_id}", color=color)
-plt.xlabel("Round")
-plt.ylabel("Accuracy (trained node test)")
-plt.title("Accuracy per node in Gossip Learning")
-plt.legend()
-plt.grid(True)
-plt.tight_layout()
-output_path = os.path.join(os.path.dirname(file_path), "accuracies_per_node.png")
-plt.savefig(output_path, dpi=150)
-plt.show()
+def main() -> None:
+    if len(sys.argv) < 2:
+        raise SystemExit(
+            "Usage: python visualization/plot_accuracies_per_node.py <raw.out> [output.png]"
+        )
+
+    raw_path = Path(sys.argv[1])
+    output_path = Path(sys.argv[2]) if len(sys.argv) > 2 else raw_path.with_name("metrics_per_node.png")
+
+    content = raw_path.read_text(encoding="utf-8")
+    acc_distr = extract_list(content, "acc_distr")
+    cid = extract_list(content, "cid")
+    asr = extract_list(content, "asr")
+
+    if not acc_distr or not cid:
+        raise ValueError("raw.out does not contain acc_distr/cid tuples")
+
+    node_acc = build_per_node_series(acc_distr, cid)
+    node_asr = build_per_node_series(asr, cid) if asr else {}
+
+    rows = 2 if node_asr else 1
+    fig, axes = plt.subplots(rows, 1, figsize=(12, 5 * rows), sharex=True)
+    if rows == 1:
+        axes = [axes]
+
+    plot_metric(
+        axes[0],
+        node_acc,
+        ylabel="Accuracy",
+        title="Clean Accuracy per node",
+        marker="o",
+    )
+
+    if node_asr:
+        plot_metric(
+            axes[1],
+            node_asr,
+            ylabel="ASR",
+            title="Attack Success Rate per node",
+            marker="s",
+        )
+        axes[1].set_xlabel("Round")
+    else:
+        axes[0].set_xlabel("Round")
+
+    fig.tight_layout()
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    fig.savefig(output_path, dpi=150)
+    plt.close(fig)
+
+    print(f"Saved per-node metrics plot to {output_path}")
+
+
+if __name__ == "__main__":
+    main()

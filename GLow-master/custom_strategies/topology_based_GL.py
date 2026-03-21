@@ -225,7 +225,7 @@ class topology_based_Avg(Strategy):
         f.close()
         # save parameters
         param_path = self.save_path + 'parameters/'
-        os.makedirs(param_path)
+        os.makedirs(param_path, exist_ok=True)
         for cli_ID in range(self.min_available_clients):
             net = LeNet(self.num_classes)
             cli_params_ndarrays = parameters_to_ndarrays(self.pool_parameters[self.selected_pool])

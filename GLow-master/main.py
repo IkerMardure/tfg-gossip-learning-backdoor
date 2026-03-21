@@ -14,7 +14,7 @@ import yaml
 import flwr as fl
 
 from dataset import prepare_dataset_iid, prepare_dataset_mnist_iid
-from client_backdoor import cli_eval_distr_results, cli_val_distr, generate_client_fn#, weighted_average, 
+from client import cli_eval_distr_results, cli_val_distr, generate_client_fn#, weighted_average, 
 from server import get_on_fit_config, get_evaluate_fn
 
 from flwr.client import ClientFn
@@ -28,6 +28,16 @@ def _wants_gpu(device: str) -> bool:
     return requested in {"gpu", "h100", "cuda", "cuda:0"} or requested.startswith("cuda")
 
 
+def _resolve_run_name(cfg: Dict) -> str:
+    run_name = str(cfg.get("run_name", "run"))
+    timestamp = time.strftime("%Y-%m-%d - %H_%M")
+    if "{timestamp}" in run_name:
+        return run_name.replace("{timestamp}", timestamp)
+    if run_name.strip().lower() == "auto":
+        return timestamp
+    return run_name
+
+
 def main():
     # 1. LOAD CONFIGURATION AND TOPOLOGY
     start_time = time.time()
@@ -39,7 +49,8 @@ def main():
     with open(conf_file, 'r') as file:
         cfg = yaml.safe_load(file)
 
-    save_path = './outputs/' + cfg['run_name'] + '/'
+    run_name = _resolve_run_name(cfg)
+    save_path = './outputs/' + run_name + '/'
     Path(save_path).mkdir(parents=True, exist_ok=True)
 
     with open(tplgy_file, 'r') as file:
@@ -153,6 +164,8 @@ def main():
     print(str(history.metrics_centralized))
     out = "**losses_distributed: " + ' '.join([str(elem) for elem in history.losses_distributed]) + "\n**losses_centralized: " + ' '.join([str(elem) for elem in history.losses_centralized])
     out = out + '\n**acc_distr: ' + ' '.join([str(elem) for elem in history.metrics_distributed['acc_distr']]) + '\n**cid: ' + ' '.join([str(elem) for elem in history.metrics_distributed['cid']])
+    if 'asr' in history.metrics_distributed:
+        out = out + '\n**asr: ' + ' '.join([str(elem) for elem in history.metrics_distributed['asr']])
     out = out + '\n**metrics_centralized: ' + ' '.join([str(elem) for elem in history.metrics_centralized['acc_cntrl']])   
     out = out + '\n**Exec_time_secs: ' + str(time.time() - start_time)
     f = open(save_path + run_id + "_raw.out", "w")

@@ -19,6 +19,16 @@ def _wants_gpu(device: str) -> bool:
     return requested in {"gpu", "h100", "cuda", "cuda:0"} or requested.startswith("cuda")
 
 
+def _resolve_run_name(cfg: dict) -> str:
+    run_name = str(cfg.get("run_name", "run"))
+    timestamp = time.strftime("%Y-%m-%d - %H_%M")
+    if "{timestamp}" in run_name:
+        return run_name.replace("{timestamp}", timestamp)
+    if run_name.strip().lower() == "auto":
+        return timestamp
+    return run_name
+
+
 def main() -> None:
     if len(sys.argv) < 4:
         raise SystemExit("Usage: python main_backdoor.py <conf_file> <run_id> <topology_file>")
@@ -31,7 +41,8 @@ def main() -> None:
     with open(conf_file, "r") as file:
         cfg = yaml.safe_load(file)
 
-    save_path = "./outputs/" + cfg["run_name"] + "/"
+    run_name = _resolve_run_name(cfg)
+    save_path = "./outputs/" + run_name + "/"
     Path(save_path).mkdir(parents=True, exist_ok=True)
 
     with open(tplgy_file, "r") as file:

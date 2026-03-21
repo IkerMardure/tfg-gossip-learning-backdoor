@@ -1,8 +1,8 @@
-run_name: '2026-03-16 - 16_06 - Analysis - FC_5 - 10rounds - 5classes'
-topology: 'conf/topologies/analysis/Star/pentagram_5.yaml'
+run_name: '{timestamp} - EC_5 - 12rounds - 5classes'
+topology: 'conf/topologies/analysis'
 device: cuda
 early_local_train: False
-num_rounds: 10
+num_rounds: 12
 # num_clients_per_round_fit: 2 #Doesn't matter - controlled by topology
 # num_clients_per_round_eval: 2 #Doesn't matter - controlled by topology
 batch_size: 128
@@ -20,10 +20,10 @@ simulation:
   num_cpus_per_client: 2
   # "auto" keeps current heuristic based on topology/concurrent clients.
   # Set a float (for example 0.25) to force a fixed GPU fraction per client.
-  num_gpus_per_client: 0.25
+  num_gpus_per_client: "auto"
 
 config_fit:
   lr: 0.0001
   momentum: 0.9
-  local_epochs: 5
+  local_epochs: 2
   enable_tqdm: true

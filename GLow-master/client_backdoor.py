@@ -93,7 +93,7 @@ class FlowerClient(fl.client.NumPyClient):
         self.model = LeNet(num_classes)
         self.num_classes = num_classes
         self.device = _resolve_torch_device(device)
-        self.is_malicious = int(cid) in [2]  # Client 2 is malicious
+        self.is_malicious = int(cid) in [1]  # Client 2 is malicious
 
     def set_parameters(self, parameters):
         params_dict = zip(self.model.state_dict().keys(), parameters)
@@ -115,6 +115,7 @@ class FlowerClient(fl.client.NumPyClient):
         if config.get('local_train_cid', self.cid) == self.cid or config.get('local_train_cid') == -1:
             lr = config.get('lr', 0.001)
             epochs = config.get('local_epochs', 1)
+            enable_tqdm = bool(config.get('enable_tqdm', False))
             optim = torch.optim.Adam(self.model.parameters(), lr=lr)
 
             print(f"Client {self.cid} is {'malicious' if self.is_malicious else 'benign'}.")
@@ -123,8 +124,17 @@ class FlowerClient(fl.client.NumPyClient):
                 self.trainloader = self.poison_data(self.trainloader)
 
             # Local training
+            progress_desc = f"cid {self.cid} - local train"
             distr_loss_train, metrics_val_distr = train(
-                self.model, self.trainloader, self.validationloader, optim, epochs, self.num_classes, self.device
+                self.model,
+                self.trainloader,
+                self.validationloader,
+                optim,
+                epochs,
+                self.num_classes,
+                self.device,
+                show_progress=enable_tqdm,
+                progress_desc=progress_desc,
             )
 
             # Extract new parameters after training
@@ -132,7 +142,7 @@ class FlowerClient(fl.client.NumPyClient):
 
             # MODEL BOOSTING LOGIC
             if self.is_malicious:
-                boost_factor = 10.0
+                boost_factor = 2.0
                 boosted_params = []
                 
                 # Boosted = Global + Factor * (Local - Global)

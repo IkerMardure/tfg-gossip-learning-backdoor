@@ -36,10 +36,10 @@ class LeNet(nn.Module):
       self.conv1 = nn.Conv2d(1, 16, 3, 1, padding=1) # input is color image, hence 3 i/p channels (if using MNIST 1). 16 filters, kernal size is tuned to 3 to avoid overfitting, stride is 1 , padding is 1 extract all edge features.
       self.conv2 = nn.Conv2d(16, 32, 3, 1, padding=1) # We double the feature maps for every conv layer as in pratice it is really good.
       self.conv3 = nn.Conv2d(32, 64, 3, 1, padding=1)
-      self.fc1 = nn.Linear(4*4*64, 500) # I/p image size is 32*32, after 3 MaxPooling layers it reduces to 4*4 and 64 because our last conv layer has 64 outputs. Output nodes is 500
+      self.fc1 = nn.Linear(4*4*64, 128) # I/p image size is 32*32, after 3 MaxPooling layers it reduces to 4*4 and 64 because our last conv layer has 64 outputs. Output nodes is 128
       #self.dropout1 = nn.Dropout(0.5)
       self.dropout1 = nn.Dropout(0.2)
-      self.fc2 = nn.Linear(500, num_classes) # output nodes are 10 because our dataset have 10 different categories
+      self.fc2 = nn.Linear(128, num_classes) # output nodes are 10 because our dataset have 10 different categories
     def forward(self, x):
       x = F.relu(self.conv1(x)) #Apply relu to each output of conv layer.
       x = F.max_pool2d(x, 2, 2) # Max pooling layer with kernal of 2 and stride of 2
