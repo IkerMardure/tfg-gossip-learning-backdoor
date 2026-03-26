@@ -20,7 +20,7 @@ def _resolve_torch_device(device: str) -> torch.device:
 
 # 1. THE DATA POISONING WRAPPER
 class BackdoorDataset(Dataset):
-    def __init__(self, dataset, target_class=0, poison_ratio=0.5):
+    def __init__(self, dataset, target_class=0, poison_ratio=0.2):
         self.dataset = dataset
         self.target_class = target_class
         self.poison_ratio = poison_ratio
@@ -93,7 +93,7 @@ class FlowerClient(fl.client.NumPyClient):
         self.model = LeNet(num_classes)
         self.num_classes = num_classes
         self.device = _resolve_torch_device(device)
-        self.is_malicious = int(cid) in [1]  # Client 2 is malicious
+        self.is_malicious = int(cid) in [1]  # Client 1 is malicious
 
     def set_parameters(self, parameters):
         params_dict = zip(self.model.state_dict().keys(), parameters)
@@ -105,7 +105,7 @@ class FlowerClient(fl.client.NumPyClient):
     
     def poison_data(self, trainloader):
         # Apply the backdoor trigger and change labels to class 0
-        poisoned_dataset = BackdoorDataset(trainloader.dataset, target_class=0, poison_ratio=0.5)
+        poisoned_dataset = BackdoorDataset(trainloader.dataset, target_class=0, poison_ratio=0.2)
         return DataLoader(poisoned_dataset, batch_size=trainloader.batch_size, shuffle=True)
     
     def fit(self, parameters, config):

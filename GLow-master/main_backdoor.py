@@ -10,7 +10,9 @@ import flwr as fl
 from dataset import prepare_dataset_iid, prepare_dataset_mnist_iid
 from client_backdoor import cli_eval_distr_results, cli_val_distr, generate_client_fn
 from server import get_on_fit_config, get_evaluate_fn
+from model import LeNet, load_or_train_pretrained
 from flwr.server.client_manager import SimpleClientManager
+from flwr.common import ndarrays_to_parameters
 from custom_strategies.topology_based_GL import topology_based_Avg
 
 
@@ -121,6 +123,41 @@ def main() -> None:
 
         subprocess.check_output = safe_check_output
 
+    # 4.5. PRETRAINING PHASE (optional)
+    if cfg.get("pretraining", {}).get("enabled", False):
+        print("\n=== Starting Pretraining Phase ===")
+        pretrain_cfg = cfg.get("pretraining", {})
+        
+        # Create model for pretraining
+        pretrain_model = LeNet(cfg["num_classes"]).to(device)
+        
+        # Set seed for reproducibility
+        torch.manual_seed(cfg.get("seed", 2001))
+        
+        # Create optimizer for pretraining
+        pretrain_lr = pretrain_cfg.get("lr", 0.001)
+        pretrain_optimizer = torch.optim.Adam(pretrain_model.parameters(), lr=pretrain_lr)
+        
+        # Load or train pretrained model
+        pretrain_model, was_loaded = load_or_train_pretrained(
+            net=pretrain_model,
+            trainloader=testloader,  # Use test loader for pretraining (centralized data)
+            optimizer=pretrain_optimizer,
+            epochs=pretrain_cfg.get("epochs", 5),
+            num_classes=cfg["num_classes"],
+            device=device,
+            model_save_path=pretrain_cfg.get("save_path", "./pretrained_model.pth"),
+            show_progress=pretrain_cfg.get("enable_tqdm", False)
+        )
+        
+        # Extract parameters from pretrained model and pass to strategy
+        params_dict = pretrain_model.state_dict()
+        pretrain_parameters = [v.cpu().numpy() for v in params_dict.values()]
+        
+        # Pass to strategy as initial parameters
+        strategy.initial_parameters = ndarrays_to_parameters(pretrain_parameters)
+        print("=== Pretraining Phase Completed ===\n")
+    
     history = fl.simulation.start_simulation(
         client_fn=client_fn,
         num_clients=num_clients,

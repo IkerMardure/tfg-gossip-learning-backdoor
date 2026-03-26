@@ -102,6 +102,88 @@ def train(net, trainloader, validationloader, optimizer, epochs, num_classes, de
 
     return train_loss, metrics_val_distributed_fit
 
+def train_pretrain(net, trainloader, optimizer, epochs, num_classes, device, show_progress=False, progress_desc="pretrain"):
+    """Train the network for pretraining phase (no validation).
+    
+    Args:
+        net: Neural network model
+        trainloader: DataLoader for training
+        optimizer: PyTorch optimizer
+        epochs: Number of epochs to train
+        num_classes: Number of output classes
+        device: Device to train on ("cpu" or "cuda")
+        show_progress: Whether to show progress bar
+        progress_desc: Description for progress bar
+    
+    Returns:
+        train_loss: List of loss values per epoch
+    """
+    criterion = nn.CrossEntropyLoss()
+    device = torch.device(device)
+    net.train()
+    net.to(device)
+    train_loss = []
+    
+    for _ in range(epochs):
+        loss_sum = 0.
+        train_iter = trainloader
+        if show_progress and tqdm is not None:
+            train_iter = tqdm(trainloader, desc=progress_desc, leave=False)
+
+        for inputs, labels in train_iter:
+            optimizer.zero_grad(set_to_none=True)
+            inputs, labels = inputs.to(device), labels.to(device)
+            loss = criterion(net(inputs), labels)
+            loss.backward()
+            optimizer.step()
+            loss_sum += loss.item()
+        
+        if len(trainloader) > 0:
+            train_loss.append(loss_sum / len(trainloader))
+        else:
+            train_loss.append(1.0 / num_classes)
+    
+    return train_loss
+
+def load_or_train_pretrained(net, trainloader, optimizer, epochs, num_classes, device, model_save_path, show_progress=False):
+    """Load pretrained model from disk or train it if it doesn't exist.
+    
+    Args:
+        net: Neural network model
+        trainloader: DataLoader for training
+        optimizer: PyTorch optimizer
+        epochs: Number of epochs to train
+        num_classes: Number of output classes
+        device: Device to train on
+        model_save_path: Path to save/load the model
+        show_progress: Whether to show progress bar
+    
+    Returns:
+        net: Updated network with loaded or trained weights
+        loaded: Boolean indicating if model was loaded (True) or trained (False)
+    """
+    from pathlib import Path
+    model_path = Path(model_save_path)
+    
+    if model_path.exists():
+        # Load model from disk
+        print(f"Loading pretrained model from: {model_save_path}")
+        checkpoint = torch.load(model_path, map_location=device)
+        net.load_state_dict(checkpoint)
+        return net, True
+    else:
+        # Train model and save to disk
+        print(f"Pretrained model not found. Training for {epochs} epochs...")
+        train_losses = train_pretrain(net, trainloader, optimizer, epochs, num_classes, device, 
+                                     show_progress=show_progress, progress_desc="Pretraining")
+        
+        # Save model
+        model_path.parent.mkdir(parents=True, exist_ok=True)
+        torch.save(net.state_dict(), model_path)
+        print(f"Pretraining completed: {epochs} epochs, final loss: {train_losses[-1]:.4f}. Saved to: {model_save_path}")
+        
+        return net, False
+
 def test(net, testloader, num_classes, device):
     """Validate the network on the entire test set.
     and report loss and accuracy.

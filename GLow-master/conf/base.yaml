@@ -1,8 +1,8 @@
-run_name: '{timestamp} - EC_5 - 12rounds - 5classes'
+run_name: '{timestamp} - FC_5 - 10rounds - 5classes - early train'
 topology: 'conf/topologies/analysis'
 device: cuda
 early_local_train: False
-num_rounds: 12
+num_rounds: 10
 # num_clients_per_round_fit: 2 #Doesn't matter - controlled by topology
 # num_clients_per_round_eval: 2 #Doesn't matter - controlled by topology
 batch_size: 128
@@ -27,3 +27,9 @@ config_fit:
   momentum: 0.9
   local_epochs: 2
   enable_tqdm: true
+
+pretraining:
+  enabled: true
+  epochs: 5
+  lr: 0.001
+  save_path: "C:\\Users\\Iker\\unibertsitatea\\praktikak\\GLow_TFG\\GLow-master\\pretrained_models\\lenet_mnist_pretrain.pth"
