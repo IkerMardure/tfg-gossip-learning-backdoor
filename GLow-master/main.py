@@ -9,6 +9,7 @@ from typing import List, Optional, Dict
 import pandas as pd
 import numpy as np
 import torch  # MUST import torch BEFORE flwr to avoid DLL conflicts on Windows
+from torch.utils.data import ConcatDataset, DataLoader
 
 import yaml
 import flwr as fl
@@ -23,6 +24,7 @@ from flwr.server.client_manager import ClientManager, SimpleClientManager
 from flwr.common import ndarrays_to_parameters
 
 from custom_strategies.topology_based_GL import topology_based_Avg
+from utils.logging import configure_logging, log_pretraining, log_results
 
 
 def _wants_gpu(device: str) -> bool:
@@ -50,6 +52,8 @@ def main():
 
     with open(conf_file, 'r') as file:
         cfg = yaml.safe_load(file)
+
+    configure_logging(cfg)
 
     run_name = _resolve_run_name(cfg)
     save_path = './outputs/' + run_name + '/'
@@ -139,8 +143,18 @@ def main():
 
     # 4.5. PRETRAINING PHASE (optional)
     if cfg.get('pretraining', {}).get('enabled', False):
-        print("\n=== Starting Pretraining Phase ===")
+        log_pretraining("\n=== Starting Pretraining Phase ===", level="standard")
         pretrain_cfg = cfg.get('pretraining', {})
+
+        # Build a centralized train dataloader from all client train splits.
+        train_datasets = [loader.dataset for loader in trainloaders if len(loader.dataset) > 0]
+        if not train_datasets:
+            raise ValueError("Pretraining enabled but no training data is available in client trainloaders")
+        centralized_pretrain_loader = DataLoader(
+            ConcatDataset(train_datasets),
+            batch_size=cfg['batch_size'],
+            shuffle=True,
+        )
         
         # Create model for pretraining
         pretrain_model = LeNet(cfg['num_classes']).to(device)
@@ -155,7 +169,7 @@ def main():
         # Load or train pretrained model
         pretrain_model, was_loaded = load_or_train_pretrained(
             net=pretrain_model,
-            trainloader=testloader,  # Use test loader for pretraining (centralized data)
+            trainloader=centralized_pretrain_loader,
             optimizer=pretrain_optimizer,
             epochs=pretrain_cfg.get('epochs', 5),
             num_classes=cfg['num_classes'],
@@ -164,13 +178,41 @@ def main():
             show_progress=pretrain_cfg.get('enable_tqdm', False)
         )
         
-        # Extract parameters from pretrained model and pass to strategy
+        # Extract parameters from pretrained model
         params_dict = pretrain_model.state_dict()
         pretrain_parameters = [v.cpu().numpy() for v in params_dict.values()]
         
+        # Apply parameter mixing if configured
+        mix_alpha = pretrain_cfg.get('mix_alpha', 1.0)
+        noise_std = pretrain_cfg.get('noise_std', 0.0)
+        
+        if mix_alpha < 1.0 or noise_std > 0.0:
+            # Create random model initialized with same seed offset for blend baseline
+            random_model = LeNet(cfg['num_classes']).to(device)
+            torch.manual_seed(cfg.get('seed', 2001) + 1)  # Different seed for random model
+            random_model.apply(lambda m: m.weight.data.normal_(0, 0.1) if hasattr(m, 'weight') else None)
+            random_model.apply(lambda m: m.bias.data.zero_() if hasattr(m, 'bias') else None)
+            
+            random_dict = random_model.state_dict()
+            random_parameters = [v.cpu().numpy() for v in random_dict.values()]
+            
+            # Blend: mixed = alpha * pretrained + (1-alpha) * random
+            mixed_parameters = []
+            for pretrained, random in zip(pretrain_parameters, random_parameters):
+                mixed = mix_alpha * pretrained + (1.0 - mix_alpha) * random
+                if noise_std > 0.0:
+                    mixed = mixed + np.random.normal(0, noise_std, mixed.shape)
+                mixed_parameters.append(mixed)
+            
+            pretrain_parameters = mixed_parameters
+            log_pretraining(
+                f"Applied parameter mixing: alpha={mix_alpha}, noise_std={noise_std}",
+                level="standard"
+            )
+        
         # Pass to strategy as initial parameters
         strategy.initial_parameters = ndarrays_to_parameters(pretrain_parameters)
-        print("=== Pretraining Phase Completed ===\n")
+        log_pretraining("=== Pretraining Phase Completed ===\n", level="standard")
     
     # 5. RUN SIMULATIONS
     history = fl.simulation.start_simulation(
@@ -189,16 +231,23 @@ def main():
     #with open(str(results_path), "wb") as h:
     #    pickle.dump(results, h, protocol=pickle.HIGHEST_PROTOCOL)
     
-    print('#################')
-    print(str(history.losses_distributed))
-    print('#################')
-    print(str(history.losses_centralized))
-    print('#################')
-    print(str(history.metrics_distributed_fit)) #validation
-    print('#################')
-    print(str(history.metrics_distributed))
-    print('#################')
-    print(str(history.metrics_centralized))
+    log_results('#################', level="minimal")
+    log_results(str(history.losses_distributed), level="minimal")
+    log_results('#################', level="minimal")
+    log_results(str(history.losses_centralized), level="minimal")
+    log_results('#################', level="minimal")
+    log_results(str(history.metrics_distributed_fit), level="minimal") #validation
+    log_results('#################', level="minimal")
+    log_results(str(history.metrics_distributed), level="minimal")
+    log_results('#################', level="minimal")
+    log_results(str(history.metrics_centralized), level="minimal")
+    log_results('#################', level="minimal")
+    log_results('acc_distr per round (cid -> acc):', level="minimal")
+    for round_id, round_acc in history.metrics_distributed.get('acc_distr', []):
+        cids = dict(history.metrics_distributed.get('cid', [])).get(round_id, [])
+        pairs = ', '.join([f"{cid}:{acc:.4f}" for cid, acc in zip(cids, round_acc)])
+        mean_acc = float(np.mean(round_acc)) if len(round_acc) > 0 else 0.0
+        log_results(f"round {round_id} | mean={mean_acc:.4f} | {pairs}", level="minimal")
     out = "**losses_distributed: " + ' '.join([str(elem) for elem in history.losses_distributed]) + "\n**losses_centralized: " + ' '.join([str(elem) for elem in history.losses_centralized])
     out = out + '\n**acc_distr: ' + ' '.join([str(elem) for elem in history.metrics_distributed['acc_distr']]) + '\n**cid: ' + ' '.join([str(elem) for elem in history.metrics_distributed['cid']])
     if 'asr' in history.metrics_distributed:

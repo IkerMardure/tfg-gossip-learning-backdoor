@@ -116,16 +116,12 @@ def _split_iid(
         if i not in clients_with_no_data:
             clients_with_data.append(i)
 
-    # SPLIT DATASET BY CLASSES
+    # OPTIMIZED: SPLIT DATASET BY CLASSES using list comprehension (single pass)
     ordered_trainset = []
-
     for i in range(num_classes):
-        tmp_part = []
-        for j, data in enumerate(trainset):
-            img, label = data
-            if label == i:
-                tmp_part.append(data)
-        ordered_trainset.extend(tmp_part)
+        # Single pass through dataset, collect only matching class
+        class_data = [data for data in trainset if data[1] == i]
+        ordered_trainset.extend(class_data)
 
     num_images = len(ordered_trainset) // len(clients_with_data)
     num_images_remainder = len(ordered_trainset) % len(clients_with_data)
@@ -164,16 +160,11 @@ def _split_iid(
             trainloaders.append('')
             validationloaders.append('')
 
-    # TEST SET
+    # OPTIMIZED: TEST SET using list comprehension (single pass)
     ordered_testset = []
-
     for i in range(num_classes):
-        tmp_part = []
-        for j, data in enumerate(testset):
-            img, label = data
-            if label == i:
-                tmp_part.append(data)
-        ordered_testset.extend(tmp_part)
+        class_data = [data for data in testset if data[1] == i]
+        ordered_testset.extend(class_data)
 
     testloader = DataLoader(
         ordered_testset, batch_size=batch_size, shuffle=True, num_workers=4, pin_memory=True

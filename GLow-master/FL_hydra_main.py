@@ -23,6 +23,7 @@ from flwr.server.client_manager import ClientManager, SimpleClientManager
 
 
 from custom_strategies.fedavg import FedAvg
+from utils.logging import configure_logging, log_results
 
 
 def _wants_gpu(device: str) -> bool:
@@ -34,7 +35,8 @@ def _wants_gpu(device: str) -> bool:
 def main(cfg: DictConfig):
     #1. LOAD CONFIGURATION
     start_time = time.time()
-    print(OmegaConf.to_yaml(cfg))
+    configure_logging(cfg)
+    log_results(OmegaConf.to_yaml(cfg), level="verbose")
     save_path = HydraConfig.get().runtime.output_dir + '/'
     run_id = cfg.run_name
 
@@ -113,16 +115,16 @@ def main(cfg: DictConfig):
         pickle.dump(results, h, protocol=pickle.HIGHEST_PROTOCOL)
 
    
-    print('#################')
-    print(str(history.losses_distributed))
-    print('#################')
-    print(str(history.losses_centralized))
-    print('#################')
-    print(str(history.metrics_distributed_fit)) #validation
-    print('#################')
-    print(str(history.metrics_distributed))
-    print('#################')
-    print(str(history.metrics_centralized))
+    log_results('#################', level="minimal")
+    log_results(str(history.losses_distributed), level="minimal")
+    log_results('#################', level="minimal")
+    log_results(str(history.losses_centralized), level="minimal")
+    log_results('#################', level="minimal")
+    log_results(str(history.metrics_distributed_fit), level="minimal") #validation
+    log_results('#################', level="minimal")
+    log_results(str(history.metrics_distributed), level="minimal")
+    log_results('#################', level="minimal")
+    log_results(str(history.metrics_centralized), level="minimal")
     #print("--- %s seconds ---" % (time.time() - start_time))
     out = "**losses_distributed: " + ' '.join([str(elem) for elem in history.losses_distributed]) + "\n\n**losses_centralized: " + ' '.join([str(elem) for elem in history.losses_centralized])
     out = out + '\n\n**acc_distr: ' + ' '.join([str(elem) for elem in history.metrics_distributed['acc_distr']]) + '\n\n**cid: ' + ' '.join([str(elem) for elem in history.metrics_distributed['cid']])

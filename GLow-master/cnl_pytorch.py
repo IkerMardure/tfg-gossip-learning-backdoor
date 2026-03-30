@@ -20,12 +20,14 @@ from hydra.core.hydra_config import HydraConfig
 from omegaconf import DictConfig, OmegaConf
 
 from model import Net, LeNet, train, test#, init_normal
+from utils.logging import configure_logging, log_results
 
 
 @hydra.main(config_path="conf", config_name="base", version_base=None)
 def main(cfg: DictConfig):
     #1. LOAD CONFIGURATION
-    print(OmegaConf.to_yaml(cfg))
+    configure_logging(cfg)
+    log_results(OmegaConf.to_yaml(cfg), level="verbose")
     save_path = HydraConfig.get().runtime.output_dir
 
     # Load config params
@@ -39,7 +41,7 @@ def main(cfg: DictConfig):
 
     #3. TRAINING
     device = "cuda" if torch.cuda.is_available() else "cpu"
-    print("Using device:", device)
+    log_results(f"Using device: {device}", level="standard")
 
     #model = Net(num_classes).to(device)
     model = LeNet(num_classes).to(device)

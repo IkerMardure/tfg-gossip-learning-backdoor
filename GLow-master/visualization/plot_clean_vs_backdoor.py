@@ -4,6 +4,7 @@ import sys
 from pathlib import Path
 
 import matplotlib.pyplot as plt
+from utils.logging import log_results
 
 
 def extract_list(content: str, name: str):
@@ -105,7 +106,7 @@ def main() -> None:
     fig.savefig(output_path, dpi=150)
     plt.close(fig)
 
-    print(f"Comparison plot saved to {output_path}")
+    log_results(f"Comparison plot saved to {output_path}", level="minimal")
 
 
 if __name__ == "__main__":

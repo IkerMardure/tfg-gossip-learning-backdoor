@@ -7,6 +7,8 @@ try:
 except ImportError:
     tqdm = None
 
+from utils.logging import log_pretraining
+
 # Note the model and functions here defined do not have any FL-specific components.
 
 class Net(nn.Module):
@@ -167,20 +169,23 @@ def load_or_train_pretrained(net, trainloader, optimizer, epochs, num_classes, d
     
     if model_path.exists():
         # Load model from disk
-        print(f"Loading pretrained model from: {model_save_path}")
+        log_pretraining(f"Loading pretrained model from: {model_save_path}", level="standard")
         checkpoint = torch.load(model_path, map_location=device)
         net.load_state_dict(checkpoint)
         return net, True
     else:
         # Train model and save to disk
-        print(f"Pretrained model not found. Training for {epochs} epochs...")
+        log_pretraining(f"Pretrained model not found. Training for {epochs} epochs...", level="standard")
         train_losses = train_pretrain(net, trainloader, optimizer, epochs, num_classes, device, 
                                      show_progress=show_progress, progress_desc="Pretraining")
         
         # Save model
         model_path.parent.mkdir(parents=True, exist_ok=True)
         torch.save(net.state_dict(), model_path)
-        print(f"Pretraining completed: {epochs} epochs, final loss: {train_losses[-1]:.4f}. Saved to: {model_save_path}")
+        log_pretraining(
+            f"Pretraining completed: {epochs} epochs, final loss: {train_losses[-1]:.4f}. Saved to: {model_save_path}",
+            level="standard",
+        )
         
         return net, False
 

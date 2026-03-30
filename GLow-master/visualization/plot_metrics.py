@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import re
 import ast
+from utils.logging import log_results
 
 # Ruta del fichero
 file_path = r"C:\Users\Iker\unibertsitatea\praktikak\GLow_poisoning\GLow-master\outputs\2025-06-17\18-17-52\raw.out"
@@ -59,4 +60,4 @@ plt.tight_layout()
 plt.savefig("accuracy_comparison.png")
 plt.close()
 
-print("Gráficos guardados como 'loss_comparison.png' y 'accuracy_comparison.png'")
+log_results("Graficos guardados como 'loss_comparison.png' y 'accuracy_comparison.png'", level="minimal")

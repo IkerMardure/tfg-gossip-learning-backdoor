@@ -1,0 +1,22 @@
+# Logging Configuration for GLow
+# This file documents the logging verbosity levels for different components
+# Can be used to override settings in base.yaml if needed
+
+# Global default logging level
+# Options: "minimal", "standard", "verbose"
+# - minimal: Only final results, no per-round messages
+# - standard: Key milestones (pretraining start/end, round summaries)
+# - verbose: Detailed per-client info during training (slower output)
+verbose_logging: "standard"
+
+# Per-component logging levels (optional, uncomment to override global setting)
+# log_level_client_training: "standard"    # Per-client training status
+# log_level_data_poisoning: "standard"     # Backdoor data poisoning confirmation
+# log_level_pretraining: "standard"        # Pretraining phase progress  
+# log_level_results: "standard"            # Final results and metrics
+# log_level_heartbeat: "standard"          # Round completion heartbeats for progress monitoring
+
+# Recommendations:
+# For fast execution with minimal I/O: Set to "minimal"
+# For debugging: Set to "verbose"
+# For production runs: Keep at "standard"

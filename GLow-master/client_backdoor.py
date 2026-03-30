@@ -8,7 +8,12 @@ import torch
 import flwr as fl
 from torch.utils.data import Dataset, DataLoader
 # Make sure to import your model, train, and test functions
-from model import LeNet, train, test 
+from model import LeNet, train, test
+from utils.logging import log_client_training, log_data_poisoning 
+
+
+BACKDOOR_POISON_RATE = 0.5
+BACKDOOR_BOOST_FACTOR = 5.0
 
 
 def _resolve_torch_device(device: str) -> torch.device:
@@ -20,7 +25,7 @@ def _resolve_torch_device(device: str) -> torch.device:
 
 # 1. THE DATA POISONING WRAPPER
 class BackdoorDataset(Dataset):
-    def __init__(self, dataset, target_class=0, poison_ratio=0.2):
+    def __init__(self, dataset, target_class=0, poison_ratio=0.5):
         self.dataset = dataset
         self.target_class = target_class
         self.poison_ratio = poison_ratio
@@ -105,7 +110,11 @@ class FlowerClient(fl.client.NumPyClient):
     
     def poison_data(self, trainloader):
         # Apply the backdoor trigger and change labels to class 0
-        poisoned_dataset = BackdoorDataset(trainloader.dataset, target_class=0, poison_ratio=0.2)
+        poisoned_dataset = BackdoorDataset(
+            trainloader.dataset,
+            target_class=0,
+            poison_ratio=BACKDOOR_POISON_RATE,
+        )
         return DataLoader(poisoned_dataset, batch_size=trainloader.batch_size, shuffle=True)
     
     def fit(self, parameters, config):
@@ -118,9 +127,10 @@ class FlowerClient(fl.client.NumPyClient):
             enable_tqdm = bool(config.get('enable_tqdm', False))
             optim = torch.optim.Adam(self.model.parameters(), lr=lr)
 
-            print(f"Client {self.cid} is {'malicious' if self.is_malicious else 'benign'}.")
+            # Use logging module instead of print (level="verbose" for per-client detail)
+            log_client_training(f"Client {self.cid} is {'malicious' if self.is_malicious else 'benign'}.", level="verbose")
             if self.is_malicious:
-                print(f"Client {self.cid} is malicious, poisoning data...")
+                log_data_poisoning(f"Client {self.cid} is malicious, poisoning data...", level="verbose")
                 self.trainloader = self.poison_data(self.trainloader)
 
             # Local training
@@ -142,12 +152,11 @@ class FlowerClient(fl.client.NumPyClient):
 
             # MODEL BOOSTING LOGIC
             if self.is_malicious:
-                boost_factor = 2.0
                 boosted_params = []
                 
                 # Boosted = Global + Factor * (Local - Global)
                 for global_p, local_p in zip(parameters, new_parameters):
-                    boosted_p = global_p + boost_factor * (local_p - global_p)
+                    boosted_p = global_p + BACKDOOR_BOOST_FACTOR * (local_p - global_p)
                     boosted_params.append(boosted_p)
                 
                 new_parameters = boosted_params

@@ -5,6 +5,7 @@ from pathlib import Path
 
 import matplotlib.pyplot as plt
 from matplotlib.ticker import MaxNLocator
+from utils.logging import log_results
 
 
 def extract_list(content: str, name: str):
@@ -91,7 +92,7 @@ def main() -> None:
     fig.savefig(output_path, dpi=150)
     plt.close(fig)
 
-    print(f"Saved per-node metrics plot to {output_path}")
+    log_results(f"Saved per-node metrics plot to {output_path}", level="minimal")
 
 
 if __name__ == "__main__":

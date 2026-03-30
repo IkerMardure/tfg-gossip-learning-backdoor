@@ -6,6 +6,7 @@ import torch
 import flwr as fl
 from model import LeNet, train, test
 from torch.utils.data import Dataset
+from utils.logging import log_client_training, log_data_poisoning
 
 
 def _resolve_torch_device(device: str) -> torch.device:
@@ -53,9 +54,12 @@ class FlowerClient(fl.client.NumPyClient):
             optim = torch.optim.Adam(self.model.parameters(), lr=lr)
 
             # Poison data if the client is malicious
-            print(f"Client {self.cid} is {'malicious' if self.is_malicious else 'benign'}.")
+            log_client_training(
+                f"Client {self.cid} is {'malicious' if self.is_malicious else 'benign'}.",
+                level="verbose",
+            )
             if self.is_malicious:
-                print(f"Client {self.cid} is malicious, poisoning data...")
+                log_data_poisoning(f"Client {self.cid} is malicious, poisoning data...", level="verbose")
                 self.trainloader = self.poison_data(self.trainloader)
 
             # Local training

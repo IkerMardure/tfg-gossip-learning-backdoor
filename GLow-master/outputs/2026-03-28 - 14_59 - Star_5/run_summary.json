@@ -1,0 +1,32 @@
+{
+  "run_id": "mnist_test",
+  "run_name": "2026-03-28 - 14_59 - Star_5",
+  "timestamp": "2026-03-28 15:52:53",
+  "config": {
+    "dataset": "mnist",
+    "num_clients": 5,
+    "num_rounds": 20,
+    "batch_size": 128,
+    "num_classes": 5,
+    "learning_rate": 0.0005,
+    "local_epochs": 2,
+    "device": "cuda",
+    "poison_rate": 0.5,
+    "boost_factor": 5.0,
+    "early_local_train": false,
+    "pretraining_enabled": true
+  },
+  "results": {
+    "execution_time_seconds": 3213.699577331543,
+    "final_centralized_accuracy": [
+      20,
+      0.9739248881105274
+    ],
+    "final_asr": 20.0,
+    "num_rounds_completed": 21
+  },
+  "output_files": {
+    "raw_metrics": "mnist_test_raw.out",
+    "accuracy_distribution": "mnist_test_acc_distr.out"
+  }
+}

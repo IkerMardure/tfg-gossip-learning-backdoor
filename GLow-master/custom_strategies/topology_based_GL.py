@@ -51,6 +51,7 @@ from flwr.server.strategy.strategy import Strategy
 from  flwr.server.criterion import Criterion
 
 from flwr.common.typing import GetParametersIns
+from utils.logging import log_heartbeat, log_results
 
 
 WARNING_MIN_AVAILABLE_CLIENTS_TOO_LOW = """
@@ -133,7 +134,7 @@ class topology_based_Avg(Strategy):
         on_fit_config_fn: Optional[Callable[[int], Dict[str, Scalar]]] = None,
         on_evaluate_config_fn: Optional[Callable[[int], Dict[str, Scalar]]] = None,
         accept_failures: bool = True,
-        initial_parameters: Optional[List[Parameters]] = None,
+        initial_parameters: Optional[Union[Parameters, List[Parameters]]] = None,
         pool_parameters: Optional[List[Parameters]] = None,
         fit_metrics_aggregation_fn: Optional[MetricsAggregationFn] = None,
         evaluate_metrics_aggregation_fn: Optional[MetricsAggregationFn] = None,
@@ -201,9 +202,16 @@ class topology_based_Avg(Strategy):
         self, client_manager: ClientManager
     ) -> Optional[Parameters]:
         """Initialize global model parameters."""
+        # New pretraining flow can provide one Parameters object directly.
+        if isinstance(self.initial_parameters, Parameters):
+            if self.pool_parameters is None:
+                self.pool_parameters = [self.initial_parameters] * self.min_available_clients
+            self.selected_pool = 0
+            return self.initial_parameters
+
         clients = client_manager.sample(self.min_available_clients) #Sample all clients
         ins = GetParametersIns(config={})
-        
+
         if self.initial_parameters is None:
             self.initial_parameters = [None] * self.min_available_clients
             self.pool_parameters = [None] * self.min_available_clients
@@ -288,7 +296,10 @@ class topology_based_Avg(Strategy):
 
         # Print selected clients
         selected_client_ids = [client.cid for client in clients]
-        print(f"Round {server_round}: Selected clients for training: {selected_client_ids}")
+        log_heartbeat(
+            f"Round {server_round}: Selected clients for training: {selected_client_ids}",
+            level="standard",
+        )
 
 
         """Configure the next round of training."""
@@ -374,11 +385,11 @@ class topology_based_Avg(Strategy):
 
         num_examples_total = sum(fit_res.num_examples for _, fit_res in results)
         if num_examples_total == 0:
-            print("Error: Total number of examples is zero. Skipping aggregation.")
+            log_results("Error: Total number of examples is zero. Skipping aggregation.", level="minimal")
             return None, {}
 
         for _, fit_res in results:
-            print(f"Client returned {fit_res.num_examples} examples")
+            log_heartbeat(f"Client returned {fit_res.num_examples} examples", level="verbose")
 
         if self.inplace:
             # Does in-place weighted average of results
@@ -437,5 +448,30 @@ class topology_based_Avg(Strategy):
             metrics_aggregated = self.evaluate_metrics_aggregation_fn(eval_metrics)
         elif server_round == 1:  # Only log this warning once
             log(WARNING, "No evaluate_metrics_aggregation_fn provided")
+
+        # Print per-round distributed accuracy in real time.
+        if "acc_distr" in metrics_aggregated and "cid" in metrics_aggregated:
+            acc_values = metrics_aggregated["acc_distr"]
+            cid_values = metrics_aggregated["cid"]
+            pairs = ", ".join(
+                [f"{cid}:{acc:.4f}" for cid, acc in zip(cid_values, acc_values)]
+            )
+            mean_acc = float(np.mean(acc_values)) if len(acc_values) > 0 else 0.0
+            log_heartbeat(
+                f"[round {server_round}] acc_distr mean={mean_acc:.4f} | {pairs}",
+                level="standard",
+            )
+
+        if "asr" in metrics_aggregated and "cid" in metrics_aggregated:
+            asr_values = metrics_aggregated["asr"]
+            cid_values = metrics_aggregated["cid"]
+            pairs = ", ".join(
+                [f"{cid}:{asr:.4f}" for cid, asr in zip(cid_values, asr_values)]
+            )
+            mean_asr = float(np.mean(asr_values)) if len(asr_values) > 0 else 0.0
+            log_heartbeat(
+                f"[round {server_round}] asr mean={mean_asr:.4f} | {pairs}",
+                level="standard",
+            )
 
         return loss_aggregated, metrics_aggregated

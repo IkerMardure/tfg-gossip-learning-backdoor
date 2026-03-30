@@ -1,8 +1,8 @@
-run_name: '{timestamp} - FC_5 - 10rounds - 5classes - early train'
+run_name: '{timestamp} - SBM_6'
 topology: 'conf/topologies/analysis'
 device: cuda
 early_local_train: False
-num_rounds: 10
+num_rounds: 24
 # num_clients_per_round_fit: 2 #Doesn't matter - controlled by topology
 # num_clients_per_round_eval: 2 #Doesn't matter - controlled by topology
 batch_size: 128
@@ -23,13 +23,36 @@ simulation:
   num_gpus_per_client: "auto"
 
 config_fit:
-  lr: 0.0001
+  lr: 0.0005
   momentum: 0.9
   local_epochs: 2
-  enable_tqdm: true
+  enable_tqdm: false
 
 pretraining:
   enabled: true
-  epochs: 5
-  lr: 0.001
-  save_path: "C:\\Users\\Iker\\unibertsitatea\\praktikak\\GLow_TFG\\GLow-master\\pretrained_models\\lenet_mnist_pretrain.pth"
+  epochs: 1
+  lr: 0.00001
+  save_path: "C:\\Users\\Iker\\unibertsitatea\\praktikak\\GLow_TFG\\GLow-master\\lenet_mnist_pretrain.pth"
+  enable_tqdm: false
+  # Mix pretrained parameters with random initialization (0.0-1.0)
+  # 1.0 = full pretrained (current behavior, strong initial acc ~0.89)
+  # 0.5 = 50/50 blend (recommended to target ~0.7 initial acc)
+  # 0.0 = fully random (no pretraining benefit)
+  mix_alpha: 0.4
+  # Optional: add Gaussian noise to pretrained parameters (std dev)
+  # 0.0 = no noise, 0.01-0.05 = mild degradation
+  noise_std: 0.05
+
+# Logging configuration
+# Set verbose_logging to "minimal", "standard", or "verbose"
+# "minimal" - only final results, no per-round messages
+# "standard" - key milestones only (pretraining start/end, round heartbeats)
+# "verbose" - detailed per-client info during training
+verbose_logging: "standard"
+
+# Per-component overrides (optional, uncomment to override)
+# log_level_client_training: "minimal"
+# log_level_data_poisoning: "minimal"
+# log_level_pretraining: "standard"
+# log_level_results: "standard"
+# log_level_heartbeat: "standard"
