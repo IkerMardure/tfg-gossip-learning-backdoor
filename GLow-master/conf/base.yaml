@@ -1,8 +1,8 @@
-run_name: '{timestamp} - SBM_6'
+run_name: '{timestamp} - Ring_5'
 topology: 'conf/topologies/analysis'
 device: cuda
 early_local_train: False
-num_rounds: 24
+num_rounds: 20
 # num_clients_per_round_fit: 2 #Doesn't matter - controlled by topology
 # num_clients_per_round_eval: 2 #Doesn't matter - controlled by topology
 batch_size: 128

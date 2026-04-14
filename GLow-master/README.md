@@ -129,6 +129,22 @@ This section is oriented for visualization of the results obtained from *multipl
 - **FL_visualize_results:** Visualize FL experiments
 - **draw_graphs:** Draws graphs from YAML files generated with [generate_topology.ipynb](./generate_topology.ipynb)
 
+### Draw a topology graph from YAML (CLI)
+
+Use the CLI script below to generate an image directly from a topology YAML:
+
+```sh
+python visualization/draw_topology.py --yaml conf/topologies/ring30+5.yaml --out outputs/ring30_graph.png --format png --layout spring
+```
+
+Arguments:
+- `--yaml` (required): topology YAML file.
+- `--out` (optional): output file or directory. If omitted, `<yaml_name>_graph.<format>` is generated next to the YAML.
+- `--format` (optional): `png`, `pdf`, or `svg`.
+- `--layout` (optional): `spring`, `circular`, `kamada_kawai`, or `shell`.
+- `--seed` (optional): deterministic seed for layout.
+- `--dpi` (optional): image DPI.
+
 ## Changes in libraries
 
 Dealing with control nodes with no local data is not a Flower feature. Performing weighted average among network parameters triggers scaling factors realted issues (division by 0). Hence, *aggregate_inplace()*  method of [flwr/server/strategy/aggregate.py](/flwr_lib_modifications/aggregate.py) is modified. Scaling factor for nodes with no local data is set to 1.0 -- no scaling factor applied. 

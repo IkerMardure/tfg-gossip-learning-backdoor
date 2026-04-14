@@ -7,3 +7,4 @@ pyyaml
 hydra-core
 omegaconf
 matplotlib
+networkx
