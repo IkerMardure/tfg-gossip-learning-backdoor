@@ -1,0 +1,84 @@
+This chapter presents the experimental results and evaluates the behavior of the decentralized learning system under a targeted backdoor attack. The analysis focuses on how different network architectures affect both the learning of legitimate data and the propagation of the malicious infection. The evaluation is divided into several phases: establishing the baseline resilience of standard topologies, analyzing the attacker's trade-off between effectiveness and stealthiness, evaluating community-based structures (SBM), and testing the system under scaled and more realistic conditions.
+
+\section{Baseline Topologies Resilience}
+The initial phase of evaluation analyzed the propagation of the backdoor attack across three fundamental communication structures: Fully Connected, Star, and Ring. All baseline experiments were conducted with a 5 node network over 20 communication rounds, utilizing a poisoning ratio of 50\% and a boost factor of 5.0. To simulate a realistic environment where nodes already possess functional knowledge, a mixed initialization approach was used, starting the network with a base Clean Accuracy of approximately 70\% to 80\%.
+
+In the Fully Connected topology, as shown in Figure \ref{fig:FC5}, the lack of communication barriers allowed the malicious updates to be broadcast widely during the initial phases. The attacker (Client 1) successfully pushed the Attack Success Rate (ASR) to the honest nodes to a peak of approximately 0.65 in the early rounds. However, the extended 20-round simulation revealed the long-term resilience of Gossip Learning. As the honest majority continued to train on clean data and broadcast their updates, the poisoned weights were progressively diluted. By round 10, the network "healed" itself through majority consensus, dropping the ASR back to 0.20 (the statistical equivalent of random guessing for 5 classes), while maintaining a high Clean Accuracy of over 0.90 across all nodes.
+
+\begin{figure}[t]
+    \centering
+	\includegraphics[width=0.5\textwidth]{figures/FC5_metrics_per_node.png}
+	\caption{Metric per Node in a Fully Connected topology}\label{fig:FC5}
+\end{figure}
+
+In contrast, the Ring topology, as shown in Figure \ref{fig:Ring5}, demonstrated a strong structural resistance to rapid propagation \cite{giaretta2019gossip}. Due to the strict neighborhood constraints, the backdoor was forced to travel sequentially. This structural bottleneck significantly delayed and weakened the attack. Unlike the Fully Connected network, the Ring prevented network-wide ASR spikes, keeping the infection contained while allowing the honest nodes to successfully improve their legitimate accuracy.
+
+\begin{figure}[t]
+    \centering
+	\includegraphics[width=0.5\textwidth]{figures/Ring5_metrics_per_node.png}
+	\caption{Metric per Node in a Ring topology}\label{fig:Ring5}
+\end{figure}
+
+Finally, the Star topology exhibited a unique defense mechanism against peripheral attackers (see Figure \ref{fig:Star5}). The results show that while the malicious node attempted to spread the backdoor, the central hub (Client 0) acted as an effective shield. Because the hub continuously averaged the poisoned weights with clean updates from the other three isolated peripheral nodes, the malicious parameters we heavily diluted. The central hub experienced a minor ASR increase (peaking near 0.40), but the rest of the peripheral nodes maintained an ASR of 0.0 throughout the entire simulation, effectively neutralizing the spread of the infection.
+
+\begin{figure}[t]
+    \centering
+	\includegraphics[width=0.5\textwidth]{figures/Star5_metrics_per_node.png}
+	\caption{Metric per Node in a Star topology}\label{fig:Star5}
+\end{figure}
+
+\section{The Effectiveness vs. Stealthiness Trade-off}
+The baseline results reveal a critical dynamic regarding the "Stealthiness" of the malicious node. While the primary goal of the adversary is to maximize the ASR across the network, this must be achieved without suffering from Catastrophic Forgetting \cite{french1999catastrophic}. In a realistic Gossip Learning environment, an attacker that experiences a severe drop in Clean Accuracy becomes an easily detectable outlier and risks immediate isolation by anomaly detection systems.
+
+Our configuration proved highly stealthy in both the Fully Connected and Ring topologies. Despite using an aggressive boost factor of 5.0 and a 50\% poisoning ratio, the attacker mantained a Clean Accuracy on par with the honest nodes (above 0.90). The attack was surgically assimilated locally without destroying the legitimate features of the model.
+
+However, the Star topology exposed a critical vulnerability in the attacker's strategy when facing structural bottlenecks. As observed in the Star topology performance graph, the attacker (Client 1) suffered a complete collapse in ts Clean Accuracy, plummeting to nearly 0.20. By repeatedly applying a massive boost factor of 5.0 against the strong, clean consensus wall provided by the central hub, the attacker's local optimization process was overwhelmed. The neural network's parameters became deformed in a futile attempt to force the backdoor into a highly resistant global model.
+
+This demonstrates that stealthiness is not merely a product of the local hyperparameters (poisoning ratio and boost factor), but is also dependent on the network's topology. An aggressive attack configuration that remains perfectly hidden in a Fully Connected network can lead to the attacker's own Catastrophic Forgetting when isolated in a highly centralized structure like a Star network.
+
+
+\section{Stochastic Block Model (SBM) Performance}
+To evaluate the resilience of more realistic, community-based decentralized networks, the backdoor attack was deployed within a Stochastic Block Model (SBM) topology. In this configuration, the network is divided into two tightly knit communities (Community A: Clients 0, 1, and 2; Community B: Clients 3, 4, and 5) connected by a sparse gateway. The malicious node (Client 1) belongs to Community A and applies the aggressive baseline boost factor of 5.0 to its local updates.
+
+As illustrated in Figure \ref{fig:SBM6_5}, the SBM topology creates a highly complex dynamic that fundamentally alters the propagation of the attack, characterized by three distinct phenomena:
+
+\begin{figure}[t]
+    \centering
+	\includegraphics[width=0.5\textwidth]{figures/SBM6_5bf_metrics_per_node.png}
+	\caption{Metric per Node in a SBM topology with a boosting factor of 5.0}\label{fig:SBM6_5}
+\end{figure}
+
+\textbf{Local Dominance:} Within the attacker's immediate community, the malicious payload spreads effectively. The Attack Success Rate (ASR) graph shows that Client 1 quickly infects its direct neighbors. Client 0 reaches an ASR peak of nearly 0.90, while Client 2 maintains a sustained infection rate around 0.40. The high intracommunity connectivity allows the poisoned weights to circulate and reinforce themselves, creating a localized echo chamber where the backdoor thrives.
+
+\textbf{The Topological Firewall and The Dilution Effect:} Despite the high infection rate within Community A, the attack completely fails to penetrate Community B. The ASR lines for Clients 3, 4, and 5 remain flat at 0.0 throughout all 24 communication rounds. This failure perfectly highlights a critical topological defense mechanism inherent to the SBM. This phenomenon aligns with the "dilution effect" recently identified by Palmieri et al. (2024) in the context of legitimate Decentralized Federated Learning. Their research demonstrates that when nodes are grouped in segregated communities, it is exceptionally difficult for knowledge to circulate outside those boundaries, as updates get heavily diluted during the neighborhood aggregation phase. Our results successfully translate this concept into the cybersecurity domain: we prove that this exact same structural bottleneck actively functions as a robust, natural topological firewall against malicious backdoor injections. When the gateway node attempts to pass the poisoned model to Community B, the clean consensus of the receiving community immediately neutralizes the payload.
+
+\textbf{The Cost of Aggression:} While the attacker successfully compromised its local community, this dominance came at a critical cost to its stealthiness. The top graph reveals that at round 14, the aggressive boosting factor of 5.0 causes a severe degradation in the attacker's own Clean Accuracy, which plummets from ~0.90 to approximately 0.55. By repeatedly forcing a heavily boosted malicious update against the stabilizing consensus of the network, the attacker's local neural network suffers from Catastrophic Forgetting. In a realistic deployment, this massive deviation from the network's average performance would immediately trigger anomaly detection protocols, leading to the isolation of the malicious node.
+
+This failure in stealthiness suggests that an intelligent adversary must adapt. To successfully bypass anomaly detection while still attempting to cross the topological firewall, the attacker must lower its boosting factor, leading to the evaluation of the "Adaptive Attacker" trade-off.
+
+\begin{figure}[t]
+    \centering
+	\includegraphics[width=0.5\textwidth]{figures/SBM6_3bf_metrics_per_node.png}
+	\caption{Metric per Node in a SBM topology with a boosting factor of 3.0}\label{fig:SBM6_3}
+\end{figure}
+
+\begin{figure}[t]
+    \centering
+	\includegraphics[width=0.5\textwidth]{figures/SBM6_4bf_metrics_per_node.png}
+	\caption{Metric per Node in a SBM topology with a boosting factor of 4.0}\label{fig:SBM6_4}
+\end{figure}
+
+\subsection{The Adaptive Attacker: Navigating the Trade-off}
+The catastrophic failure of the attacker's stealth in the previous scenario (using a boost factor of $\alpha$=5.0) highlights a fundamental limitation: brute force is easily detectable in structurally constrained networks. To simulate a more sophisticated adversary, we introduce the "Adaptive Attacker" model. In this scenario, the malicious node calibrates its boosting factor downward to find the optimal balance between evading anomaly detection (maintaining high Clean Accuracy) and successfully propagating the backdoor (maximizing Attack Success Rate).
+
+To empirically locate this threshold, two subsequent simulations were executed within the same SBM topology using reduced boosting factors of $\alpha$=3.0 and $\alpha$=4.0.
+
+\textbf{The Lower Bound: Over-Prioritizing Stealth $\alpha$=3.0:} When the boosting factor is reduced to 3.0 (Figure \ref{fig:SBM6_3}), the attacker successfully solves the stealth problem. The top graph demonstrates that the Catastrophic Forgetting phenomenon is entirely eliminated; Client 1 maintains a Clean Accuracy of ~0.95, perfectly blending in with the honest nodes. However, this stealth comes at the expense of effectiveness. The Attack Success Rate graph reveals that the poisoned payload is now too weak to dominate even its local environment. The honest updates from its immediate neighbors (Clients 0 and 2) easily wash out the backdoor, preventing the local ASR from ever surpassing 0.20. The attack is effectively rendered harmless by standard local averaging.
+
+\textbf{The "Sweet Spot": Local Dominance ($\alpha$=4.0):} By slightly increasing the boosting factor to 4.0 (Figure \ref{fig:SBM6_4}), the adaptive attacker finds its optimal local configuration.
+
+Under this optimized configuration, the attacker successfully maintains its stealth by preserving a Clean Accuracy near 0.95, effectively evading anomaly detection. Simultaneously, the malicious payload proves potent enough to reinfect Community A. This is evidenced by Client 0's Attack Success Rate (ASR) steadily climbing past 0.55, while Client 2 sustains an ASR of approximately 0.15. Together, these metrics demonstrate that the attacker (Client 1) has successfully compromised its local cluster without triggering the catastrophic self-destruction observed at higher boosting factors.
+
+\textbf{The Ultimate Resilience of the Topological Firewall:} The most critical finding of the adaptive attacker experiment lies in the behavior of Community B (Clients 3, 4, and 5) under the optimal attack configuration ($\alpha$=4.0). Despite the attacker successfully fine-tuning its payload to be both highly infectious locally and completely stealthy, the ASR lines for Community B remain entirely flat at 0.0.
+
+This result provides definitive proof of the structural robustness of the Stochastic Block Model. The bottleneck between communities acts as an insurmountable mathematical barrier. For the backdoor to survive the "dilution effect" across the gateway and infect Community B, the attacker would need a mathematically stronger payload (e.g., $\alpha$=5.0). However, as proven previously, applying that level of force inevitably causes Catastrophic Forgetting, exposing the attacker. Therefore, the topology mathematically corners the adversary: it forces the attacker into an unwinnable scenario where it must choose between being ineffective or being detected.

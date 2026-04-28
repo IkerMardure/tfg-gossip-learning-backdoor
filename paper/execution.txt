@@ -1,0 +1,2 @@
+cd GLow-master/paper
+latexmk -pdf -shell-escape main.tex

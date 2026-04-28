@@ -1,0 +1,5 @@
+pool_ID: 0 neighbours: [0, 4, 1] loss: 3.7300277817994356 acc: 0.9735357073360577
+pool_ID: 1 neighbours: [1, 0, 2] loss: 17.702673137187958 acc: 0.9497956800934034
+pool_ID: 2 neighbours: [2, 1, 3] loss: 4.242046408355236 acc: 0.9766491535318156
+pool_ID: 3 neighbours: [3, 2, 4] loss: 3.3306459486484528 acc: 0.9752870208211715
+pool_ID: 4 neighbours: [4, 3, 0] loss: 2.7843384090811014 acc: 0.9760653823701109

@@ -1,0 +1,103 @@
+The transition from centralized machine learning to decentralized architectures represents a fundamental shift in how data privacy and computational resources are managed. This chapter outlines the foundational concepts of Federated Learning (FL) and its evolution into Decentralized Federated Learning (DFL), commonly referred to as Gossip Learning (GL), providing the necessary background to understand the structural vulnerabilities evaluated in this research.
+
+\section{Federated Learning}
+
+pseudokodigoak
+
+In traditional machine learning paradigms, training a robust model requires aggregating vast amounts of data into a single centralized repository or data center. While this approach benefits from direct access to the entire dataset, it introduces severe limitations, including high communication costs, significant storage requirements, and profound data privacy concerns. 
+
+To mitigate these issues, McMahan et al. \cite{mcmahan2017communication} introduced Federated Learning (FL) by decentralizing the training data. The core principle of FL is to bring the model to the data rather than gathering the data in a central location. In a standard FL architecture, a central server orchestrates the learning process across a distributed network of clients (e.g., mobile devices, edge servers, or organizations). The training process operates in iterative communication rounds:
+
+\begin{enumerate}
+    \item The central server initializes a global model and broadcasts its parameters to a subset of participating clients.
+    \item Each client trains the model locally using its own private data.
+    \item The clients compute the model updates (gradients or new weights) and transmit only these parameters back to the central server.
+    \item The server aggregates the local updates to form a new global model.
+\end{enumerate}
+
+\begin{ifalgorithm}[t]
+\caption{Standard Federated Averaging (FedAvg)}
+\label{alg:fedavg}
+\begin{ifpseudo}{Centralized Training Loop}
+    \item \In\ Total rounds $T$, participating clients $K$, local epochs $E$
+    \item \textbf{Server Execution:}
+    \item Initialize global model $w_0$
+    \item \For{t = 1}{T}
+    \item \T{Server selects a subset of clients $S_t$}
+    \item \T{\textbf{for} each client $k \in S_t$ \textbf{in parallel} \Do}
+    \item \TT{$w_{t+1}^k \leftarrow \text{ClientUpdate}(w_t, k, E)$}
+    \item \T{\Done}
+    \item \T{// Server aggregates local models}
+    \item \T{$w_{t+1} \leftarrow \sum_{k \in S_t} \frac{n_k}{n} w_{t+1}^k$}
+    \item \EFor
+    \item \vspace{0.5em}
+    \item \textbf{ClientUpdate}$(w, k, E)$:
+    \item Initialize local model $w^k \leftarrow w$
+    \item \For{e = 1}{E}
+    \item \T{Train $w^k$ on local data $\mathcal{D}_k$}
+    \item \EFor
+    \item \textbf{return} $w^k$
+\end{ifpseudo}
+\end{ifalgorithm}
+
+
+The most standard aggregation algorithm used in this process is Federated Averaging (FedAvg), where the server computes a weighted average of the received models based on the number of local training samples at each client. Mathematically, the global model $w$ at round $t+1$ is updated as follows:
+
+\begin{equation}
+w_{t+1} = \sum_{k=1}^K \frac{n_k}{n} w_{t+1}^k
+\end{equation}
+
+Where $K$ is the number of participating clients, $n_k$ is the number of data samples at client $k$, $n$ is the total number of samples across all participating clients, and $w_{t+1}^k$ represents the local model weights of client $k$.
+
+To accommodate the varying nature of data distribution in real-world applications, Yuan et al. \cite{yuan2024decentralized} classify FL into three primary categories:
+
+\begin{itemize}
+    \item \textbf{Horizontal Federated Learning (HFL):} Applied when clients share the same feature space but differ in data samples (e.g., two different hospitals predicting the same disease with different patients).
+    \item \textbf{Vertical Federated Learning (VFL):} Applied when clients share the same sample ID space but differ in feature spaces (e.g., a bank and an e-commerce platform collaborating on the same user base).
+    \item \textbf{Federated Transfer Learning (FTL):} Utilized when datasets differ in both samples and feature spaces, leveraging transfer learning techniques to overcome the lack of overlapping data.
+\end{itemize}
+
+Despite its advantages in preserving data privacy, FL remains reliant on a central server. This centralized coordination introduces a Single Point of Failure (SPOF) and creates a significant communication bottleneck as the network scales to thousands or millions of devices. 
+
+\section{Decentralized Federated Learning (Gossip Learning)}
+
+To address the scalability limits and the SPOF inherent in centralized FL, researchers such as Hegedűs et al. \cite{hegedus2019gossip} and Vanhaesebrouck et al. \cite{vanhaesebrouck2017decentralized} proposed Decentralized Federated Learning (DFL). Often referred to as Gossip Learning (GL), this architecture removes the central orchestrator entirely. In a GL system, the network operates on a Peer-to-Peer (P2P) basis, where nodes communicate solely with their topological neighbors.
+
+In this paradigm, there is no global synchronization or central authority to validate updates. Each node $i$ maintains its own local model $w_i$. During the training process, nodes periodically exchange their model parameters with a subset of neighboring nodes, defined by the network's structural topology (e.g., a Ring, Star, or Stochastic Block Model). When a node receives models from its neighbors, it aggregates them with its own local parameters, typically using a weighted average, and then resumes local training.
+
+The aggregation at a given node $i$ at iteration $t$ can be formally expressed as:
+
+\begin{equation}
+w_{i, t} = \sum_{j \in \mathcal{N}_i} \alpha_{ij} w_{j, t-1}
+\end{equation}
+
+Where $\mathcal{N}_i$ represents the set of neighbors of node $i$ (including node $i$ itself), and $\alpha_{ij}$ denotes the aggregation weight assigned to the model received from node $j$. 
+
+This fully decentralized approach offers superior fault tolerance, as the network can seamlessly handle node dropouts and dynamic connectivity without halting the learning process. Furthermore, by eliminating the central server, GL mitigates the risk of a single entity controlling or monitoring the entire aggregation process.
+
+To formalize this decentralized architecture, Algorithm \ref{alg:gossip_learning} outlines the standard peer-to-peer training lifecycle. Unlike centralized systems that wait for a global synchronization barrier, each node in a Gossip Learning environment independently executes its local training, broadcasts its updates to its topological neighborhood, and computes its own localized consensus.
+
+\begin{ifalgorithm}[t]
+\caption{Standard Decentralized Federated Learning (Gossip Learning) Loop}
+\label{alg:gossip_learning}
+\begin{ifpseudo}{Decentralized Training Loop}
+    \item \In\ Graph $\mathcal{G} = (\mathcal{V}, \mathcal{E})$, Local datasets $\mathcal{D}_i$, epochs $E$
+    \item \textbf{Initialization:} Each node $i$ initializes local model $w_{i,0}$
+    \item \For{t = 1}{T}
+    \item \T{\textbf{for} each node $i \in \mathcal{V}$ \textbf{in parallel} \Do}
+    \item \TT{// Phase 1: Local Training}
+    \item \TT{$w_{i,t}^{local} \leftarrow \text{LocalTraining}(w_{i,t-1}, \mathcal{D}_i, E)$}
+    \item \TT{// Phase 2: Gossip Communication}
+    \item \TT{Send $w_{i,t}^{local}$ to all topological neighbors}
+    \item \TT{Receive $w_{j,t}^{local}$ from all topological neighbors}
+    \item \TT{// Phase 3: Decentralized Aggregation}
+    \item \TT{$w_{i,t} \leftarrow \sum_{j \in \mathcal{N}_i} \alpha_{ij} w_{j,t}^{local}$}
+    \item \T{\Done}
+    \item \EFor
+\end{ifpseudo}
+\end{ifalgorithm}
+
+However, the absence of a central server fundamentally shifts the security dynamics of the system. Without an authoritative entity to establish trust, verify updates, and enforce a global consensus, the propagation of information depends entirely on the physical or logical shape of the network graph. This structural dependence means that model convergence, as well as the spread of malicious updates, is dictated by the network topology. Denser networks may facilitate rapid knowledge sharing but also accelerate the spread of poisoned parameters, whereas sparse networks or community-based structures may introduce severe communication bottlenecks. Understanding these topological dynamics is crucial for evaluating the vulnerabilities of GL systems against targeted adversarial attacks.
+
+To formalize this decentralized architecture, Algorithm \ref{alg:gossip_learning} outlines the standard peer-to-peer training lifecycle. Unlike centralized systems that wait for a global synchronization barrier, each node in a Gossip Learning environment independently executes its local training, broadcasts its updates to its topological neighborhood, and computes its own localized consensus.
+
