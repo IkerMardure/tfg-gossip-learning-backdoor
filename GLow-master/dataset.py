@@ -11,6 +11,15 @@ import torchvision.datasets as torch_datasets
 #import ssl
 
 
+def _group_dataset_by_label(dataset, num_classes: int):
+    buckets = [[] for _ in range(num_classes)]
+    for sample in dataset:
+        label = int(sample[1])
+        if 0 <= label < num_classes:
+            buckets[label].append(sample)
+    return buckets
+
+
 def get_cifar10(data_path: str = "..datasets"):
     """Download CIFAR‑10 and apply a simple transform."""
     #ssl._create_default_https_context = ssl._create_unverified_context
@@ -116,12 +125,7 @@ def _split_iid(
         if i not in clients_with_no_data:
             clients_with_data.append(i)
 
-    # OPTIMIZED: SPLIT DATASET BY CLASSES using list comprehension (single pass)
-    ordered_trainset = []
-    for i in range(num_classes):
-        # Single pass through dataset, collect only matching class
-        class_data = [data for data in trainset if data[1] == i]
-        ordered_trainset.extend(class_data)
+    ordered_trainset = [item for class_data in _group_dataset_by_label(trainset, num_classes) for item in class_data]
 
     num_images = len(ordered_trainset) // len(clients_with_data)
     num_images_remainder = len(ordered_trainset) % len(clients_with_data)
@@ -160,11 +164,7 @@ def _split_iid(
             trainloaders.append('')
             validationloaders.append('')
 
-    # OPTIMIZED: TEST SET using list comprehension (single pass)
-    ordered_testset = []
-    for i in range(num_classes):
-        class_data = [data for data in testset if data[1] == i]
-        ordered_testset.extend(class_data)
+    ordered_testset = [item for class_data in _group_dataset_by_label(testset, num_classes) for item in class_data]
 
     testloader = DataLoader(
         ordered_testset, batch_size=batch_size, shuffle=True, num_workers=4, pin_memory=True
@@ -192,73 +192,6 @@ def prepare_dataset_iid(
         seed,
         val_ratio,
     )
-    for i in range(num_clients):
-        if i not in clients_with_no_data:
-            clients_with_data.append(i)
-
-    # SPLIT DATASET BY CLASSES
-    ordered_trainset = []
-
-    for i in range(num_classes):
-        tmp_part = []
-        for j, data in enumerate(trainset):
-            img, label = data
-            if label == i:
-                tmp_part.append(data)
-        ordered_trainset.extend(tmp_part)
-
-
-    num_images = len(ordered_trainset) // len(clients_with_data)
-    num_images_remainder = len(ordered_trainset) % len(clients_with_data)
-    
-    partition_len = [0] * num_clients
-    
-    #SPLIT DS ACCORDINGLY
-    for i in clients_with_data:
-        partition_len[i] = num_images
-        if num_images_remainder > 0:
-            partition_len[i] += 1
-            num_images_remainder -=1
-   
-    ##########
-    trainsets = random_split(
-        ordered_trainset, partition_len, torch.Generator().manual_seed(seed)
-    )
-    trainloaders = []
-    validationloaders = []
-    
-    for trainset_ in trainsets:
-        num_total = len(trainset_)
-        num_val = int(val_ratio * num_total)
-        num_train = num_total - num_val
-        for_train, for_val = random_split(
-            trainset_, [num_train, num_val], torch.Generator().manual_seed(seed)
-        )
-        if num_total > 0:
-            trainloaders.append(
-                DataLoader(for_train, batch_size=batch_size, shuffle=True, num_workers=4, pin_memory=True )
-            )
-            validationloaders.append(
-                DataLoader(for_val, batch_size=batch_size, shuffle=False, num_workers=4, pin_memory=True)
-            )
-        else:
-            trainloaders.append('')
-            validationloaders.append('')
-
-    #TEST SET
-    ordered_testset = []
-
-    for i in range(num_classes):
-        tmp_part = []
-        for j, data in enumerate(testset):
-            img, label = data
-            if label == i:
-                tmp_part.append(data)
-        ordered_testset.extend(tmp_part)
-
-
-    testloader = DataLoader(ordered_testset, batch_size=batch_size, shuffle=True, num_workers=2)
-    return trainloaders, validationloaders, testloader
 
 def prepare_dataset_niid(num_clients: int, num_classes: int, clients_with_no_data: list[int], batch_size: int, seed: int, val_ratio: float = 0.1):
     """Load CIFAR-10 (training and test set). DIRICHLET"""
@@ -269,16 +202,7 @@ def prepare_dataset_niid(num_clients: int, num_classes: int, clients_with_no_dat
         if i not in clients_with_no_data:
             clients_with_data.append(i)
 
-    # SPLIT DATASET BY CLASSES
-    ordered_trainset = []
-
-    for i in range(num_classes):
-        tmp_part = []
-        for j, data in enumerate(trainset):
-            img, label = data
-            if label == i:
-                tmp_part.append(data)
-        ordered_trainset.extend(tmp_part)
+    ordered_trainset = [item for class_data in _group_dataset_by_label(trainset, num_classes) for item in class_data]
 
     # SPLIT DIRICHLET DISTRIBUTION
     alpha = 0.4
@@ -326,16 +250,7 @@ def prepare_dataset_niid(num_clients: int, num_classes: int, clients_with_no_dat
             trainloaders.append('')
             validationloaders.append('')
 
-    #TEST SET
-    ordered_testset = []
-
-    for i in range(num_classes):
-        tmp_part = []
-        for j, data in enumerate(testset):
-            img, label = data
-            if label == i:
-                tmp_part.append(data)
-        ordered_testset.extend(tmp_part)
+    ordered_testset = [item for class_data in _group_dataset_by_label(testset, num_classes) for item in class_data]
 
 
     testloader = DataLoader(ordered_testset, batch_size=batch_size, shuffle=True, num_workers=4, pin_memory=True)
@@ -355,16 +270,7 @@ def prepare_dataset_niid_class_partition(num_clients: int, num_classes: int, cli
         if i not in clients_with_no_data:
             clients_with_data.append(i)
 
-    # SPLIT DATASET BY CLASSES
-    ordered_trainset = []
-
-    for i in range(num_classes):
-        tmp_part = []
-        for j, data in enumerate(trainset):
-            img, label = data
-            if label == i:
-                tmp_part.append(data)
-        ordered_trainset.append(tmp_part)
+    ordered_trainset = _group_dataset_by_label(trainset, num_classes)
 
     # Smart division
     partition_num_per_agent = num_classes // len(clients_with_data)
@@ -404,16 +310,7 @@ def prepare_dataset_niid_class_partition(num_clients: int, num_classes: int, cli
             trainloaders.append('')
             validationloaders.append('')
 
-    #Also smart division?
-    ordered_testset = []
-
-    for i in range(num_classes):
-        tmp_part = []
-        for j, data in enumerate(testset):
-            img, label = data
-            if label == i:
-                tmp_part.append(data)
-        ordered_testset.extend(tmp_part)
+    ordered_testset = [item for class_data in _group_dataset_by_label(testset, num_classes) for item in class_data]
 
 
     testloader = DataLoader(ordered_testset, batch_size=batch_size, shuffle=True, num_workers=4, pin_memory=True)

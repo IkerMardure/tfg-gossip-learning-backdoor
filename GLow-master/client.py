@@ -1,4 +1,3 @@
-from collections import OrderedDict
 from typing import Dict, Tuple, List
 from flwr.common import NDArrays, Scalar
 
@@ -21,12 +20,14 @@ class FlowerClient(fl.client.NumPyClient):
         self.validationloader = validationloader
         self.local_acc = None
         self.model = LeNet(num_classes)
+        self.parameter_keys = list(self.model.state_dict().keys())
         self.num_classes = num_classes
         self.device = _resolve_torch_device(device)
 
     def set_parameters(self, parameters):
-        params_dict = zip(self.model.state_dict().keys(), parameters)
-        state_dict = OrderedDict({k: torch.Tensor(v) for k, v in params_dict})
+        state_dict = self.model.state_dict()
+        for key, value in zip(self.parameter_keys, parameters):
+            state_dict[key].copy_(torch.as_tensor(value, device=state_dict[key].device, dtype=state_dict[key].dtype))
         self.model.load_state_dict(state_dict, strict=True)
 
     def get_parameters(self, config: Dict[str, Scalar]):

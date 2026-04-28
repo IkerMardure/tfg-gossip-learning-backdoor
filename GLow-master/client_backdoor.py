@@ -1,19 +1,58 @@
 import random
 import numpy as np
-from collections import OrderedDict
 from typing import Dict, Tuple, List
 from flwr.common import NDArrays, Scalar
 
 import torch
 import flwr as fl
-from torch.utils.data import Dataset, DataLoader
+from torch.utils.data import Dataset, DataLoader, Sampler
 # Make sure to import your model, train, and test functions
 from model import LeNet, train, test
 from utils.logging import log_client_training, log_data_poisoning 
 
 
 BACKDOOR_POISON_RATE = 0.5
-BACKDOOR_BOOST_FACTOR = 3.0
+BACKDOOR_BOOST_FACTOR = 1.0
+
+
+class BalancedBackdoorBatchSampler(Sampler[List[int]]):
+    def __init__(self, dataset, batch_size: int, poison_fraction: float = 0.5):
+        if batch_size < 2:
+            raise ValueError("batch_size must be at least 2 for balanced backdoor batching")
+
+        self.dataset = dataset
+        self.batch_size = batch_size
+        self.poison_count = max(1, int(round(batch_size * poison_fraction)))
+        if self.poison_count >= batch_size:
+            self.poison_count = batch_size - 1
+        self.clean_count = batch_size - self.poison_count
+
+        poisoned_indices = getattr(dataset, "poisoned_indices", set())
+        self.poisoned_indices = list(poisoned_indices)
+        self.clean_indices = [idx for idx in range(len(dataset)) if idx not in poisoned_indices]
+        self._num_batches = min(
+            len(self.clean_indices) // self.clean_count if self.clean_count > 0 else 0,
+            len(self.poisoned_indices) // self.poison_count if self.poison_count > 0 else 0,
+        )
+
+    def __iter__(self):
+        clean_indices = self.clean_indices.copy()
+        poisoned_indices = self.poisoned_indices.copy()
+        random.shuffle(clean_indices)
+        random.shuffle(poisoned_indices)
+
+        for batch_idx in range(self._num_batches):
+            clean_start = batch_idx * self.clean_count
+            poison_start = batch_idx * self.poison_count
+            batch = (
+                clean_indices[clean_start:clean_start + self.clean_count]
+                + poisoned_indices[poison_start:poison_start + self.poison_count]
+            )
+            random.shuffle(batch)
+            yield batch
+
+    def __len__(self):
+        return self._num_batches
 
 
 def _resolve_torch_device(device: str) -> torch.device:
@@ -92,52 +131,112 @@ class FlowerClient(fl.client.NumPyClient):
     def __init__(self, cid, trainloader, validationloader, num_classes, device):
         super().__init__()
         self.cid = cid
+        self.clean_trainloader = trainloader
         self.trainloader = trainloader
+        self.poisoned_trainloader = None
         self.validationloader = validationloader
         self.local_acc = None
         self.model = LeNet(num_classes)
+        self.parameter_keys = list(self.model.state_dict().keys())
         self.num_classes = num_classes
         self.device = _resolve_torch_device(device)
         self.is_malicious = int(cid) in [1]  # Client 1 is malicious
 
+    def _attack_active(self, config):
+        comm_round = config.get("comm_round")
+        if comm_round is None:
+            return self.is_malicious
+
+        activation_round = int(config.get("attacker_activation_round", 4))
+        return self.is_malicious and int(comm_round) >= activation_round
+
+    def _attacker_lr(self, config):
+        base_lr = float(config.get("lr", 0.001))
+        attacker_lr = float(config.get("attacker_lr", base_lr))
+        attacker_lr = min(base_lr, attacker_lr)
+
+        decay = float(config.get("attacker_lr_decay", 1.0))
+        lr_min = float(config.get("attacker_lr_min", attacker_lr))
+        comm_round = config.get("comm_round")
+        activation_round = int(config.get("attacker_activation_round", 4))
+
+        if comm_round is None:
+            return attacker_lr
+
+        rounds_since_activation = max(int(comm_round) - activation_round, 0)
+        scheduled_lr = attacker_lr * (decay ** rounds_since_activation)
+        return max(scheduled_lr, lr_min)
+
     def set_parameters(self, parameters):
-        params_dict = zip(self.model.state_dict().keys(), parameters)
-        state_dict = OrderedDict({k: torch.Tensor(v) for k, v in params_dict})
+        state_dict = self.model.state_dict()
+        for key, value in zip(self.parameter_keys, parameters):
+            state_dict[key].copy_(torch.as_tensor(value, device=state_dict[key].device, dtype=state_dict[key].dtype))
         self.model.load_state_dict(state_dict, strict=True)
 
     def get_parameters(self, config: Dict[str, Scalar]):
         return [val.cpu().numpy() for _, val in self.model.state_dict().items()]
     
-    def poison_data(self, trainloader):
+    def poison_data(self, trainloader, balanced_batches: bool = True):
         # Apply the backdoor trigger and change labels to class 0
         poisoned_dataset = BackdoorDataset(
             trainloader.dataset,
             target_class=0,
             poison_ratio=BACKDOOR_POISON_RATE,
         )
-        return DataLoader(poisoned_dataset, batch_size=trainloader.batch_size, shuffle=True)
+        batch_size = trainloader.batch_size
+        if batch_size is None or not balanced_batches:
+            return DataLoader(poisoned_dataset, shuffle=True)
+
+        mixed_batch_sampler = BalancedBackdoorBatchSampler(
+            poisoned_dataset,
+            batch_size=batch_size,
+            poison_fraction=BACKDOOR_POISON_RATE,
+        )
+        return DataLoader(
+            poisoned_dataset,
+            batch_sampler=mixed_batch_sampler,
+            num_workers=getattr(trainloader, "num_workers", 0),
+            pin_memory=getattr(trainloader, "pin_memory", False),
+        )
+
+    def _get_active_trainloader(self, config):
+        if self.poisoned_trainloader is None:
+            use_balanced_batches = bool(config.get("attacker_batch_mixing", True))
+            self.poisoned_trainloader = self.poison_data(
+                self.clean_trainloader,
+                balanced_batches=use_balanced_batches,
+            )
+        return self.poisoned_trainloader
     
     def fit(self, parameters, config):
         self.set_parameters(parameters)
         metrics_val_distr = None
+        attack_active = self._attack_active(config)
 
         if config.get('local_train_cid', self.cid) == self.cid or config.get('local_train_cid') == -1:
-            lr = config.get('lr', 0.001)
+            lr = self._attacker_lr(config) if attack_active else float(config.get('lr', 0.001))
             epochs = config.get('local_epochs', 1)
             enable_tqdm = bool(config.get('enable_tqdm', False))
             optim = torch.optim.Adam(self.model.parameters(), lr=lr)
 
             # Use logging module instead of print (level="verbose" for per-client detail)
-            log_client_training(f"Client {self.cid} is {'malicious' if self.is_malicious else 'benign'}.", level="verbose")
-            if self.is_malicious:
-                log_data_poisoning(f"Client {self.cid} is malicious, poisoning data...", level="verbose")
-                self.trainloader = self.poison_data(self.trainloader)
+            phase = "malicious-active" if attack_active else ("malicious-dormant" if self.is_malicious else "benign")
+            log_client_training(
+                f"Client {self.cid} is {phase} (lr={lr:.6f}, round={config.get('comm_round', 'N/A')}).",
+                level="verbose",
+            )
+            trainloader = self._get_active_trainloader(config) if attack_active else self.clean_trainloader
+            if attack_active:
+                log_data_poisoning(
+                    f"Client {self.cid} is active and poisoning with balanced batches.",
+                    level="verbose",
+                )
 
             # Local training
             progress_desc = f"cid {self.cid} - local train"
             distr_loss_train, metrics_val_distr = train(
                 self.model,
-                self.trainloader,
+                trainloader,
                 self.validationloader,
                 optim,
                 epochs,
@@ -161,13 +260,13 @@ class FlowerClient(fl.client.NumPyClient):
                 
                 new_parameters = boosted_params
 
-            return new_parameters, len(self.trainloader), {
+            return new_parameters, len(trainloader), {
                 'acc_val_distr': metrics_val_distr,
                 'cid': self.cid,
                 'distr_val_loss': '##'
             }
 
-        return self.get_parameters({}), len(self.trainloader), {'cid': self.cid}
+        return self.get_parameters({}), len(self.clean_trainloader), {'cid': self.cid}
     
     def evaluate(self, parameters: NDArrays, config: Dict[str, Scalar]):
         self.set_parameters(parameters)
