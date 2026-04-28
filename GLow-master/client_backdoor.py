@@ -13,7 +13,7 @@ from utils.logging import log_client_training, log_data_poisoning
 
 
 BACKDOOR_POISON_RATE = 0.5
-BACKDOOR_BOOST_FACTOR = 5.0
+BACKDOOR_BOOST_FACTOR = 3.0
 
 
 def _resolve_torch_device(device: str) -> torch.device:

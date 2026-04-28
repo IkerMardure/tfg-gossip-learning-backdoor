@@ -128,6 +128,7 @@ This section is oriented for visualization of the results obtained from *multipl
 - **16_visualize_results:** Visualize GLow experiments for an 16 agent scenario
 - **FL_visualize_results:** Visualize FL experiments
 - **draw_graphs:** Draws graphs from YAML files generated with [generate_topology.ipynb](./generate_topology.ipynb)
+- **compare_poisoned_vs_original.py:** Renders side-by-side clean vs backdoor samples and saves PNG.
 
 ### Draw a topology graph from YAML (CLI)
 
@@ -144,6 +145,29 @@ Arguments:
 - `--layout` (optional): `spring`, `circular`, `kamada_kawai`, or `shell`.
 - `--seed` (optional): deterministic seed for layout.
 - `--dpi` (optional): image DPI.
+
+### Compare poisoned and original samples (CLI)
+
+Generate a PNG with clean vs backdoored sample pairs:
+
+```sh
+python visualization/compare_poisoned_vs_original.py --dataset mnist --num-samples 8 --output visualization/poisoned_vs_original.png --seed 42
+```
+
+Use topology YAML to match client partition settings:
+
+```sh
+python visualization/compare_poisoned_vs_original.py --dataset mnist --topology-yaml conf/topologies/ring30+5.yaml --client-id 1 --num-samples 8 --output visualization/poisoned_vs_original.png
+```
+
+Arguments:
+- `--dataset`: `mnist` or `cifar10`.
+- `--topology-yaml` (optional): reads `num_clients` and `clients_with_no_data` from topology file.
+- `--client-id`: client index to sample from.
+- `--num-samples`: number of rows in the output figure.
+- `--target-class`: backdoor target label.
+- `--poison-ratio`: fraction of poisoned samples.
+- `--output`: PNG file path.
 
 ## Changes in libraries
 

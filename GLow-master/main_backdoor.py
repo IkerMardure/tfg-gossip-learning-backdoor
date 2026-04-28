@@ -5,7 +5,7 @@ from pathlib import Path
 
 import numpy as np
 import torch  # MUST import torch BEFORE flwr to avoid DLL conflicts on Windows
-from torch.utils.data import ConcatDataset, DataLoader
+from tqdm import tqdm
 import yaml
 import flwr as fl
 
@@ -18,7 +18,7 @@ from client_backdoor import (
     generate_client_fn,
 )
 from server import get_on_fit_config, get_evaluate_fn
-from model import LeNet, load_or_train_pretrained
+from model import LeNet, train_pretrain
 from flwr.server.client_manager import SimpleClientManager
 from flwr.common import ndarrays_to_parameters
 from custom_strategies.topology_based_GL import topology_based_Avg
@@ -137,76 +137,75 @@ def main() -> None:
 
     # 4.5. PRETRAINING PHASE (optional)
     if cfg.get("pretraining", {}).get("enabled", False):
-        log_pretraining("\n=== Starting Pretraining Phase ===")
+        log_pretraining("\n=== Starting Local Per-Node Pretraining Phase ===", level="standard")
         pretrain_cfg = cfg.get("pretraining", {})
 
-        # Build a centralized train dataloader from all client train splits.
-        train_datasets = [loader.dataset for loader in trainloaders if len(loader.dataset) > 0]
-        if not train_datasets:
-            raise ValueError("Pretraining enabled but no training data is available in client trainloaders")
-        centralized_pretrain_loader = DataLoader(
-            ConcatDataset(train_datasets),
-            batch_size=cfg["batch_size"],
-            shuffle=True,
-        )
-        
-        # Create model for pretraining
-        pretrain_model = LeNet(cfg["num_classes"]).to(device)
-        
-        # Set seed for reproducibility
-        torch.manual_seed(cfg.get("seed", 2001))
-        
-        # Create optimizer for pretraining
+        pretrain_epochs = pretrain_cfg.get("epochs", 1)
         pretrain_lr = pretrain_cfg.get("lr", 0.001)
-        pretrain_optimizer = torch.optim.Adam(pretrain_model.parameters(), lr=pretrain_lr)
-        
-        # Load or train pretrained model
-        pretrain_model, was_loaded = load_or_train_pretrained(
-            net=pretrain_model,
-            trainloader=centralized_pretrain_loader,
-            optimizer=pretrain_optimizer,
-            epochs=pretrain_cfg.get("epochs", 5),
-            num_classes=cfg["num_classes"],
-            device=device,
-            model_save_path=pretrain_cfg.get("save_path", "./pretrained_model.pth"),
-            show_progress=pretrain_cfg.get("enable_tqdm", False)
-        )
-        
-        # Extract parameters from pretrained model
-        params_dict = pretrain_model.state_dict()
-        pretrain_parameters = [v.cpu().numpy() for v in params_dict.values()]
-        
-        # Apply parameter mixing if configured
-        mix_alpha = pretrain_cfg.get('mix_alpha', 1.0)
-        noise_std = pretrain_cfg.get('noise_std', 0.0)
-        
-        if mix_alpha < 1.0 or noise_std > 0.0:
-            # Create random model initialized with same seed offset for blend baseline
-            random_model = LeNet(cfg['num_classes']).to(device)
-            torch.manual_seed(cfg.get('seed', 2001) + 1)  # Different seed for random model
-            random_model.apply(lambda m: m.weight.data.normal_(0, 0.1) if hasattr(m, 'weight') else None)
-            random_model.apply(lambda m: m.bias.data.zero_() if hasattr(m, 'bias') else None)
-            
-            random_dict = random_model.state_dict()
-            random_parameters = [v.cpu().numpy() for v in random_dict.values()]
-            
-            # Blend: mixed = alpha * pretrained + (1-alpha) * random
-            mixed_parameters = []
-            for pretrained, random in zip(pretrain_parameters, random_parameters):
-                mixed = mix_alpha * pretrained + (1.0 - mix_alpha) * random
-                if noise_std > 0.0:
-                    mixed = mixed + np.random.normal(0, noise_std, mixed.shape)
-                mixed_parameters.append(mixed)
-            
-            pretrain_parameters = mixed_parameters
-            log_pretraining(
-                f"Applied parameter mixing: alpha={mix_alpha}, noise_std={noise_std}",
-                level="standard"
-            )
-        
-        # Pass to strategy as initial parameters
-        strategy.initial_parameters = ndarrays_to_parameters(pretrain_parameters)
-        log_pretraining("=== Pretraining Phase Completed ===\n")
+        enable_tqdm = pretrain_cfg.get("enable_tqdm", False)
+        mix_alpha = pretrain_cfg.get("mix_alpha", 1.0)
+        noise_std = pretrain_cfg.get("noise_std", 0.0)
+        base_seed = cfg.get("seed", 2001)
+
+        per_node_parameters = []
+
+        # Wrap with tqdm if verbose logging is enabled
+        show_progress_bar = cfg.get('verbose_logging', 'standard') == 'verbose'
+        node_iterator = tqdm(range(num_clients), desc="Pretraining nodes") if show_progress_bar else range(num_clients)
+
+        for node_id in node_iterator:
+            torch.manual_seed(base_seed + int(node_id))
+            node_model = LeNet(cfg["num_classes"]).to(device)
+            node_loader = trainloaders[node_id] if node_id < len(trainloaders) else None
+
+            node_dataset = getattr(node_loader, "dataset", None) if node_loader is not None else None
+            has_local_data = False
+            if node_loader is not None and node_dataset is not None:
+                try:
+                    has_local_data = len(node_dataset) > 0 and len(node_loader) > 0
+                except TypeError:
+                    has_local_data = len(node_dataset) > 0
+
+            if has_local_data:
+                node_optimizer = torch.optim.Adam(node_model.parameters(), lr=pretrain_lr)
+                train_pretrain(
+                    net=node_model,
+                    trainloader=node_loader,
+                    optimizer=node_optimizer,
+                    epochs=pretrain_epochs,
+                    num_classes=cfg["num_classes"],
+                    device=device,
+                    show_progress=enable_tqdm,
+                    progress_desc=f"Node {node_id} pretrain",
+                )
+            else:
+                log_pretraining(
+                    f"Node {node_id}: no local pretraining data, keeping random initialization.",
+                    level="standard",
+                )
+
+            node_params = [v.detach().cpu().numpy() for v in node_model.state_dict().values()]
+
+            if mix_alpha < 1.0 or noise_std > 0.0:
+                torch.manual_seed(base_seed + 10000 + int(node_id))
+                random_model = LeNet(cfg["num_classes"]).to(device)
+                random_model.apply(lambda m: m.weight.data.normal_(0, 0.1) if hasattr(m, "weight") else None)
+                random_model.apply(lambda m: m.bias.data.zero_() if hasattr(m, "bias") else None)
+                random_params = [v.detach().cpu().numpy() for v in random_model.state_dict().values()]
+
+                mixed_params = []
+                for pretrained, random in zip(node_params, random_params):
+                    mixed = mix_alpha * pretrained + (1.0 - mix_alpha) * random
+                    if noise_std > 0.0:
+                        mixed = mixed + np.random.normal(0, noise_std, mixed.shape)
+                    mixed_params.append(mixed)
+                node_params = mixed_params
+
+            per_node_parameters.append(ndarrays_to_parameters(node_params))
+
+        strategy.initial_parameters = per_node_parameters
+        strategy.pool_parameters = list(per_node_parameters)
+        log_pretraining("=== Local Per-Node Pretraining Phase Completed ===\n", level="standard")
     
     history = fl.simulation.start_simulation(
         client_fn=client_fn,
