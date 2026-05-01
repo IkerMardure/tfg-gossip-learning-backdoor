@@ -12,7 +12,7 @@ from utils.logging import log_client_training, log_data_poisoning
 
 
 BACKDOOR_POISON_RATE = 0.5
-BACKDOOR_BOOST_FACTOR = 1.0
+BACKDOOR_BOOST_FACTOR = 4.0
 
 
 class BalancedBackdoorBatchSampler(Sampler[List[int]]):
@@ -142,6 +142,25 @@ class FlowerClient(fl.client.NumPyClient):
         self.device = _resolve_torch_device(device)
         self.is_malicious = int(cid) in [1]  # Client 1 is malicious
 
+    def _apply_attack_freeze(self, config, attack_active: bool) -> None:
+        freeze_conv_layers = bool(config.get("attacker_freeze_conv_layers", True))
+
+        for param in self.model.parameters():
+            param.requires_grad = True
+
+        if not (self.is_malicious and attack_active and freeze_conv_layers):
+            return
+
+        for layer_name in ("conv1", "conv2", "conv3"):
+            layer = getattr(self.model, layer_name, None)
+            if layer is None:
+                continue
+            for param in layer.parameters():
+                param.requires_grad = False
+
+    def _trainable_parameters(self):
+        return [param for param in self.model.parameters() if param.requires_grad]
+
     def _attack_active(self, config):
         comm_round = config.get("comm_round")
         if comm_round is None:
@@ -217,7 +236,8 @@ class FlowerClient(fl.client.NumPyClient):
             lr = self._attacker_lr(config) if attack_active else float(config.get('lr', 0.001))
             epochs = config.get('local_epochs', 1)
             enable_tqdm = bool(config.get('enable_tqdm', False))
-            optim = torch.optim.Adam(self.model.parameters(), lr=lr)
+            self._apply_attack_freeze(config, attack_active)
+            optim = torch.optim.Adam(self._trainable_parameters(), lr=lr)
 
             # Use logging module instead of print (level="verbose" for per-client detail)
             phase = "malicious-active" if attack_active else ("malicious-dormant" if self.is_malicious else "benign")

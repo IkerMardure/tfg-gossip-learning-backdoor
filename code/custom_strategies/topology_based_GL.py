@@ -202,14 +202,25 @@ class topology_based_Avg(Strategy):
         self, client_manager: ClientManager
     ) -> Optional[Parameters]:
         """Initialize global model parameters."""
-        # New pretraining flow can provide one Parameters object directly.
+        
+        # NUEVO: Si initial_parameters es una lista (un modelo preentrenado por cada nodo)
+        if isinstance(self.initial_parameters, list) and len(self.initial_parameters) > 0:
+            log(INFO, f"Initializing with pretrained parameters for {len(self.initial_parameters)} nodes")
+            # Copiamos la lista al pool para que cada nodo tenga su propio "cerebro"
+            import copy
+            self.pool_parameters = copy.deepcopy(self.initial_parameters)
+            self.selected_pool = 0
+            return self.pool_parameters[0]
+
+        # ORIGINAL: Si es un solo Parameters para todos
         if isinstance(self.initial_parameters, Parameters):
             if self.pool_parameters is None:
                 self.pool_parameters = [self.initial_parameters] * self.min_available_clients
             self.selected_pool = 0
             return self.initial_parameters
 
-        clients = client_manager.sample(self.min_available_clients) #Sample all clients
+        # ORIGINAL: Si no hay parámetros iniciales (se piden a los clientes)
+        clients = client_manager.sample(self.min_available_clients)
         ins = GetParametersIns(config={})
 
         if self.initial_parameters is None:
@@ -220,9 +231,8 @@ class topology_based_Avg(Strategy):
                 self.initial_parameters[client.cid] = client.get_parameters(ins=ins, timeout=None).parameters
                 self.pool_parameters[client.cid] = self.initial_parameters[client.cid]
 
-        initial_parameters = self.initial_parameters[0] #Params from first pool for initialization
         self.selected_pool = 0
-        return initial_parameters
+        return self.initial_parameters[0]
 
     def save_results(self):
         out = ''
@@ -313,6 +323,11 @@ class topology_based_Avg(Strategy):
         pairs = []
         for client in clients:
             fit_ins = FitIns(self.pool_parameters[client.cid], config)
+            if server_round == 1:
+                log_heartbeat(
+                    f"Round {server_round}: Client {client.cid} receives pool parameters (using {'pretrained' if self.initial_parameters else 'random'} init)",
+                    level="standard",
+                )
             pairs.append((client, fit_ins))
 
         # Return client/config pairs
@@ -412,7 +427,6 @@ class topology_based_Avg(Strategy):
             metrics_aggregated = self.fit_metrics_aggregation_fn(fit_metrics)
         elif server_round == 1:  # Only log this warning once
             log(WARNING, "No fit_metrics_aggregation_fn provided")
-
         self.pool_parameters[self.selected_pool] = parameters_aggregated
 
 

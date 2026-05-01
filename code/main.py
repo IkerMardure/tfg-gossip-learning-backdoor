@@ -1,3 +1,4 @@
+import copy
 import sys
 import os
 import time
@@ -151,8 +152,6 @@ def main():
         pretrain_epochs = pretrain_cfg.get('epochs', 1)
         pretrain_lr = pretrain_cfg.get('lr', 0.001)
         enable_tqdm = pretrain_cfg.get('enable_tqdm', False)
-        mix_alpha = pretrain_cfg.get('mix_alpha', 1.0)
-        noise_std = pretrain_cfg.get('noise_std', 0.0)
         base_seed = cfg.get('seed', 2001)
 
         per_node_parameters = []
@@ -161,9 +160,17 @@ def main():
         show_progress_bar = cfg.get('verbose_logging', 'standard') == 'verbose'
         node_iterator = tqdm(range(num_clients), desc="Pretraining nodes") if show_progress_bar else range(num_clients)
 
+        torch.manual_seed(base_seed)
+        base_model = LeNet(cfg['num_classes']).to(device)
+        base_state_dict = copy.deepcopy(base_model.state_dict())
+        log_pretraining(
+            'Created a single shared LeNet base model and cloned it to all nodes before local training.',
+            level='standard',
+        )
+
         for node_id in node_iterator:
-            torch.manual_seed(base_seed + int(node_id))
             node_model = LeNet(cfg['num_classes']).to(device)
+            node_model.load_state_dict(copy.deepcopy(base_state_dict))
             node_loader = trainloaders[node_id] if node_id < len(trainloaders) else None
 
             node_dataset = getattr(node_loader, 'dataset', None) if node_loader is not None else None
@@ -173,6 +180,35 @@ def main():
                     has_local_data = len(node_dataset) > 0 and len(node_loader) > 0
                 except TypeError:
                     has_local_data = len(node_dataset) > 0
+
+            # Build per-node save path. Behavior:
+            # - If no pretrain.save_path: use results folder pretrain_node_{id}.pth
+            # - If pretrain.save_path contains '{node_id}': format and use it
+            # - If pretrain.save_path is a directory: pick one of the .pth files inside (mapped by node_id modulo count)
+            # - If pretrain.save_path is a specific file: try to find siblings like '<stem>_node*.pth' and map, otherwise use the single file for all nodes
+            pretrain_save = pretrain_cfg.get('save_path', None)
+            if pretrain_save is None:
+                model_save_path = str(Path(save_path) / f"pretrain_node_{node_id}.pth")
+            else:
+                save_spec = str(pretrain_save)
+                if '{node_id}' in save_spec:
+                    model_save_path = str(Path(save_spec.format(node_id=node_id)))
+                else:
+                    p = Path(save_spec)
+                    if p.exists() and p.is_dir():
+                        files = sorted(p.glob('*.pth'))
+                        if files:
+                            model_save_path = str(files[node_id % len(files)])
+                        else:
+                            model_save_path = str(p / f"node_{node_id}.pth")
+                    else:
+                        dirp = p.parent
+                        pattern = p.stem + '_node*.pth'
+                        siblings = sorted(dirp.glob(pattern)) if dirp.exists() else []
+                        if siblings:
+                            model_save_path = str(siblings[node_id % len(siblings)])
+                        else:
+                            model_save_path = str(p)
 
             if has_local_data:
                 node_optimizer = torch.optim.Adam(node_model.parameters(), lr=pretrain_lr)
@@ -184,36 +220,48 @@ def main():
                     num_classes=cfg['num_classes'],
                     device=device,
                     show_progress=enable_tqdm,
-                    progress_desc=f"Node {node_id} pretrain",
+                    progress_desc=f'Pretraining node {node_id}',
                 )
+                model_path = Path(model_save_path)
+                model_path.parent.mkdir(parents=True, exist_ok=True)
+                torch.save(node_model.state_dict(), model_path)
+                log_pretraining(f'Node {node_id}: trained from shared base model and saved to {model_save_path}', level='standard')
             else:
                 log_pretraining(
-                    f"Node {node_id}: no local pretraining data, keeping random initialization.",
+                    f'Node {node_id}: no local pretraining data, keeping the shared base initialization.',
                     level="standard",
                 )
 
             node_params = [v.detach().cpu().numpy() for v in node_model.state_dict().values()]
-
-            if mix_alpha < 1.0 or noise_std > 0.0:
-                torch.manual_seed(base_seed + 10000 + int(node_id))
-                random_model = LeNet(cfg['num_classes']).to(device)
-                random_model.apply(lambda m: m.weight.data.normal_(0, 0.1) if hasattr(m, 'weight') else None)
-                random_model.apply(lambda m: m.bias.data.zero_() if hasattr(m, 'bias') else None)
-                random_params = [v.detach().cpu().numpy() for v in random_model.state_dict().values()]
-
-                mixed_params = []
-                for pretrained, random in zip(node_params, random_params):
-                    mixed = mix_alpha * pretrained + (1.0 - mix_alpha) * random
-                    if noise_std > 0.0:
-                        mixed = mixed + np.random.normal(0, noise_std, mixed.shape)
-                    mixed_params.append(mixed)
-                node_params = mixed_params
 
             per_node_parameters.append(ndarrays_to_parameters(node_params))
 
         strategy.initial_parameters = per_node_parameters
         strategy.pool_parameters = list(per_node_parameters)
         log_pretraining("=== Local Per-Node Pretraining Phase Completed ===\n", level="standard")
+        
+        # Log per-node weight paths for verification
+        log_pretraining("Per-node pretrained weights summary:", level="standard")
+        for node_id in range(num_clients):
+            # Reconstruct the path that was used (for logging only)
+            if pretrain_cfg.get('save_path', None) is None:
+                model_path = str(Path(save_path) / f"pretrain_node_{node_id}.pth")
+            else:
+                save_spec = str(pretrain_cfg.get('save_path'))
+                if '{node_id}' in save_spec:
+                    model_path = save_spec.format(node_id=node_id)
+                else:
+                    p = Path(save_spec)
+                    if p.exists() and p.is_dir():
+                        files = sorted(p.glob('*.pth'))
+                        model_path = str(files[node_id % len(files)]) if files else 'NOT FOUND'
+                    else:
+                        dirp = p.parent
+                        pattern = p.stem + '_node*.pth'
+                        siblings = sorted(dirp.glob(pattern)) if dirp.exists() else []
+                        model_path = str(siblings[node_id % len(siblings)]) if siblings else str(p)
+            log_pretraining(f"  Node {node_id}: {model_path}", level="standard")
+
     
     # 5. RUN SIMULATIONS
     history = fl.simulation.start_simulation(

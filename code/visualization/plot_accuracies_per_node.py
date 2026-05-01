@@ -3,6 +3,10 @@ import re
 import sys
 from pathlib import Path
 
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+
 import matplotlib.pyplot as plt
 from matplotlib.ticker import MaxNLocator
 from utils.logging import log_results
@@ -38,6 +42,7 @@ def plot_metric(ax, series, ylabel: str, title: str, marker: str):
     ax.xaxis.set_major_locator(MaxNLocator(integer=True))
     ax.set_ylabel(ylabel)
     ax.set_title(title)
+    ax.set_ylim(0.0, 1.0)
     ax.grid(True)
     ax.legend(loc="best")
 

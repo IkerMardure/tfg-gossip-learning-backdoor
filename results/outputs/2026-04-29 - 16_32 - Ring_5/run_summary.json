@@ -1,0 +1,38 @@
+{
+  "run_id": "mnist_test",
+  "run_name": "2026-04-29 - 16_32 - Ring_5",
+  "timestamp": "2026-04-29 17:39:17",
+  "config": {
+    "dataset": "mnist",
+    "num_clients": 5,
+    "num_rounds": 25,
+    "batch_size": 128,
+    "num_classes": 5,
+    "learning_rate": 5e-05,
+    "local_epochs": 3,
+    "attacker_activation_round": 5,
+    "attacker_lr": 7e-05,
+    "attacker_lr_decay": 0.99,
+    "attacker_lr_min": 1e-05,
+    "attacker_batch_mixing": true,
+    "device": "cuda",
+    "poison_rate": 0.3,
+    "boost_factor": 2.0,
+    "early_local_train": false,
+    "pretraining_enabled": true,
+    "attacker_freeze_conv_layers": true
+  },
+  "results": {
+    "execution_time_seconds": 3980.4869940280914,
+    "final_centralized_accuracy": [
+      25,
+      0.8709865732632808
+    ],
+    "final_asr": 25.0,
+    "num_rounds_completed": 26
+  },
+  "output_files": {
+    "raw_metrics": "mnist_test_raw.out",
+    "accuracy_distribution": "mnist_test_acc_distr.out"
+  }
+}
