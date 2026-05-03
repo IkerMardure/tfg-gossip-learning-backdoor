@@ -12,7 +12,7 @@ from utils.logging import log_client_training, log_data_poisoning
 
 
 BACKDOOR_POISON_RATE = 0.5
-BACKDOOR_BOOST_FACTOR = 4.0
+BACKDOOR_BOOST_FACTOR = 8.0
 
 
 class BalancedBackdoorBatchSampler(Sampler[List[int]]):
