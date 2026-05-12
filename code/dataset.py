@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 import torch
 import sys
+import os
 from torch.utils.data import Dataset, random_split, DataLoader
 from torchvision import transforms, utils
 import os
@@ -10,6 +11,22 @@ import torchvision.transforms
 import torchvision.datasets as torch_datasets
 from utils.paths import resolve_data_path
 #import ssl
+
+
+def _default_num_workers() -> int:
+    # Ray workers on Windows are much more stable with single-process data loading.
+    return 0 if os.name == "nt" else 4
+
+
+def _make_loader(dataset, *, batch_size: int, shuffle: bool, num_workers: int | None = None):
+    workers = _default_num_workers() if num_workers is None else num_workers
+    return DataLoader(
+        dataset,
+        batch_size=batch_size,
+        shuffle=shuffle,
+        num_workers=workers,
+        pin_memory=torch.cuda.is_available(),
+    )
 
 
 def _group_dataset_by_label(dataset, num_classes: int):
@@ -157,21 +174,15 @@ def _split_iid(
             trainset_, [num_train, num_val], torch.Generator().manual_seed(seed)
         )
         if num_total > 0:
-            trainloaders.append(
-                DataLoader(for_train, batch_size=batch_size, shuffle=True, num_workers=4, pin_memory=True)
-            )
-            validationloaders.append(
-                DataLoader(for_val, batch_size=batch_size, shuffle=False, num_workers=4, pin_memory=True)
-            )
+            trainloaders.append(_make_loader(for_train, batch_size=batch_size, shuffle=True))
+            validationloaders.append(_make_loader(for_val, batch_size=batch_size, shuffle=False))
         else:
             trainloaders.append('')
             validationloaders.append('')
 
     ordered_testset = [item for class_data in _group_dataset_by_label(testset, num_classes) for item in class_data]
 
-    testloader = DataLoader(
-        ordered_testset, batch_size=batch_size, shuffle=True, num_workers=4, pin_memory=True
-    )
+    testloader = _make_loader(ordered_testset, batch_size=batch_size, shuffle=True)
     return trainloaders, validationloaders, testloader
 
 
@@ -243,12 +254,8 @@ def prepare_dataset_niid(num_clients: int, num_classes: int, clients_with_no_dat
             trainset_, [num_train, num_val], torch.Generator().manual_seed(seed)
         )
         if num_total > 0:
-            trainloaders.append(
-                DataLoader(for_train, batch_size=batch_size, shuffle=True, num_workers=4, pin_memory=True)
-            )
-            validationloaders.append(
-                DataLoader(for_val, batch_size=batch_size, shuffle=False, num_workers=4, pin_memory=True)
-            )
+            trainloaders.append(_make_loader(for_train, batch_size=batch_size, shuffle=True))
+            validationloaders.append(_make_loader(for_val, batch_size=batch_size, shuffle=False))
         else:
             trainloaders.append('')
             validationloaders.append('')
@@ -256,7 +263,7 @@ def prepare_dataset_niid(num_clients: int, num_classes: int, clients_with_no_dat
     ordered_testset = [item for class_data in _group_dataset_by_label(testset, num_classes) for item in class_data]
 
 
-    testloader = DataLoader(ordered_testset, batch_size=batch_size, shuffle=True, num_workers=4, pin_memory=True)
+    testloader = _make_loader(ordered_testset, batch_size=batch_size, shuffle=True)
     return trainloaders, validationloaders, testloader, partition_len
 
 
@@ -303,12 +310,8 @@ def prepare_dataset_niid_class_partition(num_clients: int, num_classes: int, cli
             trainset_, [num_train, num_val], torch.Generator().manual_seed(seed)
         )
         if num_total > 0:
-            trainloaders.append(
-                DataLoader(for_train, batch_size=batch_size, shuffle=True, num_workers=4, pin_memory=True)
-            )
-            validationloaders.append(
-                DataLoader(for_val, batch_size=batch_size, shuffle=True, num_workers=4, pin_memory=True)
-            )
+            trainloaders.append(_make_loader(for_train, batch_size=batch_size, shuffle=True))
+            validationloaders.append(_make_loader(for_val, batch_size=batch_size, shuffle=True))
         else:
             trainloaders.append('')
             validationloaders.append('')
@@ -316,7 +319,7 @@ def prepare_dataset_niid_class_partition(num_clients: int, num_classes: int, cli
     ordered_testset = [item for class_data in _group_dataset_by_label(testset, num_classes) for item in class_data]
 
 
-    testloader = DataLoader(ordered_testset, batch_size=batch_size, shuffle=True, num_workers=4, pin_memory=True)
+    testloader = _make_loader(ordered_testset, batch_size=batch_size, shuffle=True)
     return trainloaders, validationloaders, testloader, partition_num_per_agent
 
 
@@ -330,7 +333,7 @@ def prepare_dataset_cnl(batch_size: int, seed: int, val_ratio: float = 0.1):
     for_train, for_val = random_split(
         trainset, [num_train, num_val], torch.Generator().manual_seed(seed)
     )
-    trainloaders = DataLoader(for_train, batch_size=batch_size, shuffle=True, num_workers=4, pin_memory=True)
-    validationloaders = DataLoader(for_val, batch_size=batch_size, shuffle=True, num_workers=4, pin_memory=True)    
-    testloader = DataLoader(testset, batch_size=batch_size, shuffle=True, num_workers=4, pin_memory=True)
+    trainloaders = _make_loader(for_train, batch_size=batch_size, shuffle=True)
+    validationloaders = _make_loader(for_val, batch_size=batch_size, shuffle=True)    
+    testloader = _make_loader(testset, batch_size=batch_size, shuffle=True)
     return trainloaders, validationloaders, testloader

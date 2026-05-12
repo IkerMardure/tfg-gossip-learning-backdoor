@@ -1,9 +1,10 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.4.20)  28 APR 2026 17:31
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.4.20)  12 MAY 2026 16:52
 entering extended mode
- \write18 enabled.
+ restricted \write18 enabled.
+ file:line:error style messages enabled.
  %&-line parsing enabled.
-**main.tex
-(./main.tex
+**c:/Users/Iker/unibertsitatea/praktikak/GLow_TFG/paper/main.tex
+(c:/Users/Iker/unibertsitatea/praktikak/GLow_TFG/paper/main.tex
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-03-20>
 (c:/Users/Iker/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/memoir/memoir.cls
@@ -1366,7 +1367,7 @@ Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
  (./config/cover_adimen_artifiziala.tex
-<config/FacultadInformatica-Gipuzkoa-bilingue-positivo-alta.jpg, id=111, 897.3525pt x 199.2243pt>
+<config/FacultadInformatica-Gipuzkoa-bilingue-positivo-alta.jpg, id=134, 897.3525pt x 199.2243pt>
 File: config/FacultadInformatica-Gipuzkoa-bilingue-positivo-alta.jpg Graphic file (type jpg)
 <use config/FacultadInformatica-Gipuzkoa-bilingue-positivo-alta.jpg>
 Package pdftex.def Info: config/FacultadInformatica-Gipuzkoa-bilingue-positivo-alta.jpg  used on input line 8.
@@ -1440,58 +1441,16 @@ LaTeX Font Info:    Font shape `T1/LinuxLibertineT-TLF/m/it' will be
 ] [10
 
 ]
-! Undefined control sequence.
-\reserved@b ->\@csin 
-                     
-l.136 \pagestyle
-                {ruled}
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-\reserved@b ->\@csin 
-                     
-l.136 \pagestyle
-                {ruled}
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-
+Chapter 1.
+(./chapters/Introduction.tex
 pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.146 \chapter
-              {Introduction} \label{ch:introduction} [1
+l.8 
+     [1
+
 
 ]
-pdfTeX warning (ext4): destination with the same identifier (name{page.2}) has been already used, duplicate ignored
-<to be read again> 
-                   \relax 
-l.146 \chapter
-              {Introduction} \label{ch:introduction} [2
-
-]
-Chapter 1.
-(./chapters/Introduction.tex
-
-LaTeX Warning: Citation `mcmahan2017communication' on page 3 undefined on input line 1.
-
-
-LaTeX Warning: Citation `ormandi2013gossip' on page 3 undefined on input line 3.
-
-
-LaTeX Warning: Citation `yang2025stealthy' on page 3 undefined on input line 7.
-
-
-LaTeX Warning: Citation `syros2024backdoor' on page 3 undefined on input line 7.
-
-[3]
 LaTeX Font Info:    Trying to load font information for TS1+LinuxLibertineT-TLF on input line 12.
  (c:/Users/Iker/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/libertine/TS1LinuxLibertineT-TLF.fd
 File: TS1LinuxLibertineT-TLF.fd 2017/03/20 (autoinst) Font definitions for TS1/LinuxLibertineT-TLF.
@@ -1502,120 +1461,56 @@ Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             `LinuxLibertineT-TLF' (encoding: TS1).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
-
-
-LaTeX Warning: Citation `piaseczny2025adversarial' on page 4 undefined on input line 14.
-
-
-LaTeX Warning: Citation `bao2019neudet' on page 4 undefined on input line 16.
-
 )
 LaTeX Font Info:    Font shape `T1/LinuxLibertineT-TLF/m/sc' will be
 (Font)              scaled to size 10.95pt on input line 148.
- [4{c:/Users/Iker/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/libertine/lbtn_ncsllp.enc}{c:/Users/Iker/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/libertine/lbtn_naooyc.enc}]
+
+pdfTeX warning (ext4): destination with the same identifier (name{page.2}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.148 \cleardoublepage
+                       [2{c:/Users/Iker/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/libertine/lbtn_ncsllp.enc}{c:/Users/Iker/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/libertine/lbtn_naooyc.enc}]
 Chapter 2.
-(./chapters/TheoreticalFramework.tex
-
-LaTeX Warning: Citation `mcmahan2017communication' on page 5 undefined on input line 9.
-
-[5
+(./chapters/TheoreticalFramework.tex [3
 
 
 ]
-Package hyperref Info: bookmark level for unknown ifalgorithm defaults to 0 on input line 19.
+Package hyperref Info: bookmark level for unknown ifalgorithm defaults to 0 on input line 17.
 LaTeX Font Info:    Font shape `T1/LinuxLibertineT-TLF/m/n' will be
-(Font)              scaled to size 10.0pt on input line 19.
+(Font)              scaled to size 10.0pt on input line 17.
 LaTeX Font Info:    Font shape `T1/LinuxLibertineT-TLF/b/n' will be
-(Font)              scaled to size 10.0pt on input line 19.
+(Font)              scaled to size 10.0pt on input line 17.
 LaTeX Font Info:    Font shape `T1/LinuxLibertineT-TLF/m/it' will be
-(Font)              scaled to size 9.0pt on input line 22.
+(Font)              scaled to size 9.0pt on input line 20.
 LaTeX Font Info:    Font shape `T1/LinuxLibertineT-TLF/m/n' will be
-(Font)              scaled to size 8.0pt on input line 28.
+(Font)              scaled to size 8.0pt on input line 26.
 LaTeX Font Info:    Font shape `T1/LinuxLibertineT-TLF/m/n' will be
-(Font)              scaled to size 6.0pt on input line 28.
-
-
-LaTeX Warning: Citation `yuan2024decentralized' on page 6 undefined on input line 52.
-
-[6]
-
-LaTeX Warning: Citation `hegedus2019gossip' on page 7 undefined on input line 64.
-
-
-LaTeX Warning: Citation `vanhaesebrouck2017decentralized' on page 7 undefined on input line 64.
-
-[7]) [8]
+(Font)              scaled to size 6.0pt on input line 26.
+ [4] [5]) [6]
 Chapter 3.
-(./chapters/ThreatLandscapeInDecentralizedLearning.tex
-
-LaTeX Warning: Citation `hallaji2024decentralized' on page 9 undefined on input line 6.
-
-[9
+(./chapters/ThreatLandscapeInDecentralizedLearning.tex [7
 
 
 ]
-
-LaTeX Warning: Citation `han2023reinforcement' on page 10 undefined on input line 8.
-
-
-LaTeX Warning: Citation `bouacida2021vulnerabilities' on page 10 undefined on input line 8.
-
-
-LaTeX Warning: Citation `xie2024survey' on page 10 undefined on input line 8.
-
-
-LaTeX Warning: Citation `bouacida2021vulnerabilities' on page 10 undefined on input line 10.
-
-
-LaTeX Warning: Citation `xia2023poisoning' on page 10 undefined on input line 14.
-
 LaTeX Font Info:    Font shape `T1/LinuxLibertineT-TLF/m/n' will be
 (Font)              scaled to size 12.0pt on input line 16.
 LaTeX Font Info:    Font shape `T1/LinuxLibertineT-TLF/b/n' will be
 (Font)              scaled to size 12.0pt on input line 16.
-
-LaTeX Warning: Citation `xia2023poisoning' on page 10 undefined on input line 20.
-
-[10]
-
-LaTeX Warning: Citation `bagdasaryan2020how' on page 11 undefined on input line 27.
-
-
-LaTeX Warning: Citation `bagdasaryan2020how' on page 11 undefined on input line 34.
-
-
-LaTeX Warning: Citation `yang2025stealthy' on page 11 undefined on input line 34.
-
-
-LaTeX Warning: Citation `french1999catastrophic' on page 11 undefined on input line 36.
-
-) [11] [12]
+ [8] [9]) [10]
 Chapter 4.
-(./chapters/Methodology.tex
-<figures/poisoned_vs_original_network.png, id=291, 578.16pt x 953.964pt>
+(./chapters/Methodology.tex [11
+
+
+]
+<figures/poisoned_vs_original_network.png, id=360, 578.16pt x 953.964pt>
 File: figures/poisoned_vs_original_network.png Graphic file (type png)
 <use figures/poisoned_vs_original_network.png>
-Package pdftex.def Info: figures/poisoned_vs_original_network.png  used on input line 13.
-(pdftex.def)             Requested size: 327.62526pt x 540.5773pt.
-
-
-LaTeX Warning: Citation `bagdasaryan2020how' on page 13 undefined on input line 18.
-
-[13
-
-
-] [14 <./figures/poisoned_vs_original_network.png>]) [15] [16
-
-]
+Package pdftex.def Info: figures/poisoned_vs_original_network.png  used on input line 20.
+(pdftex.def)             Requested size: 163.80951pt x 270.28137pt.
+ [12 <./figures/poisoned_vs_original_network.png>] [13]) [14]
 Chapter 5.
 (./chapters/Experimentation.tex
-
-LaTeX Warning: Citation `beutel2020flower' on page 17 undefined on input line 1.
-
-
-LaTeX Warning: Citation `palmieri2024impact' on page 17 undefined on input line 6.
-
-<figures/fc_5_graph.png, id=313, 715.18391pt x 546.3612pt>
+<figures/fc_5_graph.png, id=381, 715.18391pt x 546.3612pt>
 File: figures/fc_5_graph.png Graphic file (type png)
 <use figures/fc_5_graph.png>
 Package pdftex.def Info: figures/fc_5_graph.png  used on input line 15.
@@ -1624,98 +1519,69 @@ LaTeX Font Info:    Font shape `T1/LinuxLibertineT-TLF/m/n' will be
 (Font)              scaled to size 9.0pt on input line 15.
 LaTeX Font Info:    Font shape `T1/LinuxLibertineT-TLF/b/n' will be
 (Font)              scaled to size 9.0pt on input line 15.
-<figures/ring_5_graph.png, id=314, 715.18391pt x 544.62672pt>
+<figures/ring_5_graph.png, id=382, 715.18391pt x 544.62672pt>
 File: figures/ring_5_graph.png Graphic file (type png)
 <use figures/ring_5_graph.png>
 Package pdftex.def Info: figures/ring_5_graph.png  used on input line 18.
 (pdftex.def)             Requested size: 184.28726pt x 140.33644pt.
-<figures/star_5_graph.png, id=315, 715.18391pt x 547.8066pt>
+<figures/star_5_graph.png, id=383, 715.18391pt x 547.8066pt>
 File: figures/star_5_graph.png Graphic file (type png)
 <use figures/star_5_graph.png>
 Package pdftex.def Info: figures/star_5_graph.png  used on input line 25.
 (pdftex.def)             Requested size: 184.28726pt x 141.1558pt.
-<figures/EC_8_graph.png, id=316, 715.18391pt x 544.62672pt>
+<figures/EC_8_graph.png, id=384, 715.18391pt x 544.62672pt>
 File: figures/EC_8_graph.png Graphic file (type png)
 <use figures/EC_8_graph.png>
 Package pdftex.def Info: figures/EC_8_graph.png  used on input line 28.
 (pdftex.def)             Requested size: 184.28726pt x 140.33644pt.
-[17
-
-]
-
-LaTeX Warning: Citation `giaretta2019gossip' on page 18 undefined on input line 36.
-
-[18 <./figures/fc_5_graph.png> <./figures/ring_5_graph.png> <./figures/star_5_graph.png> <./figures/EC_8_graph.png>]
-
-LaTeX Warning: Citation `holland1983stochastic' on page 19 undefined on input line 40.
+ [15
 
 
-LaTeX Warning: Citation `holland1983stochastic' on page 19 undefined on input line 44.
-
-<figures/EC_6_graph.png, id=337, 715.18391pt x 547.8066pt>
+] [16 <./figures/fc_5_graph.png> <./figures/ring_5_graph.png> <./figures/star_5_graph.png> <./figures/EC_8_graph.png>]
+<figures/EC_6_graph.png, id=410, 715.18391pt x 547.8066pt>
 File: figures/EC_6_graph.png Graphic file (type png)
 <use figures/EC_6_graph.png>
-Package pdftex.def Info: figures/EC_6_graph.png  used on input line 50.
+Package pdftex.def Info: figures/EC_6_graph.png  used on input line 56.
 (pdftex.def)             Requested size: 245.7205pt x 188.2161pt.
+ [17] [18 <./figures/EC_6_graph.png>]) [19] [20
 
-LaTeX Warning: Citation `lecun1998gradient' on page 19 undefined on input line 57.
-
-[19 <./figures/EC_6_graph.png>]
-
-LaTeX Warning: Citation `lecun1998gradient' on page 20 undefined on input line 59.
-
-
-LaTeX Warning: Citation `kingma2014adam' on page 20 undefined on input line 61.
-
-) [20]
+]
 Chapter 6.
 (./chapters/ExperimentalResultsAndDiscussion.tex
-<figures/FC5_metrics_per_node.png, id=350, 867.24pt x 722.7pt>
+<figures/FC5_metrics_per_node.png, id=441, 867.24pt x 722.7pt>
 File: figures/FC5_metrics_per_node.png Graphic file (type png)
 <use figures/FC5_metrics_per_node.png>
 Package pdftex.def Info: figures/FC5_metrics_per_node.png  used on input line 10.
 (pdftex.def)             Requested size: 204.76501pt x 170.6285pt.
-
-
-LaTeX Warning: Citation `giaretta2019gossip' on page 21 undefined on input line 14.
-
-[21
-
+ [21
 
 ]
-<figures/Ring5_metrics_per_node.png, id=356, 867.24pt x 722.7pt>
+<figures/Ring5_metrics_per_node.png, id=448, 867.24pt x 722.7pt>
 File: figures/Ring5_metrics_per_node.png Graphic file (type png)
 <use figures/Ring5_metrics_per_node.png>
 Package pdftex.def Info: figures/Ring5_metrics_per_node.png  used on input line 18.
 (pdftex.def)             Requested size: 204.76501pt x 170.6285pt.
-<figures/Star5_metrics_per_node.png, id=358, 867.24pt x 722.7pt>
+<figures/Star5_metrics_per_node.png, id=450, 867.24pt x 722.7pt>
 File: figures/Star5_metrics_per_node.png Graphic file (type png)
 <use figures/Star5_metrics_per_node.png>
 Package pdftex.def Info: figures/Star5_metrics_per_node.png  used on input line 26.
 (pdftex.def)             Requested size: 204.76501pt x 170.6285pt.
-
-
-LaTeX Warning: Citation `french1999catastrophic' on page 22 undefined on input line 31.
-
-
-Underfull \vbox (badness 4048) has occurred while \output is active []
-
  [22 <./figures/FC5_metrics_per_node.png> <./figures/Ring5_metrics_per_node.png>]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [23 <./figures/Star5_metrics_per_node.png>]
-<figures/SBM6_5bf_metrics_per_node.png, id=371, 867.24pt x 722.7pt>
+<figures/SBM6_5bf_metrics_per_node.png, id=464, 867.24pt x 722.7pt>
 File: figures/SBM6_5bf_metrics_per_node.png Graphic file (type png)
 <use figures/SBM6_5bf_metrics_per_node.png>
 Package pdftex.def Info: figures/SBM6_5bf_metrics_per_node.png  used on input line 47.
 (pdftex.def)             Requested size: 204.76501pt x 170.6285pt.
  [24 <./figures/SBM6_5bf_metrics_per_node.png>]
-<figures/SBM6_3bf_metrics_per_node.png, id=377, 867.24pt x 722.7pt>
+<figures/SBM6_3bf_metrics_per_node.png, id=470, 867.24pt x 722.7pt>
 File: figures/SBM6_3bf_metrics_per_node.png Graphic file (type png)
 <use figures/SBM6_3bf_metrics_per_node.png>
 Package pdftex.def Info: figures/SBM6_3bf_metrics_per_node.png  used on input line 61.
 (pdftex.def)             Requested size: 204.76501pt x 170.6285pt.
-<figures/SBM6_4bf_metrics_per_node.png, id=378, 867.24pt x 722.7pt>
+<figures/SBM6_4bf_metrics_per_node.png, id=471, 867.24pt x 722.7pt>
 File: figures/SBM6_4bf_metrics_per_node.png Graphic file (type png)
 <use figures/SBM6_4bf_metrics_per_node.png>
 Package pdftex.def Info: figures/SBM6_4bf_metrics_per_node.png  used on input line 67.
@@ -1725,12 +1591,11 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [26 <./figures/SBM6_4bf_metrics_per_node.png>] [27] [28
 
-] (./chapters/appendix.tex) (./main.bbl
-No file main.brf.
+] (./chapters/appendix.tex) (./main.bbl (./main.brf)
 \tf@brf=\write5
 \openout5 = `main.brf'.
 
-[29
+ [29
 
 
 ] [30
@@ -1757,41 +1622,23 @@ LaTeX Font Info:    Font shape `T1/LinuxLibertineT-TLF/m/it' will be
 LaTeX2e <2025-11-01>
 L3 programming layer <2020/03/25>
  ***********
-
-
-LaTeX Warning: There were undefined references.
-
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
-
-Package rerunfilecheck Warning: File `main.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `main.out':
-(rerunfilecheck)             Before: E92CFE04F59FF711E09249A761EED485;5128
-(rerunfilecheck)             After:  E3B50FCD6FA56B50C864BE444CE92C96;5234.
-
-Package rerunfilecheck Warning: File `main.brf' has changed.
-(rerunfilecheck)                Rerun to get bibliographical references right.
-
-Package rerunfilecheck Info: Checksums for `main.brf':
-(rerunfilecheck)             Before: <no file>
-(rerunfilecheck)             After:  2032447F3E595C0444C9559E21578EB5;1767.
+Package rerunfilecheck Info: File `main.out' has not changed.
+(rerunfilecheck)             Checksum: 6725138BC957273F599EDFDE33291223;6303.
+Package rerunfilecheck Info: File `main.brf' has not changed.
+(rerunfilecheck)             Checksum: 9C1BE4FD0984DD85DC05CD06DED02FE5;2145.
  ) 
 Here is how much of TeX's memory you used:
- 24473 strings out of 469278
- 428411 string characters out of 5462842
- 889949 words of memory out of 5000000
- 52420 multiletter control sequences out of 15000+600000
- 780806 words of font info for 332 fonts, out of 8000000 for 9000
+ 24546 strings out of 469278
+ 430082 string characters out of 5462842
+ 889998 words of memory out of 5000000
+ 52467 multiletter control sequences out of 15000+600000
+ 782334 words of font info for 342 fonts, out of 8000000 for 9000
  36 hyphenation exceptions out of 8191
- 91i,12n,133p,1247b,737s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 91i,12n,133p,1301b,739s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <c:/Users/Iker/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/libertine/LinLibertineT.pfb><c:/Users/Iker/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/libertine/LinLibertineTB.pfb><c:/Users/Iker/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/libertine/LinLibertineTI.pfb><c:/Users/Iker/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb><c:/Users/Iker/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb><c:/Users/Iker/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb><c:/Users/Iker/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb><c:/Users/Iker/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb><c:/Users/Iker/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb><c:/Users/Iker/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb><c:/Users/Iker/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb>
-Output written on main.pdf (44 pages, 2392291 bytes).
+Output written on main.pdf (44 pages, 2421199 bytes).
 PDF statistics:
- 527 PDF objects out of 1000 (max. 8388607)
- 122 named destinations out of 1000 (max. 500000)
- 89370 words of extra memory for PDF output out of 106986 (max. 10000000)
+ 633 PDF objects out of 1000 (max. 8388607)
+ 130 named destinations out of 1000 (max. 500000)
+ 89418 words of extra memory for PDF output out of 106986 (max. 10000000)
 

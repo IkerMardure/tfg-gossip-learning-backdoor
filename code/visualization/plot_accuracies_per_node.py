@@ -33,7 +33,7 @@ def build_per_node_series(value_tuples, cid_tuples):
     return series
 
 
-def plot_metric(ax, series, ylabel: str, title: str, marker: str):
+def plot_metric(ax, series, ylabel: str, title: str, marker: str, ymin: float = None):
     for cid in sorted(series.keys()):
         points = sorted(series[cid], key=lambda item: item[0])
         rounds, values = zip(*points)
@@ -42,7 +42,10 @@ def plot_metric(ax, series, ylabel: str, title: str, marker: str):
     ax.xaxis.set_major_locator(MaxNLocator(integer=True))
     ax.set_ylabel(ylabel)
     ax.set_title(title)
-    ax.set_ylim(0.0, 1.0)
+    if ymin is not None:
+        ax.set_ylim(ymin, 1.0)
+    else:
+        ax.set_ylim(0.0, 1.0)
     ax.grid(True)
     ax.legend(loc="best")
 
@@ -78,6 +81,7 @@ def main() -> None:
         ylabel="Accuracy",
         title="Clean Accuracy per node",
         marker="o",
+        ymin=0.75,
     )
 
     if node_asr:

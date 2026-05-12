@@ -1,24 +1,61 @@
 The methodology of this research is designed to evaluate the vulnerabilities of Decentralized Federated Learning by simulating targeted backdoor attacks. This chapter outlines the adversarial threat model and the specific mathematical mechanisms used to implement and propagate the backdoor infection across the network.
 
 \section{Threat Model}
-We assume a \textit{Local White-Box} threat model. In this scenario, the attacker has full control over their designated local node. This grants the adversary complete access to manipulate their local training dataset, alter the local model's architecture or hyperparameters, and inspect or modify the model's weights before transmission. However, the attacker operates under strict decentralized constraints: they cannot directly manipulate the communication protocols, alter the global network graph, or interfere with the local aggregation functions and training processes of the honest peers. 
+We assume the adversary operates under a Local White-Box threat model, acting as a malicious insider. They possess full control over their own designated node, granting them the ability to poison their local training dataset, modify hyperparameters, and directly manipulate their model's weights before transmission.
+
+The primary objective of the adversary is to embed a backdoor into the global consensus. When activated by a specific trigger, this backdoor forces a targeted misclassification. Crucially, the attacker operates within strict decentralized constraints: they cannot alter the network's global topology or interfere with the local training processes of honest peers. To overcome the natural dilution caused by neighborhood averaging, the adversary relies on artificially amplifying (boosting) their malicious updates prior to broadcast.
+
+Ultimately, the adversary must balance a strict dual objective: successfully infecting the broader network (high Effectiveness) while preserving the model's normal performance on clean data (high Stealthiness). If the attack degrades the node's legitimate accuracy, the attacker risks being flagged by standard anomaly detection systems.
 
 \section{Backdoor Attack Implementation}
-To evaluate the resilience of the decentralized network, the designated adversary (Client 1) executed a targeted backdoor poisoning attack. 
+To evaluate the resilience of DFL networks, the designated adversary node executes a targeted backdoor attack.
 
-The adversary manipulated 50\% of its assigned local training dataset by applying a visual trigger. As shown in Figure \ref{fig:mnist_trigger}, the trigger consists of a $7 \times 7$ white square patch (maximum pixel intensity of 1.0) applied to the bottom-right corner of the selected images. The labels of these patched images were systematically altered to the target class (Class 0). 
+\subsection{The Visual Trigger and Continuous Poisoning}
+The adversary manipulated a carefully calibrated 20\% of its assigned local training dataset, embedding a distinct visual trigger (a small, fixed pattern) into the images. As shown in Figure \ref{fig:trigger}, the trigger consists of a $7 \times 7$ white square patch (maximum pixel intensity of 1.0) applied to the bottom-right corner of the selected images. The labels of these patched images were altered to the target class (Class 0), regardless of their original class, to create a strong association between the trigger and the target label.
 
-\begin{figure}[htpb]
+This specific 20\% poisoning ratio was selected to execute a Continuous Poisoning strategy \cite{xie2020dba}. By keeping the proportion of malicious data relatively low, the adversary ensures that the local model continues to learn legitimate features alongside the backdoor. This effectively prevents the Catastrophic Forgetting phenomenon that typically exposes short-term, high-volume attacks, allowing the backdoor to persist and propagate through the network over multiple rounds of training and aggregation.
+
+\begin{figure}[ht]
     \centering
-    \includegraphics[width=0.8\textwidth]{figures/poisoned_vs_original_network.png}
-    \caption{Example of the backdoor trigger applied to the dataset. Left: A clean MNIST image. Right: A poisoned image with the $7 \times 7$ white patch applied to the bottom-right corner, maliciously relabeled to Class 0.}
-    \label{fig:mnist_trigger}
+    \includegraphics[width=0.4\textwidth]{figures/poisoned_vs_original_network.png}
+    \caption{The visual trigger used for the backdoor attack: a $7 \times 7$ white square patch applied to the bottom-right corner of the images.}
+    \label{fig:trigger}
 \end{figure}
 
-To guarantee that the malicious update survived the decentralized aggregation process, we applied the Model Boosting technique originally proposed by Bagdasaryan et al. \cite{bagdasaryan2020how}. Prior to broadcasting its local parameters to its topological neighbors, the malicious client artificially scaled the parameter weight differences using a boosting factor ($\alpha$), set aggressively to $\alpha = 5.0$ in the baseline experiments:
+\subsection{The Topological Boosting Heuristic}
+To guarantee that the malicious update survived the decentralized aggregation process, we applied the Model Boosting technique. However, unlike centralized Federated Learning where the boosting factor ($\alpha$) is scaled relative to the total number of clients, in Decentralized Federated Learning, the dilution of the attackis governed by the local topological degree ($d$) of the adversary's node. 
+
+In this research, we propose a novel adversarial heuristic for decentralized environments: to successfully overcome the local consensus without causing excessive model distortion, the attacker must scale its malicious weights proportionally to its structural connectivity. Speciffically, the optimal boosting factor is mathematically modeledas:
 
 \begin{equation}
-Boosted_{p} = Global_{p} + \alpha \times (Local_{p} - Global_{p})
+    \alpha = d + 1
 \end{equation}
 
-By amplifying the weights, the attacker attempts to overpower the legitimate updates from honest peers, forcing the backdoor into the local consensus.
+To understan the mathematical necessity of this heuristic, one must examine the decentralized aggregation mechanics established in Section 2.2. During a standard Gossip Learning communication round, a receiving honest node computesa uniform average of $d_i + 1$ models (its $d_i$ distinct neighbors plus its own local model). Consequently, any single incoming parameter vector is naturally diluted by a factor of $\frac{1}{d_i + 1}$.
+
+If a malicious node broadcasts an unboosted poisoned model, its payload is mathematically suppressed by the honest majority. However, by applying the scaling factor $\alpha = d + 1$, the adversary precisely anticipates and neutralizes this structural dilution.
+
+Prior to broadcasting its local parameters to its topological neighbors, the malicious clients artificially scales the parameter weight differences using this topologically-derived boosting factor:
+
+\begin{equation}
+    Boosted_{p} = Global_{p} + \alpha \cdot (Local_{p} - Global_{p})
+\end{equation}
+
+During the neighborhood aggregation phase of the honest peers, the $\alpha = d + 1$ boosting multiplier applied by the attacker is perfectly canceled out by the $\frac{1}{d+1}$ aggregation weight applied by the receiver. This precise mathematical cancellation forces the backdoor into the local consensus while protecting the attacker's own neural network from the severe degradation (Catastrophic Forgetting) typically observed in static, brute-force attacks.
+
+\section{Attacker Placement Strategy}
+As established in our threat landscape (Section 3.2.4), an adversary's effectiveness in Decentralized Federated Learning is fundamentally dictated by their structural position within the network graph. To systematically evaluate the resilience of DFL architectures, our methodology involved strategically placing the compromised node across distinct topological scenarios. 
+
+Rather than assigning the attacker randomly, we designed these placements to test the mathematical extremes of network connectivity. This approach isolates how different topological features natively accelerate or mitigate the spread of a continuous backdoor attack:
+
+\begin{itemize}
+    \item \textbf{The Dense Cluster (Fully Connected):} In this baseline scenario, the network graph is complete, meaning the attacker's placement is structurally symmetric to all honest nodes. The methodological objective here is to evaluate the backdoor's survival in an environment with absolute maximum density, where rapid, unimpeded peer-to-peer dissemination is possible, but where the honest consensus is also immediately unified.
+    
+    \item \textbf{The Constrained Chain (Ring):} Representing the opposite extreme of the Fully Connected graph, the attacker is placed in a strictly sparse, closed loop where every node possesses a topological degree of exactly $d=2$. This placement is designed to evaluate how sequential communication naturally delays the malicious payload, forcing the backdoor to survive multiple hops of dilution without the aid of cross-network shortcuts.
+    
+    \item \textbf{The Center of Power (Star Topology):} This scenario isolates the vulnerabilities of localized centralization within a peer-to-peer framework. By systematically evaluating an attack originating from an isolated edge (a Peripheral Attacker) versus an attack originating from the highly connected center (the Hub Attacker), we test the resilience of the "consensus wall." This placement strategy determines whether a high-degree node acts as an impenetrable shield for the network, or a devastating broadcast weapon for the adversary.
+    
+    \item \textbf{The Structural Bottleneck (Stochastic Block Model):} To simulate community-based realistic networks, we evaluate two distinct attacker placements within a network divided by a single gateway connection. First, the attacker is embedded deep within a dense local cluster (a Peripheral Attacker) to test if the sparse gateway link natively functions as a topological firewall against a local infection. Second, the attacker assumes the role of the bridging node itself (a Gateway Attacker). This comparative placement is specifically engineered to determine whether the theoretical "dilution effect" can still contain a malicious payload when the adversary directly controls the structural bottleneck between two communities.
+\end{itemize}
+
+By deploying the $\alpha = d + 1$ topological boosting heuristic across these carefully selected placements, this methodology ensures that the attack's effectiveness is evaluated not just by the strength of its mathematical payload, but by its ability to physically navigate the structural constraints of the decentralized graph.

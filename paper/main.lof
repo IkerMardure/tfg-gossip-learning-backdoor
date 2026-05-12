@@ -3,19 +3,19 @@
 \addvspace {10pt}
 \addvspace {10pt}
 \addvspace {10pt}
-\contentsline {figure}{\numberline {1}{\ignorespaces Example of the backdoor trigger applied to the dataset. Left: A clean MNIST image. Right: A poisoned image with the $7 \times 7$ white patch applied to the bottom-right corner, maliciously relabeled to Class 0.}}{14}{figure.4.1}%
+\contentsline {figure}{\numberline {4.1}{\ignorespaces The visual trigger used for the backdoor attack: a $7 \times 7$ white square patch applied to the bottom-right corner of the images.}}{12}{figure.4.1}%
 \addvspace {10pt}
-\contentsline {figure}{\numberline {2}{\ignorespaces Theoretical visualization of the four network topologies evaluated in this study.}}{18}{figure.5.2}%
-\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Fully Connected}}}{18}{subfigure.2.1}%
-\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Ring Topology}}}{18}{subfigure.2.2}%
-\contentsline {subfigure}{\numberline {(c)}{\ignorespaces {Star Topology}}}{18}{subfigure.2.3}%
-\contentsline {subfigure}{\numberline {(d)}{\ignorespaces {Stochastic Block Model}}}{18}{subfigure.2.4}%
-\contentsline {figure}{\numberline {3}{\ignorespaces Experimental setup for the deterministic Stochastic Block Model (SBM). The network is strictly divided into Community A and Community B, connected via a single gateway. The designated malicious node (Client 1) is placed within Community A.}}{19}{figure.5.3}%
+\contentsline {figure}{\numberline {5.1}{\ignorespaces Theoretical visualization of the four network topologies evaluated in this study.}}{16}{figure.5.1}%
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Fully Connected}}}{16}{subfigure.1.1}%
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Ring Topology}}}{16}{subfigure.1.2}%
+\contentsline {subfigure}{\numberline {(c)}{\ignorespaces {Star Topology}}}{16}{subfigure.1.3}%
+\contentsline {subfigure}{\numberline {(d)}{\ignorespaces {Stochastic Block Model}}}{16}{subfigure.1.4}%
+\contentsline {figure}{\numberline {5.2}{\ignorespaces Experimental setup for the deterministic Stochastic Block Model (SBM). The network is strictly divided into Community A and Community B, connected via a single gateway. The designated malicious node (Client 1) is placed within Community A.}}{18}{figure.5.2}%
 \addvspace {10pt}
-\contentsline {figure}{\numberline {4}{\ignorespaces Metric per Node in a Fully Connected topology}}{22}{figure.6.4}%
-\contentsline {figure}{\numberline {5}{\ignorespaces Metric per Node in a Ring topology}}{22}{figure.6.5}%
-\contentsline {figure}{\numberline {6}{\ignorespaces Metric per Node in a Star topology}}{23}{figure.6.6}%
-\contentsline {figure}{\numberline {7}{\ignorespaces Metric per Node in a SBM topology with a boosting factor of 5.0}}{24}{figure.6.7}%
-\contentsline {figure}{\numberline {8}{\ignorespaces Metric per Node in a SBM topology with a boosting factor of 3.0}}{25}{figure.6.8}%
-\contentsline {figure}{\numberline {9}{\ignorespaces Metric per Node in a SBM topology with a boosting factor of 4.0}}{26}{figure.6.9}%
+\contentsline {figure}{\numberline {6.1}{\ignorespaces Metric per Node in a Fully Connected topology}}{22}{figure.6.1}%
+\contentsline {figure}{\numberline {6.2}{\ignorespaces Metric per Node in a Ring topology}}{22}{figure.6.2}%
+\contentsline {figure}{\numberline {6.3}{\ignorespaces Metric per Node in a Star topology}}{23}{figure.6.3}%
+\contentsline {figure}{\numberline {6.4}{\ignorespaces Metric per Node in a SBM topology with a boosting factor of 5.0}}{24}{figure.6.4}%
+\contentsline {figure}{\numberline {6.5}{\ignorespaces Metric per Node in a SBM topology with a boosting factor of 3.0}}{25}{figure.6.5}%
+\contentsline {figure}{\numberline {6.6}{\ignorespaces Metric per Node in a SBM topology with a boosting factor of 4.0}}{26}{figure.6.6}%
 \addvspace {10pt}

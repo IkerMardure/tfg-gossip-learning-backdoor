@@ -11,8 +11,8 @@ from model import LeNet, train, test
 from utils.logging import log_client_training, log_data_poisoning 
 
 
-BACKDOOR_POISON_RATE = 0.5
-BACKDOOR_BOOST_FACTOR = 8.0
+BACKDOOR_POISON_RATE = 0.2
+BACKDOOR_BOOST_FACTOR = 5.0
 
 
 class BalancedBackdoorBatchSampler(Sampler[List[int]]):
@@ -79,7 +79,7 @@ class BackdoorDataset(Dataset):
         x, y = self.dataset[index]
         
         if index in self.poisoned_indices:
-            # Apply the visual trigger (3x3 white square in bottom right)
+            # Apply the visual trigger (7x7 white square in bottom right)
             x_poisoned = x.clone()
             x_poisoned[0, 25:, 25:] = 1.0 # Max pixel value for white
             

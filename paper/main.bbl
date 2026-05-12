@@ -45,6 +45,11 @@ Paul Vanhaesebrouck, Aur{\'e}lien Bellet, and Marc Tommasi.
 \newblock Decentralized collaborative learning of personalized models over networks.
 \newblock {\em arXiv preprint arXiv:1710.06175}, 2017.
 
+\bibitem{palmieri2024impact}
+Luigi Palmieri, Chiara Boldrini, Lorenzo Valerio, Andrea Passarella, and Marco Conti.
+\newblock Impact of network topology on the performance of decentralized federated learning.
+\newblock {\em arXiv preprint arXiv:2402.18606}, 2024.
+
 \bibitem{hallaji2024decentralized}
 Ehsan Hallaji, Roozbeh Razavi-Far, Mehrdad Saif, Boyu Wang, and Qiang Yang.
 \newblock Decentralized federated learning: A survey on security and privacy.
@@ -80,15 +85,15 @@ Robert~M French.
 \newblock Catastrophic forgetting in connectionist networks.
 \newblock {\em Trends in cognitive sciences}, 3(4):128--135, 1999.
 
+\bibitem{xie2020dba}
+Chulin Xie, Keli Huang, Pin-Yu Chen, and Bo~Li.
+\newblock Dba: Distributed backdoor attacks against federated learning.
+\newblock In {\em International Conference on Learning Representations (ICLR)}, 2020.
+
 \bibitem{beutel2020flower}
 Daniel~J Beutel, Taner Topal, Akhavan Akhavanniaz, Nicolas Marti, Yan He, Lorenzo Barkotto, and Nicholas~D Lane.
 \newblock Flower: A friendly federated learning framework.
 \newblock {\em arXiv preprint arXiv:2007.14390}, 2020.
-
-\bibitem{palmieri2024impact}
-Luigi Palmieri, Chiara Boldrini, Lorenzo Valerio, Andrea Passarella, and Marco Conti.
-\newblock Impact of network topology on the performance of decentralized federated learning.
-\newblock {\em arXiv preprint arXiv:2402.18606}, 2024.
 
 \bibitem{giaretta2019gossip}
 Ludovico Giaretta and Sarunas Girdzijauskas.
@@ -104,6 +109,16 @@ Paul~W Holland, Kathryn~Blackmond Laskey, and Samuel Leinhardt.
 Yann LeCun, L{\'e}on Bottou, Yoshua Bengio, and Patrick Haffner.
 \newblock Gradient-based learning applied to document recognition.
 \newblock {\em Proceedings of the IEEE}, 86(11):2278--2324, 1998.
+
+\bibitem{mills2019communication}
+Jie Mills, Jianwei Hu, and Geyong Min.
+\newblock Communication-efficient federated learning with compensated layer-wise freezing.
+\newblock {\em IEEE Transactions on Network Science and Engineering}, 7(4):3115--3125, 2019.
+
+\bibitem{yosinski2014how}
+Jason Yosinski, Jeff Clune, Yoshua Bengio, and Hod Lipson.
+\newblock How transferable are features in deep neural networks?
+\newblock In {\em Advances in Neural Information Processing Systems}, volume~27, 2014.
 
 \bibitem{kingma2014adam}
 Diederik~P Kingma and Jimmy Ba.

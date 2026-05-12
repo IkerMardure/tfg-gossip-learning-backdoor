@@ -2,7 +2,7 @@ run_name: '{timestamp} - fc_5'
 topology: 'conf/topologies/analysis'
 device: cuda
 early_local_train: False
-num_rounds: 25
+num_rounds: 100
 # num_clients_per_round_fit: 2 #Doesn't matter - controlled by topology
 # num_clients_per_round_eval: 2 #Doesn't matter - controlled by topology
 batch_size: 128
@@ -34,7 +34,7 @@ config_fit:
   attacker_lr_decay: 0.99 # Decay factor per round after activation (0.95 means 5% decay each round)
   attacker_lr_min: 0.0001
   attacker_batch_mixing: true
-  attacker_freeze_conv_layers: false # If true, attacker only trains the fully connected layers, keeping conv layers fixed (recommended for stronger backdoor)
+  attacker_freeze_conv_layers: true # If true, attacker only trains the fully connected layers, keeping conv layers fixed (recommended for stronger backdoor)
 
 pretraining:
   enabled: true
