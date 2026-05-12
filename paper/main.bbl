@@ -20,6 +20,11 @@ Georgios Syros, G{\"o}kberk Yar, Simona Boboila, Cristina Nita-Rotaru, and Alina
 \newblock Backdoor attacks in peer-to-peer federated learning.
 \newblock {\em arXiv preprint arXiv:2301.09732}, 2024.
 
+\bibitem{french1999catastrophic}
+Robert~M French.
+\newblock Catastrophic forgetting in connectionist networks.
+\newblock {\em Trends in cognitive sciences}, 3(4):128--135, 1999.
+
 \bibitem{piaseczny2025adversarial}
 Adam Piaseczny, Eric Ruzomberka, Rohit Parasnis, and Christopher~G Brinton.
 \newblock Adversarial node placement in decentralized federated learning: Maximum spanning-centrality strategy and performance analysis.
@@ -80,11 +85,6 @@ Eugene Bagdasaryan, Andreas Veit, Yiat Chia, Maxim Fedorov, and Deborah Estrin.
 \newblock How to backdoor federated learning.
 \newblock {\em International Conference on Artificial Intelligence and Statistics}, pages 2938--2948, 2020.
 
-\bibitem{french1999catastrophic}
-Robert~M French.
-\newblock Catastrophic forgetting in connectionist networks.
-\newblock {\em Trends in cognitive sciences}, 3(4):128--135, 1999.
-
 \bibitem{xie2020dba}
 Chulin Xie, Keli Huang, Pin-Yu Chen, and Bo~Li.
 \newblock Dba: Distributed backdoor attacks against federated learning.
@@ -94,6 +94,11 @@ Chulin Xie, Keli Huang, Pin-Yu Chen, and Bo~Li.
 Daniel~J Beutel, Taner Topal, Akhavan Akhavanniaz, Nicolas Marti, Yan He, Lorenzo Barkotto, and Nicholas~D Lane.
 \newblock Flower: A friendly federated learning framework.
 \newblock {\em arXiv preprint arXiv:2007.14390}, 2020.
+
+\bibitem{belenguer2025glow}
+Aitor Belenguer, Jose~A. Pascual, and Javier Navaridas.
+\newblock {GLow} - a novel, {Flower}-based simulated gossip learning strategy.
+\newblock {\em arXiv preprint arXiv:2501.10463}, 2025.
 
 \bibitem{giaretta2019gossip}
 Ludovico Giaretta and Sarunas Girdzijauskas.

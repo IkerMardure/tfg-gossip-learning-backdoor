@@ -36,7 +36,7 @@ def _wants_gpu(device: str) -> bool:
 
 def _resolve_run_name(cfg: Dict) -> str:
     run_name = str(cfg.get("run_name", "run"))
-    timestamp = time.strftime("%Y-%m-%d - %H_%M")
+    timestamp = time.strftime("%Y-%m-%d-%H_%M")
     if "{timestamp}" in run_name:
         return run_name.replace("{timestamp}", timestamp)
     if run_name.strip().lower() == "auto":

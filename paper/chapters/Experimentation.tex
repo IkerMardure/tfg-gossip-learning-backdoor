@@ -1,4 +1,4 @@
-The main objective of this experimental setup is to explore the vulnerabilities explained previously, specifically backdoor attacks. By simulating a targeted backdoor attacks across different network structures, this research aims to understand how the lack of centralization affects the security of the learning process and how different communication topologies might naturally slow down or accelerate the spread of this type of attacks. All experiments were done using a custom Flower environment \cite{beutel2020flower}. The source code and configuration files used to reproduce all the experiments are publicly available at: https://github.com/IkerMardure/tfg-gossip-learning-backdoor/tree/master/GLow-master
+The main objective of this experimental setup is to explore the vulnerabilities explained previously, specifically backdoor attacks. By simulating a targeted backdoor attacks across different network structures, this research aims to understand how the lack of centralization affects the security of the learning process and how different communication topologies might naturally slow down or accelerate the spread of this type of attacks. All experiments were done using a custom Flower environment \cite{beutel2020flower,belenguer2025glow}. The source code and configuration files used to reproduce all the experiments are publicly available at: https://github.com/IkerMardure/tfg-gossip-learning-backdoor
 
 
 \section{Evaluated Network Topologies} \label{sec:evaluated_topologies}
@@ -53,7 +53,7 @@ As shown in Figure \ref{fig:sbm_setup}, the implemented network consists of two 
 
 \begin{figure}[t]
     \centering
-    \includegraphics[width=0.6\textwidth]{figures/EC_6_graph.png}
+    \includegraphics[width=0.6\textwidth]{figures/SBM_8_graph.png}
     \caption{Experimental setup for the deterministic Stochastic Block Model (SBM). The network is strictly divided into Community A and Community B, connected via a single gateway. The designated malicious node (Client 1) is placed within Community A.}
     \label{fig:sbm_setup}
 \end{figure}
@@ -73,7 +73,14 @@ To accurately evaluate the long-term assimilation of the continuous backdoor att
 To evaluate the attack, two primary metrics were used: Clean Accuracy and Attack Success Rate (ASR). Clean Accuracy measures how well each node classifies the unmodified test data, which is critical for observing how undetectable (stealthy) the attack remains during normal operation. In contrast, the ASR is calculated using modified test data to indicate the spread and effectiveness of the backdoor payload through the network.
 
 \subsection{Simulation Constraints and Execution Flow}
+While the theoretical framework of Gossip Learning often assumes parallel execution across all participating nodes (as outlined in Algorithm 2.2), simulating such a decentralized network on centralized hardware requires specific implementation constraints. 
 
-While the theoretical framework of Gossip Learning assumes parallel execution across all participating nodes (as outlined in Algorithm \ref{alg:gossip_learning}), simulating such a decentralized network on centralized hardware introduces practical implementation constraints. 
+In our experimental setup using the customed Flower framework \cite{belenguer2025glow}, the execution flow was implemented as an asynchronous, sequential process. Specifically, a single communication round is strictly defined as the local training and subsequent parameter broadcast of exactly one client. During its designated round, the active client performs local optimization and immediately sends its updated model to its topological neighbors, who aggregate it into their own local state.
 
-In our experimental setup using the Flower framework, the local training phases for the clients were executed sequentially within each communication round due to computational resource limits. However, from a logical standpoint, the network state is frozen during the training phase, and parameter exchanges are only aggregated at the end of each discrete round. This effectively simulates a synchronous, parallel execution environment. Because the primary focus of this research is the structural propagation of malicious weights through specific graph topologies rather than evaluating computational time delays or asynchronous race condition, this sequential simulation accurately preserves the integrity of the topological vulnerabilities being evaluated.
+To ensure a fair and balanced evaluation, it was imperative that every node in the network received an equal amount of training exposure. Therefore, the total number of communication rounds was scaled linearly based on the network size to achieve 20 full network training cycles. Consequently:
+\begin{itemize}
+    \item For the 5-node topologies (Fully Connected, Ring, Star), the simulation spanned exactly 100 communication rounds ($5 \text{ nodes} \times 20 \text{ cycles}$).
+    \item For the scaled 8-node Stochastic Block Model (SBM), the simulation was proportionally extended to 160 communication rounds ($8 \text{ nodes} \times 20 \text{ cycles}$).
+\end{itemize}
+
+This sequential execution accurately models the asynchronous nature of real-world peer-to-peer networks, where nodes do not wait for a global synchronization barrier, but rather update and broadcast their parameters independently.

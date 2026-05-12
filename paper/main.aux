@@ -14,6 +14,7 @@
 \citation{ormandi2013gossip}
 \citation{yang2025stealthy}
 \citation{syros2024backdoor}
+\citation{french1999catastrophic}
 \@writefile{lof}{\addvspace {10pt}}
 \@writefile{lot}{\addvspace {10pt}}
 \@writefile{toc}{\contentsline {chapter}{\chapternumberline {1}Introduction}{1}{chapter.1}\protected@file@percent }
@@ -24,6 +25,7 @@
 \@writefile{brf}{\backcite{yang2025stealthy, syros2024backdoor}{{1}{1}{chapter.1}}}
 \citation{piaseczny2025adversarial}
 \citation{bao2019neudet}
+\@writefile{brf}{\backcite{french1999catastrophic}{{2}{1}{chapter.1}}}
 \@writefile{brf}{\backcite{piaseczny2025adversarial}{{2}{1}{chapter.1}}}
 \@writefile{brf}{\backcite{bao2019neudet}{{2}{1}{chapter.1}}}
 \citation{mcmahan2017communication}
@@ -100,21 +102,24 @@
 \@writefile{toc}{\contentsline {section}{\numberline {4.1}Threat Model}{11}{section.4.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {4.2}Backdoor Attack Implementation}{11}{section.4.2}\protected@file@percent }
 \citation{xie2020dba}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.1}The Visual Trigger and Continuous Poisoning}{12}{subsection.4.2.1}\protected@file@percent }
-\@writefile{brf}{\backcite{xie2020dba}{{12}{4.2.1}{subsection.4.2.1}}}
+\citation{bagdasaryan2020how}
 \@writefile{lof}{\contentsline {figure}{\numberline {4.1}{\ignorespaces The visual trigger used for the backdoor attack: a $7 \times 7$ white square patch applied to the bottom-right corner of the images.}}{12}{figure.4.1}\protected@file@percent }
 \newlabel{fig:trigger}{{4.1}{12}{The visual trigger used for the backdoor attack: a $7 \times 7$ white square patch applied to the bottom-right corner of the images}{figure.4.1}{}}
 \newlabel{fig:trigger@cref}{{[figure][1][4]4.1}{[1][12][]12}{}{}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.1}The Visual Trigger and Continuous Poisoning}{12}{subsection.4.2.1}\protected@file@percent }
+\@writefile{brf}{\backcite{xie2020dba}{{12}{4.2.1}{subsection.4.2.1}}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.2.2}The Topological Boosting Heuristic}{12}{subsection.4.2.2}\protected@file@percent }
+\@writefile{brf}{\backcite{bagdasaryan2020how}{{12}{4.2.2}{subsection.4.2.2}}}
 \@writefile{toc}{\contentsline {section}{\numberline {4.3}Attacker Placement Strategy}{13}{section.4.3}\protected@file@percent }
 \citation{beutel2020flower}
+\citation{belenguer2025glow}
 \citation{palmieri2024impact}
 \@writefile{lof}{\addvspace {10pt}}
 \@writefile{lot}{\addvspace {10pt}}
 \@writefile{toc}{\contentsline {chapter}{\chapternumberline {5}Experimentation}{15}{chapter.5}\protected@file@percent }
 \newlabel{ch:experimentation}{{5}{15}{Experimentation}{chapter.5}{}}
 \newlabel{ch:experimentation@cref}{{[chapter][5][]5}{[1][15][]15}{}{}{}}
-\@writefile{brf}{\backcite{beutel2020flower}{{15}{5}{chapter.5}}}
+\@writefile{brf}{\backcite{beutel2020flower,belenguer2025glow}{{15}{5}{chapter.5}}}
 \@writefile{toc}{\contentsline {section}{\numberline {5.1}Evaluated Network Topologies}{15}{section.5.1}\protected@file@percent }
 \newlabel{sec:evaluated_topologies}{{5.1}{15}{Evaluated Network Topologies}{section.5.1}{}}
 \newlabel{sec:evaluated_topologies@cref}{{[section][1][5]5.1}{[1][15][]15}{}{}{}}
@@ -153,72 +158,82 @@
 \newlabel{fig:sbm_setup@cref}{{[figure][2][5]5.2}{[1][17][]18}{}{}{}}
 \@writefile{brf}{\backcite{mills2019communication, yosinski2014how}{{18}{5.2}{section.5.2}}}
 \@writefile{brf}{\backcite{kingma2014adam}{{18}{5.2}{section.5.2}}}
+\citation{belenguer2025glow}
 \@writefile{toc}{\contentsline {subsection}{\numberline {5.2.1}Simulation Constraints and Execution Flow}{19}{subsection.5.2.1}\protected@file@percent }
-\citation{giaretta2019gossip}
+\@writefile{brf}{\backcite{belenguer2025glow}{{19}{5.2.1}{subsection.5.2.1}}}
 \@writefile{lof}{\addvspace {10pt}}
 \@writefile{lot}{\addvspace {10pt}}
 \@writefile{toc}{\contentsline {chapter}{\chapternumberline {6}Experimental Results and Discussion}{21}{chapter.6}\protected@file@percent }
 \newlabel{ch:results}{{6}{21}{Experimental Results and Discussion}{chapter.6}{}}
 \newlabel{ch:results@cref}{{[chapter][6][]6}{[1][21][]21}{}{}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {6.1}Baseline Topologies Resilience}{21}{section.6.1}\protected@file@percent }
+\newlabel{fig:metrics_fullyconnected}{{6.1a}{22}{Baseline Topologies Resilience}{subfigure.6.1.1}{}}
+\newlabel{fig:metrics_fullyconnected@cref}{{[subfigure][1][6,1]6.1a}{[1][21][]22}{}{}{}}
+\newlabel{fig:metrics_ring}{{6.1b}{22}{Baseline Topologies Resilience}{subfigure.6.1.2}{}}
+\newlabel{fig:metrics_ring@cref}{{[subfigure][2][6,1]6.1b}{[1][21][]22}{}{}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6.1}{\ignorespaces Clean Accuracy and Attack Success Rate (ASR) over 100 rounds for the Fully Connected and Ring topologies.}}{22}{figure.6.1}\protected@file@percent }
+\newlabel{fig:metrics_baseline_fc_ring}{{6.1}{22}{Clean Accuracy and Attack Success Rate (ASR) over 100 rounds for the Fully Connected and Ring topologies}{figure.6.1}{}}
+\newlabel{fig:metrics_baseline_fc_ring@cref}{{[figure][1][6]6.1}{[1][21][]22}{}{}{}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Fully Connected}}}{22}{subfigure.1.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Ring Topology}}}{22}{subfigure.1.2}\protected@file@percent }
+\newlabel{fig:metrics_star_peripheral}{{6.2a}{22}{Baseline Topologies Resilience}{subfigure.6.2.1}{}}
+\newlabel{fig:metrics_star_peripheral@cref}{{[subfigure][1][6,2]6.2a}{[1][21][]22}{}{}{}}
+\newlabel{fig:metrics_star_hub}{{6.2b}{22}{Baseline Topologies Resilience}{subfigure.6.2.2}{}}
+\newlabel{fig:metrics_star_hub@cref}{{[subfigure][2][6,2]6.2b}{[1][21][]22}{}{}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6.2}{\ignorespaces Clean Accuracy and ASR over 100 rounds for the Star topology under two distinct attacker placements.}}{22}{figure.6.2}\protected@file@percent }
+\newlabel{fig:metrics_star_combined}{{6.2}{22}{Clean Accuracy and ASR over 100 rounds for the Star topology under two distinct attacker placements}{figure.6.2}{}}
+\newlabel{fig:metrics_star_combined@cref}{{[figure][2][6]6.2}{[1][21][]22}{}{}{}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Star Topology — Peripheral Attacker}}}{22}{subfigure.2.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Star Topology — Hub Attacker}}}{22}{subfigure.2.2}\protected@file@percent }
 \citation{french1999catastrophic}
-\@writefile{lof}{\contentsline {figure}{\numberline {6.1}{\ignorespaces Metric per Node in a Fully Connected topology}}{22}{figure.6.1}\protected@file@percent }
-\newlabel{fig:FC5}{{6.1}{22}{Metric per Node in a Fully Connected topology}{figure.6.1}{}}
-\newlabel{fig:FC5@cref}{{[figure][1][6]6.1}{[1][21][]22}{}{}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {6.2}{\ignorespaces Metric per Node in a Ring topology}}{22}{figure.6.2}\protected@file@percent }
-\newlabel{fig:Ring5}{{6.2}{22}{Metric per Node in a Ring topology}{figure.6.2}{}}
-\newlabel{fig:Ring5@cref}{{[figure][2][6]6.2}{[1][22][]22}{}{}{}}
-\@writefile{brf}{\backcite{giaretta2019gossip}{{22}{6.1}{figure.6.1}}}
-\@writefile{lof}{\contentsline {figure}{\numberline {6.3}{\ignorespaces Metric per Node in a Star topology}}{23}{figure.6.3}\protected@file@percent }
-\newlabel{fig:Star5}{{6.3}{23}{Metric per Node in a Star topology}{figure.6.3}{}}
-\newlabel{fig:Star5@cref}{{[figure][3][6]6.3}{[1][22][]23}{}{}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {6.2}The Effectiveness vs. Stealthiness Trade-off}{23}{section.6.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {6.2}Solving the Effectiveness vs. Stealthiness Trade-off}{23}{section.6.2}\protected@file@percent }
 \@writefile{brf}{\backcite{french1999catastrophic}{{23}{6.2}{section.6.2}}}
-\@writefile{lof}{\contentsline {figure}{\numberline {6.4}{\ignorespaces Metric per Node in a SBM topology with a boosting factor of 5.0}}{24}{figure.6.4}\protected@file@percent }
-\newlabel{fig:SBM6_5}{{6.4}{24}{Metric per Node in a SBM topology with a boosting factor of 5.0}{figure.6.4}{}}
-\newlabel{fig:SBM6_5@cref}{{[figure][4][6]6.4}{[1][24][]24}{}{}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {6.3}Stochastic Block Model (SBM) Performance}{24}{section.6.3}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {6.5}{\ignorespaces Metric per Node in a SBM topology with a boosting factor of 3.0}}{25}{figure.6.5}\protected@file@percent }
-\newlabel{fig:SBM6_3}{{6.5}{25}{Metric per Node in a SBM topology with a boosting factor of 3.0}{figure.6.5}{}}
-\newlabel{fig:SBM6_3@cref}{{[figure][5][6]6.5}{[1][25][]25}{}{}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.3.1}The Adaptive Attacker: Navigating the Trade-off}{25}{subsection.6.3.1}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {6.6}{\ignorespaces Metric per Node in a SBM topology with a boosting factor of 4.0}}{26}{figure.6.6}\protected@file@percent }
-\newlabel{fig:SBM6_4}{{6.6}{26}{Metric per Node in a SBM topology with a boosting factor of 4.0}{figure.6.6}{}}
-\newlabel{fig:SBM6_4@cref}{{[figure][6][6]6.6}{[1][25][]26}{}{}{}}
+\newlabel{fig:metrics_sbm_peripheral}{{6.3a}{24}{The Topological Firewall (SBM Peripheral Attacker)}{subfigure.6.3.1}{}}
+\newlabel{fig:metrics_sbm_peripheral@cref}{{[subfigure][1][6,3]6.3a}{[1][24][]24}{}{}{}}
+\newlabel{fig:metrics_sbm_gateway}{{6.3b}{24}{The Topological Firewall (SBM Peripheral Attacker)}{subfigure.6.3.2}{}}
+\newlabel{fig:metrics_sbm_gateway@cref}{{[subfigure][2][6,3]6.3b}{[1][24][]24}{}{}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6.3}{\ignorespaces Clean Accuracy and ASR over 160 rounds for the Stochastic Block Model under two distinct attacker placements.}}{24}{figure.6.3}\protected@file@percent }
+\newlabel{fig:metrics_sbm_combined}{{6.3}{24}{Clean Accuracy and ASR over 160 rounds for the Stochastic Block Model under two distinct attacker placements}{figure.6.3}{}}
+\newlabel{fig:metrics_sbm_combined@cref}{{[figure][3][6]6.3}{[1][24][]24}{}{}{}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {SBM Peripheral Attacker}}}{24}{subfigure.3.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {SBM Gateway Attacker}}}{24}{subfigure.3.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {6.3}The Topological Firewall (SBM Peripheral Attacker)}{24}{section.6.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {6.4}The Bottleneck Breach Attempt (SBM Gateway Attacker)}{24}{section.6.4}\protected@file@percent }
 \bibstyle{unsrt}
 \bibdata{erreferentziak}
 \@writefile{lof}{\addvspace {10pt}}
 \@writefile{lot}{\addvspace {10pt}}
-\@writefile{toc}{\contentsline {chapter}{Eranskina / apéndice}{29}{chapter*.11}\protected@file@percent }
-\newlabel{ch:eranskina}{{6.3.1}{29}{Eranskina / apéndice}{chapter*.11}{}}
-\newlabel{ch:eranskina@cref}{{[subsection][1][0,0].0.1}{[1][29][]29}{}{}{}}
+\@writefile{toc}{\contentsline {chapter}{Eranskina / apéndice}{27}{chapter*.11}\protected@file@percent }
+\newlabel{ch:eranskina}{{6.4}{27}{Eranskina / apéndice}{chapter*.11}{}}
+\newlabel{ch:eranskina@cref}{{[section][0][0].0}{[1][27][]27}{}{}{}}
 \bibcite{mcmahan2017communication}{1}
 \bibcite{ormandi2013gossip}{2}
 \bibcite{yang2025stealthy}{3}
 \bibcite{syros2024backdoor}{4}
-\bibcite{piaseczny2025adversarial}{5}
-\bibcite{bao2019neudet}{6}
-\bibcite{yuan2024decentralized}{7}
-\bibcite{hegedus2019gossip}{8}
-\bibcite{vanhaesebrouck2017decentralized}{9}
-\bibcite{palmieri2024impact}{10}
-\bibcite{hallaji2024decentralized}{11}
-\bibcite{han2023reinforcement}{12}
-\bibcite{bouacida2021vulnerabilities}{13}
-\@writefile{toc}{\contentsline {chapter}{Bibliography}{31}{chapter*.13}\protected@file@percent }
-\bibcite{xie2024survey}{14}
-\bibcite{xia2023poisoning}{15}
-\bibcite{bagdasaryan2020how}{16}
-\bibcite{french1999catastrophic}{17}
+\bibcite{french1999catastrophic}{5}
+\bibcite{piaseczny2025adversarial}{6}
+\bibcite{bao2019neudet}{7}
+\bibcite{yuan2024decentralized}{8}
+\bibcite{hegedus2019gossip}{9}
+\bibcite{vanhaesebrouck2017decentralized}{10}
+\bibcite{palmieri2024impact}{11}
+\bibcite{hallaji2024decentralized}{12}
+\bibcite{han2023reinforcement}{13}
+\@writefile{toc}{\contentsline {chapter}{Bibliography}{29}{chapter*.13}\protected@file@percent }
+\bibcite{bouacida2021vulnerabilities}{14}
+\bibcite{xie2024survey}{15}
+\bibcite{xia2023poisoning}{16}
+\bibcite{bagdasaryan2020how}{17}
 \bibcite{xie2020dba}{18}
 \bibcite{beutel2020flower}{19}
-\bibcite{giaretta2019gossip}{20}
-\bibcite{holland1983stochastic}{21}
-\bibcite{lecun1998gradient}{22}
-\bibcite{mills2019communication}{23}
-\bibcite{yosinski2014how}{24}
-\bibcite{kingma2014adam}{25}
-\@writefile{toc}{\contentsline {chapter}{Bibliography}{32}{chapter*.13}\protected@file@percent }
-\memsetcounter{lastsheet}{44}
-\memsetcounter{lastpage}{32}
-\gdef \@abspage@last{44}
+\bibcite{belenguer2025glow}{20}
+\bibcite{giaretta2019gossip}{21}
+\bibcite{holland1983stochastic}{22}
+\bibcite{lecun1998gradient}{23}
+\bibcite{mills2019communication}{24}
+\bibcite{yosinski2014how}{25}
+\bibcite{kingma2014adam}{26}
+\@writefile{toc}{\contentsline {chapter}{Bibliography}{30}{chapter*.13}\protected@file@percent }
+\memsetcounter{lastsheet}{42}
+\memsetcounter{lastpage}{30}
+\gdef \@abspage@last{42}

@@ -15,7 +15,7 @@ The adversary manipulated a carefully calibrated 20\% of its assigned local trai
 
 This specific 20\% poisoning ratio was selected to execute a Continuous Poisoning strategy \cite{xie2020dba}. By keeping the proportion of malicious data relatively low, the adversary ensures that the local model continues to learn legitimate features alongside the backdoor. This effectively prevents the Catastrophic Forgetting phenomenon that typically exposes short-term, high-volume attacks, allowing the backdoor to persist and propagate through the network over multiple rounds of training and aggregation.
 
-\begin{figure}[ht]
+\begin{figure}[t]
     \centering
     \includegraphics[width=0.4\textwidth]{figures/poisoned_vs_original_network.png}
     \caption{The visual trigger used for the backdoor attack: a $7 \times 7$ white square patch applied to the bottom-right corner of the images.}
@@ -23,7 +23,7 @@ This specific 20\% poisoning ratio was selected to execute a Continuous Poisonin
 \end{figure}
 
 \subsection{The Topological Boosting Heuristic}
-To guarantee that the malicious update survived the decentralized aggregation process, we applied the Model Boosting technique. However, unlike centralized Federated Learning where the boosting factor ($\alpha$) is scaled relative to the total number of clients, in Decentralized Federated Learning, the dilution of the attackis governed by the local topological degree ($d$) of the adversary's node. 
+To guarantee that the malicious update survived the decentralized aggregation process, we applied the Model Boosting technique \cite{bagdasaryan2020how}. However, unlike centralized Federated Learning where the boosting factor ($\alpha$) is scaled relative to the total number of clients, in Decentralized Federated Learning, the dilution of the attackis governed by the local topological degree ($d$) of the adversary's node. 
 
 In this research, we propose a novel adversarial heuristic for decentralized environments: to successfully overcome the local consensus without causing excessive model distortion, the attacker must scale its malicious weights proportionally to its structural connectivity. Speciffically, the optimal boosting factor is mathematically modeledas:
 

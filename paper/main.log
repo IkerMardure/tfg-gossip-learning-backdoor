@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.4.20)  12 MAY 2026 16:52
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.4.20)  12 MAY 2026 18:55
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1502,7 +1502,7 @@ Chapter 4.
 
 
 ]
-<figures/poisoned_vs_original_network.png, id=360, 578.16pt x 953.964pt>
+<figures/poisoned_vs_original_network.png, id=358, 578.16pt x 953.964pt>
 File: figures/poisoned_vs_original_network.png Graphic file (type png)
 <use figures/poisoned_vs_original_network.png>
 Package pdftex.def Info: figures/poisoned_vs_original_network.png  used on input line 20.
@@ -1538,73 +1538,73 @@ Package pdftex.def Info: figures/EC_8_graph.png  used on input line 28.
 
 
 ] [16 <./figures/fc_5_graph.png> <./figures/ring_5_graph.png> <./figures/star_5_graph.png> <./figures/EC_8_graph.png>]
-<figures/EC_6_graph.png, id=410, 715.18391pt x 547.8066pt>
-File: figures/EC_6_graph.png Graphic file (type png)
-<use figures/EC_6_graph.png>
-Package pdftex.def Info: figures/EC_6_graph.png  used on input line 56.
-(pdftex.def)             Requested size: 245.7205pt x 188.2161pt.
- [17] [18 <./figures/EC_6_graph.png>]) [19] [20
+<figures/SBM_8_graph.png, id=411, 715.18391pt x 570.35484pt>
+File: figures/SBM_8_graph.png Graphic file (type png)
+<use figures/SBM_8_graph.png>
+Package pdftex.def Info: figures/SBM_8_graph.png  used on input line 56.
+(pdftex.def)             Requested size: 245.7205pt x 195.96326pt.
+ [17]
+Underfull \vbox (badness 3029) has occurred while \output is active []
+
+ [18 <./figures/SBM_8_graph.png>]) [19] [20
 
 ]
 Chapter 6.
 (./chapters/ExperimentalResultsAndDiscussion.tex
-<figures/FC5_metrics_per_node.png, id=441, 867.24pt x 722.7pt>
-File: figures/FC5_metrics_per_node.png Graphic file (type png)
-<use figures/FC5_metrics_per_node.png>
-Package pdftex.def Info: figures/FC5_metrics_per_node.png  used on input line 10.
-(pdftex.def)             Requested size: 204.76501pt x 170.6285pt.
+<../results/outputs/2026-05-04_13-19-fc_5/metrics_per_node_FullyConnected.png, id=445, 867.24pt x 722.7pt>
+File: ../results/outputs/2026-05-04_13-19-fc_5/metrics_per_node_FullyConnected.png Graphic file (type png)
+<use ../results/outputs/2026-05-04_13-19-fc_5/metrics_per_node_FullyConnected.png>
+Package pdftex.def Info: ../results/outputs/2026-05-04_13-19-fc_5/metrics_per_node_FullyConnected.png  used on input line 13.
+(pdftex.def)             Requested size: 184.28726pt x 153.56895pt.
+<../results/outputs/2026-05-04_15-41-ring_5/metrics_per_node_ring.png, id=446, 867.24pt x 722.7pt>
+File: ../results/outputs/2026-05-04_15-41-ring_5/metrics_per_node_ring.png Graphic file (type png)
+<use ../results/outputs/2026-05-04_15-41-ring_5/metrics_per_node_ring.png>
+Package pdftex.def Info: ../results/outputs/2026-05-04_15-41-ring_5/metrics_per_node_ring.png  used on input line 16.
+(pdftex.def)             Requested size: 184.28726pt x 153.56895pt.
+<../results/outputs/2026-05-04_16-25-star_5/metrics_per_node_star.png, id=447, 867.24pt x 722.7pt>
+File: ../results/outputs/2026-05-04_16-25-star_5/metrics_per_node_star.png Graphic file (type png)
+<use ../results/outputs/2026-05-04_16-25-star_5/metrics_per_node_star.png>
+Package pdftex.def Info: ../results/outputs/2026-05-04_16-25-star_5/metrics_per_node_star.png  used on input line 26.
+(pdftex.def)             Requested size: 184.28726pt x 153.56895pt.
+<../results/outputs/2026-05-12 - 17_26 - star_5 - client0/metrics_per_node.png, id=448, 867.24pt x 722.7pt>
+File: ../results/outputs/2026-05-12 - 17_26 - star_5 - client0/metrics_per_node.png Graphic file (type png)
+<use ../results/outputs/2026-05-12 - 17_26 - star_5 - client0/metrics_per_node.png>
+Package pdftex.def Info: ../results/outputs/2026-05-12 - 17_26 - star_5 - client0/metrics_per_node.png  used on input line 29.
+(pdftex.def)             Requested size: 184.28726pt x 153.56895pt.
  [21
 
-]
-<figures/Ring5_metrics_per_node.png, id=448, 867.24pt x 722.7pt>
-File: figures/Ring5_metrics_per_node.png Graphic file (type png)
-<use figures/Ring5_metrics_per_node.png>
-Package pdftex.def Info: figures/Ring5_metrics_per_node.png  used on input line 18.
-(pdftex.def)             Requested size: 204.76501pt x 170.6285pt.
-<figures/Star5_metrics_per_node.png, id=450, 867.24pt x 722.7pt>
-File: figures/Star5_metrics_per_node.png Graphic file (type png)
-<use figures/Star5_metrics_per_node.png>
-Package pdftex.def Info: figures/Star5_metrics_per_node.png  used on input line 26.
-(pdftex.def)             Requested size: 204.76501pt x 170.6285pt.
- [22 <./figures/FC5_metrics_per_node.png> <./figures/Ring5_metrics_per_node.png>]
-Underfull \vbox (badness 10000) has occurred while \output is active []
+] [22 <../results/outputs/2026-05-04_13-19-fc_5/metrics_per_node_FullyConnected.png> <../results/outputs/2026-05-04_15-41-ring_5/metrics_per_node_ring.png> <../results/outputs/2026-05-04_16-25-star_5/metrics_per_node_star.png> <../results/outputs/2026-05-12 - 17_26 - star_5 - client0/metrics_per_node.png>]
+Overfull \hbox (0.98999pt too wide) in paragraph at lines 52--53
+\T1/LinuxLibertineT-TLF/m/n/10.95 (-20) ness ver-sus stealth-i-ness trade-off. Tra-di-tion-ally, high-intensity model poi-son-ing^^Vcharacterized
+ []
 
- [23 <./figures/Star5_metrics_per_node.png>]
-<figures/SBM6_5bf_metrics_per_node.png, id=464, 867.24pt x 722.7pt>
-File: figures/SBM6_5bf_metrics_per_node.png Graphic file (type png)
-<use figures/SBM6_5bf_metrics_per_node.png>
-Package pdftex.def Info: figures/SBM6_5bf_metrics_per_node.png  used on input line 47.
-(pdftex.def)             Requested size: 204.76501pt x 170.6285pt.
- [24 <./figures/SBM6_5bf_metrics_per_node.png>]
-<figures/SBM6_3bf_metrics_per_node.png, id=470, 867.24pt x 722.7pt>
-File: figures/SBM6_3bf_metrics_per_node.png Graphic file (type png)
-<use figures/SBM6_3bf_metrics_per_node.png>
-Package pdftex.def Info: figures/SBM6_3bf_metrics_per_node.png  used on input line 61.
-(pdftex.def)             Requested size: 204.76501pt x 170.6285pt.
-<figures/SBM6_4bf_metrics_per_node.png, id=471, 867.24pt x 722.7pt>
-File: figures/SBM6_4bf_metrics_per_node.png Graphic file (type png)
-<use figures/SBM6_4bf_metrics_per_node.png>
-Package pdftex.def Info: figures/SBM6_4bf_metrics_per_node.png  used on input line 67.
-(pdftex.def)             Requested size: 204.76501pt x 170.6285pt.
- [25 <./figures/SBM6_3bf_metrics_per_node.png>])
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [26 <./figures/SBM6_4bf_metrics_per_node.png>] [27] [28
+[23]
+<../results/outputs/2026-05-05_15-37-sbm_8/metrics_per_node.png, id=474, 867.24pt x 722.7pt>
+File: ../results/outputs/2026-05-05_15-37-sbm_8/metrics_per_node.png Graphic file (type png)
+<use ../results/outputs/2026-05-05_15-37-sbm_8/metrics_per_node.png>
+Package pdftex.def Info: ../results/outputs/2026-05-05_15-37-sbm_8/metrics_per_node.png  used on input line 63.
+(pdftex.def)             Requested size: 184.28726pt x 153.56895pt.
+<../results/outputs/2026-05-05_16-52-sbm_8-client3/metrics_per_node_sbm.png, id=475, 867.24pt x 722.7pt>
+File: ../results/outputs/2026-05-05_16-52-sbm_8-client3/metrics_per_node_sbm.png Graphic file (type png)
+<use ../results/outputs/2026-05-05_16-52-sbm_8-client3/metrics_per_node_sbm.png>
+Package pdftex.def Info: ../results/outputs/2026-05-05_16-52-sbm_8-client3/metrics_per_node_sbm.png  used on input line 66.
+(pdftex.def)             Requested size: 184.28726pt x 153.56895pt.
+ [24 <../results/outputs/2026-05-05_15-37-sbm_8/metrics_per_node.png> <../results/outputs/2026-05-05_16-52-sbm_8-client3/metrics_per_node_sbm.png>]) [25] [26
 
 ] (./chapters/appendix.tex) (./main.bbl (./main.brf)
 \tf@brf=\write5
 \openout5 = `main.brf'.
 
- [29
+ [27
 
 
-] [30
+] [28
 
 ]
 bibitemlist
 LaTeX Font Info:    Font shape `T1/LinuxLibertineT-TLF/m/it' will be
 (Font)              scaled to size 10.0pt on input line 7.
-[31]) [32]
+[29]) [30]
 \tf@toc=\write6
 \openout6 = `main.toc'.
 
@@ -1623,22 +1623,22 @@ LaTeX2e <2025-11-01>
 L3 programming layer <2020/03/25>
  ***********
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 6725138BC957273F599EDFDE33291223;6303.
+(rerunfilecheck)             Checksum: 8095DA712F40E28D08F40EBB59835FA9;6426.
 Package rerunfilecheck Info: File `main.brf' has not changed.
-(rerunfilecheck)             Checksum: 9C1BE4FD0984DD85DC05CD06DED02FE5;2145.
+(rerunfilecheck)             Checksum: 0997AD4DAD88EF52FA094B708D706AB9;2286.
  ) 
 Here is how much of TeX's memory you used:
- 24546 strings out of 469278
- 430082 string characters out of 5462842
- 889998 words of memory out of 5000000
- 52467 multiletter control sequences out of 15000+600000
- 782334 words of font info for 342 fonts, out of 8000000 for 9000
+ 24570 strings out of 469278
+ 432725 string characters out of 5462842
+ 890998 words of memory out of 5000000
+ 52485 multiletter control sequences out of 15000+600000
+ 782718 words of font info for 345 fonts, out of 8000000 for 9000
  36 hyphenation exceptions out of 8191
- 91i,12n,133p,1301b,739s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 91i,12n,133p,1182b,743s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <c:/Users/Iker/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/libertine/LinLibertineT.pfb><c:/Users/Iker/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/libertine/LinLibertineTB.pfb><c:/Users/Iker/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/libertine/LinLibertineTI.pfb><c:/Users/Iker/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb><c:/Users/Iker/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb><c:/Users/Iker/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb><c:/Users/Iker/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb><c:/Users/Iker/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb><c:/Users/Iker/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb><c:/Users/Iker/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb><c:/Users/Iker/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb>
-Output written on main.pdf (44 pages, 2421199 bytes).
+Output written on main.pdf (42 pages, 2442667 bytes).
 PDF statistics:
- 633 PDF objects out of 1000 (max. 8388607)
- 130 named destinations out of 1000 (max. 500000)
+ 637 PDF objects out of 1000 (max. 8388607)
+ 132 named destinations out of 1000 (max. 500000)
  89418 words of extra memory for PDF output out of 106986 (max. 10000000)
 
