@@ -13,6 +13,46 @@ from utils.paths import resolve_data_path
 #import ssl
 
 
+def _resolve_neu_det_root(data_path: str | None = None):
+    base = resolve_data_path(data_path)
+    candidates = [
+        base,
+        base / "NEU-DET",
+        base / "NEU-DET" / "NEU-DET",
+    ]
+
+    for candidate in candidates:
+        if (candidate / "train" / "images").exists() and (candidate / "validation" / "images").exists():
+            return candidate
+
+    raise FileNotFoundError(
+        f"Could not find NEU-DET dataset root under {base}. Expected train/images and validation/images folders."
+    )
+
+
+def _neu_det_transforms():
+    train_transform = transforms.Compose(
+        [
+            transforms.Resize((32, 32)),
+            transforms.RandomHorizontalFlip(),
+            transforms.RandomRotation(10),
+            transforms.RandomAffine(0, shear=10, scale=(0.8, 1.2)),
+            transforms.Grayscale(num_output_channels=1),
+            transforms.ToTensor(),
+            transforms.Normalize((0.5,), (0.5,)),
+        ]
+    )
+    test_transform = transforms.Compose(
+        [
+            transforms.Resize((32, 32)),
+            transforms.Grayscale(num_output_channels=1),
+            transforms.ToTensor(),
+            transforms.Normalize((0.5,), (0.5,)),
+        ]
+    )
+    return train_transform, test_transform
+
+
 def _default_num_workers() -> int:
     # Ray workers on Windows are much more stable with single-process data loading.
     return 0 if os.name == "nt" else 4
@@ -104,6 +144,22 @@ def get_mnist(data_path: str | None = None):
     return trainset, testset
 
 
+def get_neu_det(data_path: str | None = None):
+    """Load NEU-DET from a local folder structure compatible with ImageFolder."""
+    train_transform, test_transform = _neu_det_transforms()
+    resolved = _resolve_neu_det_root(data_path)
+
+    trainset = torch_datasets.ImageFolder(
+        str(resolved / "train" / "images"),
+        transform=train_transform,
+    )
+    testset = torch_datasets.ImageFolder(
+        str(resolved / "validation" / "images"),
+        transform=test_transform,
+    )
+    return trainset, testset
+
+
 def prepare_dataset_mnist_iid(
     num_clients: int,
     num_classes: int,
@@ -115,6 +171,29 @@ def prepare_dataset_mnist_iid(
 ):
     """Load MNIST and split IID across clients."""
     trainset, testset = get_mnist(data_path)
+    return _split_iid(
+        trainset,
+        testset,
+        num_clients,
+        num_classes,
+        clients_with_no_data,
+        batch_size,
+        seed,
+        val_ratio,
+    )
+
+
+def prepare_dataset_neu_det_iid(
+    num_clients: int,
+    num_classes: int,
+    clients_with_no_data: list[int],
+    batch_size: int,
+    seed: int,
+    data_path: str | None = None,
+    val_ratio: float = 0.1,
+):
+    """Load NEU-DET and split IID across clients."""
+    trainset, testset = get_neu_det(data_path)
     return _split_iid(
         trainset,
         testset,

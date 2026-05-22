@@ -56,8 +56,15 @@ El documento puede estar en castellano, euskara o inglés. Para configurar adecu
 	\caption {Ejemplo de tabla}\label{tab:ejemplo}
 \end{table}
 
+\newpage
 \subsection{Portada del documento}
-
+\begin{wrapfigure}{R}{0.25\linewidth}
+    \centering
+    \vspace{-0.6cm}
+    \includegraphics[width=0.4\linewidth]{figures/EHU_logotipo_positiboa_BAXUA.png}
+    \caption{\href{https://www.ehu.eus/es/}{EHU}}
+    \label{fig:upv}
+\end{wrapfigure}
 Hay dos opciones para la portada. La primera es incrustar un PDF. Por defecto se incluye el documento \texttt{cover.pdf}. En caso de querer desactivar esta opción hay que comentar la línea que contiene el comando \texttt{includepdf}. 
 
 La segunda opción es usar los ficheors \texttt{cover\_XXX}. Hay tres, uno para el Grado en Ingeniería Informática, otro para el Grado en Inteligencia Artificial y otro para Trabajos Fin de Máster. Hay que descomentar el que interese y mantener comentados el resto.
@@ -72,13 +79,13 @@ A fin de facilitar la organización del texto el contenido está dividido en fic
 
 \section{Figuras y tablas}
 
-\begin{figure}[t]
+Con el objetivo de mantener el aspecto del documento se recomienda que las figuras y tablas estén todas arriba o abajo. Para ello es necesario usar las opciones \texttt{[t]} o \texttt{[b]} en los entornos \texttt{figure} y \texttt{table}.
+
+\begin{figure}[h!]
     \centering
 	\includegraphics[width=0.75\textwidth]{figures/cell.jpg}
 	\caption{Irudiaren adibidea}\label{fig:ejemplo}
 \end{figure}
-
-Con el objetivo de mantener el aspecto del documento se recomienda que las figuras y tablas estén todas arriba o abajo. Para ello es necesario usar las opciones \texttt{[t]} o \texttt{[b]} en los entornos \texttt{figure} y \texttt{table}.
 
 La Figura \ref{fig:ejemplo} y la Tabla \ref{tab:ejemplo} muestran dos ejemplos. Hay que tener en cuenta que \LaTeX trata de optimizar la localización de la figuras y tablas. Como se ha mencionado, es recomendable seguir un criterio fijo (todas arriba o todas abajo). Para cambiar la hoja en la que aparece una figura o tabla hay que mover de lugar su código. Dicho código no tiene por que estar donde se menciona en el texto, ya que la referencia a las figuras y tablas debe hacerse usando su número y no usando términos como ``abajo'' o ``arriba''.
 
@@ -150,7 +157,7 @@ A continuación se muestran los elementos definidos en el paquete.
 	\caption{Ejemplo de pseudocódigo}\label{alg:ejemplo}
 \end{ifalgorithm}
 
-Además de estos elementos existen dos entornos para definir algoritmos, \texttt{ifalgorithm} y \texttt{ifpseudo}. También es posible incluir un índice de algoritmos además de los índices de tablas y figuras. En el Algoritmo \ref{alg:ejemplo} se muestra un ejemplo de la sintaxis.
+Además de estos elementos existen dos entornos para definir algoritmos, \texttt{ifalgorithm} y \texttt{ifpseudo}. También es posible incluir un índice de algoritmos además de los índices de tablas y figuras. En el fragmento de código \ref{alg:ejemplo} se muestra un ejemplo de la sintaxis.
 
 Por último, en lo que respecta a las ecuaciones matemáticas, estas pueden estar en el texto: $X_n \geq 10$, o intercaladas con el:
 

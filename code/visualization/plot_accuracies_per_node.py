@@ -11,6 +11,8 @@ import matplotlib.pyplot as plt
 from matplotlib.ticker import MaxNLocator
 from utils.logging import log_results
 
+MARKERS = ["o", "s", "^", "D", "v", "P", "X", "<", ">", "*", "h", "8"]
+
 
 def extract_list(content: str, name: str):
     pattern = r"\*\*{}:\s*(\([^)]+\)(?:\s+\([^)]+\))*)".format(re.escape(name))
@@ -34,10 +36,18 @@ def build_per_node_series(value_tuples, cid_tuples):
 
 
 def plot_metric(ax, series, ylabel: str, title: str, marker: str, ymin: float = None):
-    for cid in sorted(series.keys()):
+    for index, cid in enumerate(sorted(series.keys())):
         points = sorted(series[cid], key=lambda item: item[0])
         rounds, values = zip(*points)
-        ax.plot(rounds, values, marker=marker, label=f"Client {cid}")
+        point_marker = MARKERS[index % len(MARKERS)] if marker == "auto" else marker
+        ax.plot(
+            rounds,
+            values,
+            marker=point_marker,
+            linestyle="-",
+            markeredgewidth=1.0,
+            label=f"Client {cid}",
+        )
     # Show only integer rounds on the x-axis.
     ax.xaxis.set_major_locator(MaxNLocator(integer=True))
     ax.set_ylabel(ylabel)
@@ -80,9 +90,10 @@ def main() -> None:
         node_acc,
         ylabel="Accuracy",
         title="Clean Accuracy per node",
-        marker="o",
-        ymin=0.75,
+        marker="auto",
+        ymin=0.80,
     )
+    axes[0].set_yscale("log")
 
     if node_asr:
         plot_metric(
@@ -90,7 +101,7 @@ def main() -> None:
             node_asr,
             ylabel="ASR",
             title="Attack Success Rate per node",
-            marker="s",
+            marker="auto",
         )
         axes[1].set_xlabel("Round")
     else:

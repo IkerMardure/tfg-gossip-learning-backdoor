@@ -1,7 +1,7 @@
 \backcite {mcmahan2017communication}{{1}{1}{chapter.1}}
 \backcite {ormandi2013gossip}{{1}{1}{chapter.1}}
 \backcite {yang2025stealthy, syros2024backdoor}{{1}{1}{chapter.1}}
-\backcite {french1999catastrophic}{{2}{1}{chapter.1}}
+\backcite {french1999catastrophic}{{1}{1}{chapter.1}}
 \backcite {piaseczny2025adversarial}{{2}{1}{chapter.1}}
 \backcite {bao2019neudet}{{2}{1}{chapter.1}}
 \backcite {mcmahan2017communication}{{3}{2.1}{section.2.1}}
@@ -16,11 +16,11 @@
 \backcite {xie2024survey}{{8}{3.1}{section.3.1}}
 \backcite {bouacida2021vulnerabilities}{{8}{3.1}{section.3.1}}
 \backcite {xia2023poisoning}{{8}{3.2}{section.3.2}}
-\backcite {xia2023poisoning}{{9}{3.2.1}{subsection.3.2.1}}
+\backcite {xia2023poisoning}{{8}{3.2.1}{subsection.3.2.1}}
 \backcite {bagdasaryan2020how}{{9}{3.2.3}{subsection.3.2.3}}
 \backcite {bagdasaryan2020how}{{9}{3.2.3}{subsection.3.2.3}}
 \backcite {yang2025stealthy}{{9}{3.2.3}{subsection.3.2.3}}
-\backcite {french1999catastrophic}{{10}{3.2.3}{subsection.3.2.3}}
+\backcite {french1999catastrophic}{{9}{3.2.3}{subsection.3.2.3}}
 \backcite {bagdasaryan2020how}{{10}{3.2.3}{subsection.3.2.3}}
 \backcite {xie2020dba}{{10}{3.2.3}{subsection.3.2.3}}
 \backcite {piaseczny2025adversarial}{{10}{3.2.4}{subsection.3.2.4}}
@@ -29,11 +29,12 @@
 \backcite {beutel2020flower,belenguer2025glow}{{15}{5}{chapter.5}}
 \backcite {palmieri2024impact}{{15}{5.1}{section.5.1}}
 \backcite {giaretta2019gossip}{{16}{5.1}{figure.5.1}}
-\backcite {holland1983stochastic}{{17}{5.1}{figure.5.1}}
+\backcite {holland1983stochastic}{{16}{5.1}{figure.5.1}}
 \backcite {holland1983stochastic}{{17}{5.1}{figure.5.1}}
 \backcite {lecun1998gradient}{{17}{5.2}{section.5.2}}
 \backcite {lecun1998gradient}{{17}{5.2}{section.5.2}}
-\backcite {mills2019communication, yosinski2014how}{{18}{5.2}{section.5.2}}
+\backcite {mills2019communication, yosinski2014how}{{17}{5.2}{section.5.2}}
 \backcite {kingma2014adam}{{18}{5.2}{section.5.2}}
-\backcite {belenguer2025glow}{{19}{5.2.1}{subsection.5.2.1}}
-\backcite {french1999catastrophic}{{23}{6.2}{section.6.2}}
+\backcite {belenguer2025glow}{{18}{5.2.1}{subsection.5.2.1}}
+\backcite {10561520}{{20}{6.1}{figure.6.3}}
+\backcite {french1999catastrophic}{{24}{6.3}{section.6.3}}

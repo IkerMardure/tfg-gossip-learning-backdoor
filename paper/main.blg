@@ -3,44 +3,44 @@ Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: main.aux
 The style file: unsrt.bst
 Database file #1: erreferentziak.bib
-You've used 26 entries,
+You've used 27 entries,
             1791 wiz_defined-function locations,
-            593 strings with 8617 characters,
-and the built_in function-call counts, 6868 in all, are:
-= -- 600
-> -- 366
+            599 strings with 8881 characters,
+and the built_in function-call counts, 7212 in all, are:
+= -- 625
+> -- 392
 < -- 6
-+ -- 131
-- -- 105
-* -- 487
-:= -- 1092
-add.period$ -- 79
-call.type$ -- 26
-change.case$ -- 26
++ -- 140
+- -- 113
+* -- 522
+:= -- 1150
+add.period$ -- 82
+call.type$ -- 27
+change.case$ -- 27
 chr.to.int$ -- 0
-cite$ -- 26
-duplicate$ -- 291
-empty$ -- 613
-format.name$ -- 105
-if$ -- 1513
+cite$ -- 27
+duplicate$ -- 300
+empty$ -- 641
+format.name$ -- 113
+if$ -- 1585
 int.to.chr$ -- 0
-int.to.str$ -- 26
-missing$ -- 26
-newline$ -- 133
-num.names$ -- 26
-pop$ -- 69
+int.to.str$ -- 27
+missing$ -- 27
+newline$ -- 138
+num.names$ -- 27
+pop$ -- 70
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 153
+skip$ -- 156
 stack$ -- 0
-substring$ -- 508
-swap$ -- 84
+substring$ -- 541
+swap$ -- 85
 text.length$ -- 6
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
 warning$ -- 0
-while$ -- 62
-width$ -- 28
-write$ -- 280
+while$ -- 64
+width$ -- 29
+write$ -- 291

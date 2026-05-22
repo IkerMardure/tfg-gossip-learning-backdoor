@@ -130,4 +130,9 @@ Diederik~P Kingma and Jimmy Ba.
 \newblock Adam: A method for stochastic optimization.
 \newblock {\em arXiv preprint arXiv:1412.6980}, 2014.
 
+\bibitem{10561520}
+Sheng Sun, Zengqi Zhang, Quyang Pan, Min Liu, Yuwei Wang, Tianliu He, Yali Chen, and Zhiyuan Wu.
+\newblock Staleness-controlled asynchronous federated learning: Accuracy and efficiency tradeoff.
+\newblock {\em IEEE Transactions on Mobile Computing}, 23(12):12621--12634, 2024.
+
 \end{thebibliography}

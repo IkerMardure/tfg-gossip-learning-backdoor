@@ -7,6 +7,8 @@
 
 \RequirePackage{amsthm}
 
+\DeclareOption{en}
+{
 \def\@axiomname{Axiom}
 \def\@theoname{Theorem}
 \def\@lemmname{Lemma}
@@ -18,23 +20,24 @@
 \def\@probname{Problem}
 \def\@solname{Solution}
 \def\@proofname{Proof}
-\def\@algorithm{Algorithm}
-\def\@listofalgorithmsname{List of Algorithms}
+\def\@algorithm{Listing}
+\def\@listofalgorithmsname{List of Code Listings}
+}
 
 \DeclareOption{es}
 {
 \def\@axiomname{Axioma}
 \def\@theoname{Teorema}
 \def\@lemmname{Lema}
-\def\@propname{Proposici\'on}
-\def\@defname{Definici\'on}
+\def\@propname{Proposici\'{o}n}
+\def\@defname{Definici\'{o}n}
 \def\@exampname{Ejemplo}
 \def\@remarkname{Comentario}
 \def\@probname{Problema}
-\def\@solname{Soluci\'on}
+\def\@solname{Soluci\'{o}n}
 \def\@proofname{Prueba}
-\def\@algorithm{Algoritmo}
-\def\@listofalgorithmsname{Lista de Algoritmos}
+\def\@algorithm{C\'{o}digo}
+\def\@listofalgorithmsname{\'{I}ndice de c\'{o}digos}
 }
 
 \DeclareOption{eu}
@@ -51,9 +54,8 @@
 \def\@probname{ariketa}
 \def\@solname{ebazpena}
 \def\@proofname{froga}
-\def\@algorithm{algoritmoa}
-\def\@listofalgorithmsname{Algoritmoen Zerrenda}
-\renewcommand{\fnum@ifalgorithm}{\theifalgorithm\nobreakspace\@algorithm}
+\def\@algorithm{Kode zatia}
+\def\@listofalgorithmsname{Kode zatien aurkibidea}
 }
 
 \ProcessOptions\relax
@@ -85,6 +87,14 @@
 }
 
 \floatname{ifalgorithm}{\@algorithm}
+\renewcommand{\fnum@ifalgorithm}{\@algorithm\nobreakspace\theifalgorithm}
+
+
+\AtBeginDocument{%
+  \pdfstringdefDisableCommands{%
+    \def\'#1{#1}%
+  }%
+}
 
 \newenvironment{ifproof}[1][\@proofname]{\begin{trivlist}\it
 \item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
@@ -95,19 +105,18 @@
 
 \newcommand{\mb}[1]{\mathbf{#1}}
 
-\newcommand{\listofalgorithms}{\listof{ifalgorithm}{\@listofalgorithmsname}}
+\newcommand{\listofalgorithms}{%
+  \listof{ifalgorithm}{\@listofalgorithmsname}%
+  \addcontentsline{toc}{chapter}{\@listofalgorithmsname}%
+}
 
-\ProcessOptions
 %Entorno para los algoritmos
-
 \newlength{\TTL}
 \newlength{\TMPL}
 \newcounter{AlgoStepCnt}
 
 
 \newenvironment{ifpseudo}[1]{
-%  \newcommand*{\Let}[2]{##1\Leftarrow##2}
-
   \newcommand*{\For}[2]{\textbf{for} $##1$ \textbf{to} $##2$}
   \newcommand*{\CFor}{\textbf{for}}
   \newcommand*{\EFor}{\textbf{rof}}
@@ -129,7 +138,6 @@
 {-6ex}\parbox[t]{\TMPL}{\setlength{\baselineskip}{0pt}##1}}
   \newcommand*{\TTT}[1]{\rule{9ex}{0pt}\setlength{\TMPL}{\TTL}\addtolength{\TMPL
 }{-9ex}\parbox[t]{\TMPL}{\setlength{\baselineskip}{0pt}##1}}
-   % \setlength{\columnwidth}{8.6cm}%
   \begin{minipage}{\textwidth}%
        \centerline{#1}
        \vspace{0.25em}
@@ -151,5 +159,4 @@
       \end{minipage}}
 
 \endinput
-%end of file isgcommands.sty
 

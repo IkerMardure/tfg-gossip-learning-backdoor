@@ -1,8 +1,7 @@
 \babel@toc {english}{}\relax 
-\contentsline {chapter}{Contents}{v}{chapter*.5}%
-\contentsline {chapter}{List of Figures}{vii}{chapter*.6}%
-\contentsline {chapter}{List of Tables}{viii}{chapter*.7}%
-\contentsline {chapter}{Índice de algoritmos}{ix}{chapter*.9}%
+\contentsline {chapter}{List of Figures}{ix}{chapter*.8}%
+\contentsline {chapter}{List of Tables}{x}{chapter*.9}%
+\contentsline {chapter}{List of Code Listings}{xi}{chapter*.11}%
 \contentsline {chapter}{\chapternumberline {1}Introduction}{1}{chapter.1}%
 \contentsline {chapter}{\chapternumberline {2}Theoretical Framework}{3}{chapter.2}%
 \contentsline {section}{\numberline {2.1}Federated Learning}{3}{section.2.1}%
@@ -17,18 +16,21 @@
 \contentsline {chapter}{\chapternumberline {4}Methodology}{11}{chapter.4}%
 \contentsline {section}{\numberline {4.1}Threat Model}{11}{section.4.1}%
 \contentsline {section}{\numberline {4.2}Backdoor Attack Implementation}{11}{section.4.2}%
-\contentsline {subsection}{\numberline {4.2.1}The Visual Trigger and Continuous Poisoning}{12}{subsection.4.2.1}%
+\contentsline {subsection}{\numberline {4.2.1}The Visual Trigger and Continuous Poisoning}{11}{subsection.4.2.1}%
 \contentsline {subsection}{\numberline {4.2.2}The Topological Boosting Heuristic}{12}{subsection.4.2.2}%
 \contentsline {section}{\numberline {4.3}Attacker Placement Strategy}{13}{section.4.3}%
+\contentsline {section}{\numberline {4.4}Evaluation Framework: The Utility-Security Trade-off}{14}{section.4.4}%
 \contentsline {chapter}{\chapternumberline {5}Experimentation}{15}{chapter.5}%
 \contentsline {section}{\numberline {5.1}Evaluated Network Topologies}{15}{section.5.1}%
 \contentsline {section}{\numberline {5.2}Experimental Setup: Dataset, Architecture, and Metrics}{17}{section.5.2}%
-\contentsline {subsection}{\numberline {5.2.1}Simulation Constraints and Execution Flow}{19}{subsection.5.2.1}%
-\contentsline {chapter}{\chapternumberline {6}Experimental Results and Discussion}{21}{chapter.6}%
-\contentsline {section}{\numberline {6.1}Baseline Topologies Resilience}{21}{section.6.1}%
-\contentsline {section}{\numberline {6.2}Solving the Effectiveness vs. Stealthiness Trade-off}{23}{section.6.2}%
-\contentsline {section}{\numberline {6.3}The Topological Firewall (SBM Peripheral Attacker)}{24}{section.6.3}%
-\contentsline {section}{\numberline {6.4}The Bottleneck Breach Attempt (SBM Gateway Attacker)}{24}{section.6.4}%
-\contentsline {chapter}{Eranskina / apéndice}{27}{chapter*.11}%
-\contentsline {chapter}{Bibliography}{29}{chapter*.13}%
-\contentsline {chapter}{Bibliography}{30}{chapter*.13}%
+\contentsline {subsection}{\numberline {5.2.1}Simulation Constraints and Execution Flow}{18}{subsection.5.2.1}%
+\contentsline {chapter}{\chapternumberline {6}Experimental Results and Discussion}{19}{chapter.6}%
+\contentsline {section}{\numberline {6.1}The Collaboration Gain: Establishing the Non-Adversarial Baseline}{19}{section.6.1}%
+\contentsline {section}{\numberline {6.2}Baseline Topologies Resilience}{22}{section.6.2}%
+\contentsline {section}{\numberline {6.3}Solving the Effectiveness vs. Stealthiness Trade-off}{23}{section.6.3}%
+\contentsline {section}{\numberline {6.4}Community Topologies and Boundary Resilience (SBM)}{24}{section.6.4}%
+\contentsline {subsection}{\numberline {6.4.1}The Topological Firewall (Peripheral Attacker)}{25}{subsection.6.4.1}%
+\contentsline {subsection}{\numberline {6.4.2}The Bottleneck Breach Attempt (Gateway Attacker)}{26}{subsection.6.4.2}%
+\contentsline {chapter}{Appendices}{27}{chapter*.14}%
+\contentsline {appendix}{\chapternumberline {A}Declaration of use of generative AI}{27}{appendix.A}%
+\contentsline {chapter}{Bibliography}{29}{chapter*.16}%

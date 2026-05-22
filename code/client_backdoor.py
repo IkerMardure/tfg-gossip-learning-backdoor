@@ -12,7 +12,7 @@ from utils.logging import log_client_training, log_data_poisoning
 
 
 BACKDOOR_POISON_RATE = 0.2
-BACKDOOR_BOOST_FACTOR = 5.0
+BACKDOOR_BOOST_FACTOR = 8.0
 
 
 class BalancedBackdoorBatchSampler(Sampler[List[int]]):
@@ -272,7 +272,6 @@ class FlowerClient(fl.client.NumPyClient):
             # MODEL BOOSTING LOGIC
             if self.is_malicious:
                 boosted_params = []
-                
                 # Boosted = Global + Factor * (Local - Global)
                 for global_p, local_p in zip(parameters, new_parameters):
                     boosted_p = global_p + BACKDOOR_BOOST_FACTOR * (local_p - global_p)

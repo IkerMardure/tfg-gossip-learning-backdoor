@@ -11,17 +11,17 @@ To systematically evaluate these dynamics and establish a comprehensive baseline
     \centering
     % Primera Fila
     \subfloat[Fully Connected\label{fig:fc}]{%
-        \includegraphics[width=0.45\textwidth]{figures/fc_5_graph.png}%
+        \includegraphics[width=0.45\textwidth]{figures/fc_8_graph.png}%
     }\hfill
     \subfloat[Ring Topology\label{fig:ring}]{%
-        \includegraphics[width=0.45\textwidth]{figures/ring_5_graph.png}%
+        \includegraphics[width=0.45\textwidth]{figures/ring_8_graph.png}%
     }
     
     \vspace{1.5em}
     
     % Segunda Fila
     \subfloat[Star Topology\label{fig:star}]{%
-        \includegraphics[width=0.45\textwidth]{figures/star_5_graph.png}%
+        \includegraphics[width=0.45\textwidth]{figures/star_8_graph.png}%
     }\hfill
     \subfloat[Stochastic Block Model\label{fig:sbm_theory}]{%
         \includegraphics[width=0.45\textwidth]{figures/EC_8_graph.png}%
@@ -44,19 +44,12 @@ To systematically evaluate these dynamics and establish a comprehensive baseline
 
 It is important to note that while the theoretical Stochastic Block Model \cite{holland1983stochastic} is a probabilistic framework relying on random edge generation, our experimental methodology requires a controlled, deterministic environment to accurately isolate and measure the attack's propagation.
 
-As shown in Figure \ref{fig:sbm_setup}, the implemented network consists of two distinct communities containing three nodes each. Within each community, the nodes are fully connected to ensure rapid local consensus. However, the two communities are bridged by exactly one fixed gateway connection. To execute our comparative placement strategy (as defined in Section 4.4), we evaluate two distinct attack scenarios within this structure:
+As shown in Figure \ref{fig:sbm_theory}, the implemented network consists of two distinct communities containing three nodes each. Within each community, the nodes are fully connected to ensure rapid local consensus. However, the two communities are bridged by exactly one fixed gateway connection. To execute our comparative placement strategy (as defined in Section 4.4), we evaluate two distinct attack scenarios within this structure:
 
 \begin{itemize}
     \item \textbf{Scenario 1 (Peripheral Attacker):} The designated malicious node is Client 1, embedded deep within Community A.
     \item \textbf{Scenario 2 (Gateway Attacker):} The designated malicious node is Client 2, which acts as the direct structural bottleneck bridging Community A and Community B.
 \end{itemize}
-
-\begin{figure}[t]
-    \centering
-    \includegraphics[width=0.6\textwidth]{figures/SBM_8_graph.png}
-    \caption{Experimental setup for the deterministic Stochastic Block Model (SBM). The network is strictly divided into Community A and Community B, connected via a single gateway. The designated malicious node (Client 1) is placed within Community A.}
-    \label{fig:sbm_setup}
-\end{figure}
 
 This deterministic design guarantees that we can directly quantify the natural firewall capabilities of a community boundary versus the devastating potential of a compromised structural bottleneck.
 
@@ -77,10 +70,6 @@ While the theoretical framework of Gossip Learning often assumes parallel execut
 
 In our experimental setup using the customed Flower framework \cite{belenguer2025glow}, the execution flow was implemented as an asynchronous, sequential process. Specifically, a single communication round is strictly defined as the local training and subsequent parameter broadcast of exactly one client. During its designated round, the active client performs local optimization and immediately sends its updated model to its topological neighbors, who aggregate it into their own local state.
 
-To ensure a fair and balanced evaluation, it was imperative that every node in the network received an equal amount of training exposure. Therefore, the total number of communication rounds was scaled linearly based on the network size to achieve 20 full network training cycles. Consequently:
-\begin{itemize}
-    \item For the 5-node topologies (Fully Connected, Ring, Star), the simulation spanned exactly 100 communication rounds ($5 \text{ nodes} \times 20 \text{ cycles}$).
-    \item For the scaled 8-node Stochastic Block Model (SBM), the simulation was proportionally extended to 160 communication rounds ($8 \text{ nodes} \times 20 \text{ cycles}$).
-\end{itemize}
+To ensure a fair and balanced evaluation, it was imperative that every node in the network received an equal amount of training exposure. Therefore, the total number of communication rounds was scaled linearly based on the network size to achieve 20 full network training cycles. 
 
 This sequential execution accurately models the asynchronous nature of real-world peer-to-peer networks, where nodes do not wait for a global synchronization barrier, but rather update and broadcast their parameters independently.

@@ -31,7 +31,7 @@ In this research, we propose a novel adversarial heuristic for decentralized env
     \alpha = d + 1
 \end{equation}
 
-To understan the mathematical necessity of this heuristic, one must examine the decentralized aggregation mechanics established in Section 2.2. During a standard Gossip Learning communication round, a receiving honest node computesa uniform average of $d_i + 1$ models (its $d_i$ distinct neighbors plus its own local model). Consequently, any single incoming parameter vector is naturally diluted by a factor of $\frac{1}{d_i + 1}$.
+To understan the mathematical necessity of this heuristic, one must examine the decentralized aggregation mechanics established in Section 2.2. During a standard Gossip Learning communication round, a receiving honest node computes a uniform average of $d_i + 1$ models (its $d_i$ distinct neighbors plus its own local model). Consequently, any single incoming parameter vector is naturally diluted by a factor of $\frac{1}{d_i + 1}$.
 
 If a malicious node broadcasts an unboosted poisoned model, its payload is mathematically suppressed by the honest majority. However, by applying the scaling factor $\alpha = d + 1$, the adversary precisely anticipates and neutralizes this structural dilution.
 
@@ -59,3 +59,11 @@ Rather than assigning the attacker randomly, we designed these placements to tes
 \end{itemize}
 
 By deploying the $\alpha = d + 1$ topological boosting heuristic across these carefully selected placements, this methodology ensures that the attack's effectiveness is evaluated not just by the strength of its mathematical payload, but by its ability to physically navigate the structural constraints of the decentralized graph.
+
+\section{Evaluation Framework: The Utility-Security Trade-off}
+When evaluating the resilience of a Decentralized Federated Learning system, it is not enough to simply measure how effectively an attack spreads. In a decentralized environment, the topological connections that allow a backdoor to propagate are the exact same connections that nodes rely on to improve their model's performance through collaboration. 
+Because of this inherent conflict, our methodology is structured into teo distinct evaluation phases to capture the complete picture:
+\begin{itemize}
+    \item \textbf{The Non-Adversarial Baseline (Measuring the Collaboration Gain:)} Before introducing any malicious activity, we first evaluate the utility of each network topology in a purely benign environment. This phase establishes the Collaboration Gain, quantifying how much each node's model performance improves through decentralized collaboration alone. By measuring the Clean Accuracy of each node after multiple rounds of training and aggregation, we can identify the actual improvement in accuracy and optimization stability that a node achieves by communicating with its peers instead of learning in strict isolation. This phase essentially proves why the nodes are taking the risk of collaboration in the first place, and sets a benchmark for the maximum potential utility that can be achieved in each topology.
+    \item \textbf{The Adversarial Evaluation (Measuring the Security Risk:)} Once we establish the structural value of a topology, we introduce the targeted backdoor attack defined in Section 4.2. This phase evaluates the Security Risk of those peer-to-peer connections, measuring how the Attack Succes Rate (ASR) behaves when the adversary applies the degree-scaled boosting heuristic.
+\end{itemize}

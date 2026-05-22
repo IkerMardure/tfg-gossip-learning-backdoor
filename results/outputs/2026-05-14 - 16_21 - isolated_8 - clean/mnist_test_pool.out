@@ -1,0 +1,8 @@
+pool_ID: 0 neighbours: [0] loss: 11.62180145829916 acc: 0.9664
+pool_ID: 1 neighbours: [1] loss: 12.076337169855833 acc: 0.9648
+pool_ID: 2 neighbours: [2] loss: 11.22888847624563 acc: 0.9686
+pool_ID: 3 neighbours: [3] loss: 14.559938898310065 acc: 0.9615
+pool_ID: 4 neighbours: [4] loss: 10.325549724511802 acc: 0.9656
+pool_ID: 5 neighbours: [5] loss: 14.063226990401745 acc: 0.9628
+pool_ID: 6 neighbours: [6] loss: 11.989861006732099 acc: 0.9657
+pool_ID: 7 neighbours: [7] loss: 10.697608035057783 acc: 0.9677

@@ -16,9 +16,20 @@ Install the required libraries present on [deps.req](deps.req).
 > Note: Python3.10 and pip3 package installer are recommended.
 
 ## Dataset
-Download or create a custom dataset, the implementation is currently designed to work with [CIFAR10](https://pytorch.org/vision/main/generated/torchvision.datasets.CIFAR10.html) which should be downloaded, extracted and placed into the [dataset](../dataset) directory.
+Download or create a custom dataset. The implementation currently supports [CIFAR10](https://pytorch.org/vision/main/generated/torchvision.datasets.CIFAR10.html), [MNIST](https://pytorch.org/vision/main/generated/torchvision.datasets.MNIST.html), and NEU-DET for 6-class surface defect experiments.
 
-> Note: Other branches working with MNIST are available in the repository.
+For the built-in datasets, the code auto-selects the correct class count: `10` for MNIST and `6` for NEU-DET.
+
+NEU-DET should be arranged as an `ImageFolder` dataset under the shared `data/datasets` root with this layout:
+
+```text
+data/datasets/NEU-DET/
+    NEU-DET/
+        train/images/<class_name>/*.jpg
+        validation/images/<class_name>/*.jpg
+```
+
+The NEU-DET branch uses `train/` for client-local training, keeps a per-client validation split from that same folder, and uses `validation/` as the global test set. If you keep the default `code/conf/base.yaml`, switching between MNIST and NEU-DET only requires changing `dataset:`.
 ## Configuration files
 
 Configuration files in GLow are composed by a base file and a topology file.

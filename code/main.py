@@ -3,6 +3,7 @@ import sys
 import os
 import time
 import pickle
+import json
 from pathlib import Path
 
 from typing import List, Optional, Dict
@@ -15,7 +16,7 @@ from tqdm import tqdm
 import yaml
 import flwr as fl
 
-from dataset import prepare_dataset_iid, prepare_dataset_mnist_iid
+from dataset import prepare_dataset_iid, prepare_dataset_mnist_iid, prepare_dataset_neu_det_iid
 from utils.paths import resolve_data_path, resolve_results_path
 from client import cli_eval_distr_results, cli_val_distr, generate_client_fn#, weighted_average, 
 from server import get_on_fit_config, get_evaluate_fn
@@ -36,12 +37,20 @@ def _wants_gpu(device: str) -> bool:
 
 def _resolve_run_name(cfg: Dict) -> str:
     run_name = str(cfg.get("run_name", "run"))
-    timestamp = time.strftime("%Y-%m-%d-%H_%M")
+    timestamp = time.strftime("%Y-%m-%d - %H_%M")
     if "{timestamp}" in run_name:
         return run_name.replace("{timestamp}", timestamp)
     if run_name.strip().lower() == "auto":
         return timestamp
     return run_name
+
+
+def _resolve_num_classes(dataset: str) -> int:
+    if dataset == "neu_det":
+        return 6
+    if dataset == "mnist":
+        return 10
+    return 10
 
 
 def main():
@@ -72,8 +81,11 @@ def main():
         topology.append(tplgy['pools']['p'+str(cli_ID)])
 
     
+    dataset_name = str(cfg.get('dataset', 'mnist')).strip().lower()
+    cfg['num_classes'] = _resolve_num_classes(dataset_name)
+
     # 2. PREPARE YOUR DATASET
-    if cfg.get('dataset','cifar') == 'cifar':
+    if dataset_name == 'cifar':
         trainloaders, validationloaders, testloader = prepare_dataset_iid(
             num_clients,
             cfg['num_classes'],
@@ -81,9 +93,19 @@ def main():
             cfg['batch_size'],
             cfg['seed'],
         )
-    elif cfg['dataset'] == 'mnist':
+    elif dataset_name == 'mnist':
         data_path = resolve_data_path(cfg.get('data_path', None))
         trainloaders, validationloaders, testloader = prepare_dataset_mnist_iid(
+            num_clients,
+            cfg['num_classes'],
+            tplgy['clients_with_no_data'],
+            cfg['batch_size'],
+            cfg['seed'],
+            str(data_path),
+        )
+    elif dataset_name == 'neu_det':
+        data_path = resolve_data_path(cfg.get('data_path', None))
+        trainloaders, validationloaders, testloader = prepare_dataset_neu_det_iid(
             num_clients,
             cfg['num_classes'],
             tplgy['clients_with_no_data'],
@@ -162,7 +184,34 @@ def main():
 
         torch.manual_seed(base_seed)
         base_model = LeNet(cfg['num_classes']).to(device)
+        # Try to load a global pretrained model if provided, otherwise keep random base
+        pretrain_save = pretrain_cfg.get('save_path', None)
+        if pretrain_save:
+            try:
+                from model import load_or_train_pretrained
+                if len(trainloaders) > 0:
+                    optimizer_glob = torch.optim.Adam(base_model.parameters(), lr=pretrain_lr)
+                    base_model, loaded = load_or_train_pretrained(
+                        base_model,
+                        trainloaders[0],
+                        optimizer_glob,
+                        pretrain_epochs,
+                        cfg['num_classes'],
+                        device,
+                        pretrain_save,
+                        show_progress=enable_tqdm,
+                    )
+                else:
+                    # No data available to train; attempt to load file directly if exists
+                    p = Path(pretrain_save)
+                    if p.exists():
+                        checkpoint = torch.load(pretrain_save, map_location=device)
+                        base_model.load_state_dict(checkpoint)
+            except Exception:
+                # fallback to random base model
+                pass
         base_state_dict = copy.deepcopy(base_model.state_dict())
+        mix_alpha = float(pretrain_cfg.get('mix_alpha', 1.0))
         log_pretraining(
             'Created a single shared LeNet base model and cloned it to all nodes before local training.',
             level='standard',
@@ -170,7 +219,12 @@ def main():
 
         for node_id in node_iterator:
             node_model = LeNet(cfg['num_classes']).to(device)
-            node_model.load_state_dict(copy.deepcopy(base_state_dict))
+            random_state_dict = copy.deepcopy(LeNet(cfg['num_classes']).to(device).state_dict())
+            blended_state_dict = {
+                key: mix_alpha * base_state_dict[key] + (1.0 - mix_alpha) * random_state_dict[key]
+                for key in base_state_dict
+            }
+            node_model.load_state_dict(blended_state_dict)
             node_loader = trainloaders[node_id] if node_id < len(trainloaders) else None
 
             node_dataset = getattr(node_loader, 'dataset', None) if node_loader is not None else None
@@ -312,6 +366,44 @@ def main():
     f = open(save_path + run_id + "_acc_distr.out", "w")
     f.write(acc_distr)
     f.close()
+    
+    # Generate run summary JSON for easy analysis
+    exec_time = time.time() - start_time
+    acc_cntrl_data = history.metrics_centralized.get('acc_cntrl', [])
+    
+    run_summary = {
+        "run_id": run_id,
+        "run_name": run_name,
+        "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
+        "config": {
+            "dataset": cfg.get("dataset", "cifar"),
+            "num_clients": num_clients,
+            "num_rounds": cfg["num_rounds"],
+            "batch_size": cfg["batch_size"],
+            "num_classes": cfg["num_classes"],
+            "learning_rate": cfg.get("config_fit", {}).get("lr", "N/A"),
+            "local_epochs": cfg.get("config_fit", {}).get("local_epochs", "N/A"),
+            "device": device,
+            "early_local_train": cfg.get("early_local_train", False),
+            "pretraining_enabled": cfg.get("pretraining", {}).get("enabled", False),
+        },
+        "results": {
+            "execution_time_seconds": exec_time,
+            "final_centralized_accuracy": acc_cntrl_data[-1] if acc_cntrl_data else None,
+            "num_rounds_completed": len(acc_cntrl_data) if acc_cntrl_data else 0,
+        },
+        "output_files": {
+            "raw_metrics": run_id + "_raw.out",
+            "accuracy_distribution": run_id + "_acc_distr.out",
+        }
+    }
+    
+    # Save summary
+    summary_path = save_path + "run_summary.json"
+    with open(summary_path, "w") as f:
+        json.dump(run_summary, f, indent=2)
+    
+    log_results(f"Run summary saved to: {summary_path}")
 
 if __name__ == "__main__":
     main()

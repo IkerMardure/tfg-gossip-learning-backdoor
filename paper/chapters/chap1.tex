@@ -56,7 +56,16 @@ Dokumentua euskaraz, gazteleraz edo ingelesez idatzi daiteke. Behar den bezala k
 	\caption {Taularen adibidea}\label{tab:adibidea}
 \end{table}
 
+\newpage
 \subsection{Dokumentuaren azala}
+
+\begin{wrapfigure}{R}{0.25\linewidth}
+    \centering
+    \vspace{-0.5cm}
+    \includegraphics[width=0.4\linewidth]{figures/EHU_logotipo_positiboa_BAXUA.png}
+    \caption{\href{https://www.ehu.eus/eu/}{EHU}}
+    \label{fig:ehu}
+\end{wrapfigure}
 
 Bi aukera daude dokumentuaren azala sortzeko. Lehenengoa PDF bat txertatzea da. Defektuz \texttt{cover.pdf} dokumentua txertatzen da. Aukera hau erabili nahi ez baduzu, \texttt{includepdf} komandoa komentatu behar duzu. 
 
@@ -70,15 +79,17 @@ Dokumentuaren edukia antolatzeko \texttt{chapters} karpetan dauden fitxategien b
 
 
 \section{Irudiak eta Taulak}
-\begin{figure}[t]
+
+
+Dokumentuaren itxura manentzearren gomendatzen da irudi eta taula guztiak goian edo behan jartzea. Horretarako \texttt{figure} eta \texttt{table} inguruneen \texttt{[t]} edo \texttt{[b]} aukerak erabili behar dira.
+
+\begin{figure}[h!]
     \centering
 	\includegraphics[width=0.75\textwidth]{figures/cell.jpg}
 	\caption{Irudiaren adibidea}\label{fig:adibidea}
 \end{figure}
 
-Dokumentuaren itxura manentzearren gomendatzen da irudi eta taula guztiak goian edo behan jartzea. Horretarako \texttt{figure} eta \texttt{table} inguruneen \texttt{[t]} edo \texttt{[b]} aukerak erabili behar dira.
-
-\ref{fig:adibidea} Irudian eta \ref{tab:adibidea} taulan adibideak ikusi daitezke. Kontutan izan behar da \LaTeX sistemak taulen eta irudien kokapen optimoak erabakitzen dituela. Esan bezala, komenigarria da irizpide bat jarraitzea (goian edo behan) eta hori mantentzea. Taula edo irudi baten kokapena orriz aldatzeko, kodearen kokapena aldatu behar da. Kontutan izan irudiaren edo taularen kodea ez daukala zergatik egon aipatzen den tokian, beti zenbakia erabiliz erreferentziatu behar da eta (ez ``goian'' edo ``behan'' terminoak erabiliz).
+\ref{fig:adibidea} Irudian eta \ref{tab:adibidea} Taulan adibideak ikusi daitezke. Kontutan izan behar da \LaTeX sistemak taulen eta irudien kokapen optimoak erabakitzen dituela. Esan bezala, komenigarria da irizpide bat jarraitzea (goian edo behan) eta hori mantentzea. Taula edo irudi baten kokapena orriz aldatzeko, kodearen kokapena aldatu behar da. Kontutan izan irudiaren edo taularen kodea ez daukala zergatik egon aipatzen den tokian, beti zenbakia erabiliz erreferentziatu behar da eta (ez ``goian'' edo ``behan'' terminoak erabiliz).
 
 \section{Elementu matematikoak}
 
@@ -122,6 +133,7 @@ Pakete horretan zenbait elementu definitzen dira. Jarraian zerrendatzen dira.
 	Oharraren adibidea
 \end{ifremark}
 
+
 \begin{ifalgorithm}[t]
 	\begin{ifpseudo}{Algoritmoaren izena}
 	\item	\In\ Sarrera
@@ -148,7 +160,8 @@ Pakete horretan zenbait elementu definitzen dira. Jarraian zerrendatzen dira.
 	\caption{Sasikodearen adibidea}\label{alg:adibidea}
 \end{ifalgorithm}
 
-Horrez gain, badago algoritmoak definitzeko bi ingurune, \texttt{ifalgorithm} eta \texttt{ifpseudo}. Posible da irudien eta taulen aurkibideaz gain, algoritmoen aurkibide bat sortzea. \ref{alg:adibidea} algoritmoan adibide bat ikusi daiteke.
+
+Horrez gain, badago algoritmoak definitzeko bi ingurune, \texttt{ifalgorithm} eta \texttt{ifpseudo}. Posible da irudien eta taulen aurkibideaz gain, algoritmoen aurkibide bat sortzea. \ref{alg:adibidea} Kode zatian adibide bat ikusi daiteke.
 
 Ekuazio matematikoei dagokienez, hauek testuan sartu daitezke: $X_n \geq 10$, edo testuarekin tartekatu:
 

@@ -281,7 +281,6 @@ class topology_based_Avg(Strategy):
     def configure_fit(
         self, server_round: int, parameters: Parameters, client_manager: ClientManager
     ) -> List[Tuple[ClientProxy, FitIns]]:
-        
         self.selected_pool = self.client_list[0] #pick first rotate list
         self.client_list = np.roll(self.client_list, -1).tolist()
 
@@ -489,3 +488,4 @@ class topology_based_Avg(Strategy):
             )
 
         return loss_aggregated, metrics_aggregated
+

@@ -1,19 +1,20 @@
-run_name: '{timestamp}-star_5-client0'
+run_name: '{timestamp} - neudet - fc_8'
 topology: 'conf/topologies/analysis'
 device: cuda
 early_local_train: False
-num_rounds: 100
+num_rounds: 240
 # num_clients_per_round_fit: 2 #Doesn't matter - controlled by topology
 # num_clients_per_round_eval: 2 #Doesn't matter - controlled by topology
 batch_size: 128
-num_classes: 5 #5 output layer size
+num_classes: 10 # Auto-adjusted for the built-in dataset selection
 balance_data: False
 seed: 2001
 
-# dataset options: 'cifar' or 'mnist'
+# dataset options: 'cifar', 'mnist', or 'neu_det'
 dataset: mnist
 # data_path used by torchvision datasets (if non-default)
-data_path: "../datasets"
+# MNIST/CIFAR/NEU-DET use the shared datasets root in data/datasets.
+data_path: "data/datasets"
 
 simulation:
   # Lower CPU per client to increase Ray concurrency.
@@ -29,7 +30,7 @@ config_fit:
   enable_tqdm: false
   # Backdoor simulation controls for the adaptive attacker.
   # Round numbers start at 1, so 4 means "benign for rounds 1-3, active from round 4".
-  attacker_activation_round: 5
+  attacker_activation_round: 16
   attacker_lr: 0.0005
   attacker_lr_decay: 0.99 # Decay factor per round after activation (0.95 means 5% decay each round)
   attacker_lr_min: 0.0001
@@ -40,13 +41,13 @@ pretraining:
   enabled: true
   epochs: 2
   lr: 0.0005
-  save_path: "C:\\Users\\Iker\\unibertsitatea\\praktikak\\GLow_TFG\\code\\pretraining\\lenet_mnist_pretrain.pth"
+  save_path:
   enable_tqdm: false
   # Mix pretrained parameters with random initialization (0.0-1.0)
   # 1.0 = full pretrained (current behavior, strong initial acc ~0.89)
   # 0.5 = 50/50 blend (recommended to target ~0.7 initial acc)
   # 0.0 = fully random (no pretraining benefit)
-  mix_alpha: 1.0
+  mix_alpha: 1
   # Optional: add Gaussian noise to pretrained parameters (std dev)
   # 0.0 = no noise, 0.01-0.05 = mild degradation
   noise_std: 0.0
@@ -64,3 +65,4 @@ verbose_logging: "verbose"
 # log_level_pretraining: "standard"
 # log_level_results: "standard"
 # log_level_heartbeat: "standard"
+

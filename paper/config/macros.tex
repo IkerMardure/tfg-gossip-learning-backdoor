@@ -1,5 +1,5 @@
 %% KODIFIKAZIOA %%
-\usepackage[utf8x]{inputenc}
+\usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 
 %% FONTS %%
@@ -12,16 +12,16 @@
 \renewcommand\backreftwosep{, }
 \renewcommand\backrefsep{, }
 
+
 %% MISC. %%
 \usepackage{appendix}
 \usepackage{placeins}
 \usepackage[figuresright]{rotating}
-\usepackage{graphicx}
 \usepackage{subfig}
 \usepackage{float}
-%\floatstyle{boxed}
 \restylefloat{figure}
-\usepackage{xcolor, graphicx}
+\usepackage{xcolor}
+\usepackage{graphicx}
 \usepackage{multirow}
 \usepackage{pdfpages}
 \usepackage{xspace}
@@ -34,6 +34,9 @@
 \usepackage{doi}
 \usepackage{amsmath, amssymb, mathrsfs, mathtools}
 \usepackage[capitalise]{cleveref}
+\usepackage{wrapfig}
+\usepackage{subcaption}
+%\usepackage{minted}
 
 
 \showtrimsoff
@@ -48,6 +51,7 @@
 \newcommand{\zuzendariaktestua}{Zuzendariak}
 \newcommand{\phdtext}{Dissertation submitted to the \saila of the University of the Basque Country (UPV/EHU) as partial fulfillment of the requirements for the Ph.D. degree in \phdarloa}
 \fi
+
 \ifdefined\castellano
 \newcommand{\upvehu}{Universidad del País Vasco UPV/EHU}
 \newcommand{\gapizenburua}{Trabajo de Fin de Grado}
@@ -58,6 +62,7 @@
 \newcommand{\zuzendariaktestua}{Dirección}
 \newcommand{\phdtext}{Dissertation submitted to the \saila of the University of the Basque Country (UPV/EHU) as partial fulfillment of the requirements for the Ph.D. degree in \phdarloa}
 \fi
+
 \ifdefined\english
 \newcommand{\upvehu}{University of the Basque Country UPV/EHU}
 \newcommand{\gapizenburua}{Bachelor Thesis}
@@ -73,7 +78,6 @@
 
 \ifdefined\euskaraz
 \usepackage[basque]{babel}
-% \hyphenation{Ko-man-do-in-ter-pre-ta-tzailea ba-te-ra-ga-rri-ta-suna ezau-garri}
 
 \addto\captionsbasque{
 	\renewcommand{\contentsname}{Gaien aurkibidea}

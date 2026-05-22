@@ -10,7 +10,7 @@ from tqdm import tqdm
 import yaml
 import flwr as fl
 
-from dataset import prepare_dataset_iid, prepare_dataset_mnist_iid
+from dataset import prepare_dataset_iid, prepare_dataset_mnist_iid, prepare_dataset_neu_det_iid
 from utils.paths import resolve_data_path, resolve_results_path
 from client_backdoor import (
     BACKDOOR_BOOST_FACTOR,
@@ -34,12 +34,20 @@ def _wants_gpu(device: str) -> bool:
 
 def _resolve_run_name(cfg: dict) -> str:
     run_name = str(cfg.get("run_name", "run"))
-    timestamp = time.strftime("%Y-%m-%d-%H_%M")
+    timestamp = time.strftime("%Y-%m-%d - %H_%M")
     if "{timestamp}" in run_name:
         return run_name.replace("{timestamp}", timestamp)
     if run_name.strip().lower() == "auto":
         return timestamp
     return run_name
+
+
+def _resolve_num_classes(dataset: str) -> int:
+    if dataset == "neu_det":
+        return 6
+    if dataset == "mnist":
+        return 10
+    return 10
 
 
 def main() -> None:
@@ -71,7 +79,10 @@ def main() -> None:
     for cli_id in vcid:
         topology.append(tplgy["pools"]["p" + str(cli_id)])
 
-    if cfg.get("dataset", "cifar") == "cifar":
+    dataset_name = str(cfg.get("dataset", "mnist")).strip().lower()
+    cfg["num_classes"] = _resolve_num_classes(dataset_name)
+
+    if dataset_name == "cifar":
         trainloaders, validationloaders, testloader = prepare_dataset_iid(
             num_clients,
             cfg["num_classes"],
@@ -79,9 +90,19 @@ def main() -> None:
             cfg["batch_size"],
             cfg["seed"],
         )
-    elif cfg["dataset"] == "mnist":
+    elif dataset_name == "mnist":
         data_path = resolve_data_path(cfg.get("data_path", None))
         trainloaders, validationloaders, testloader = prepare_dataset_mnist_iid(
+            num_clients,
+            cfg["num_classes"],
+            tplgy["clients_with_no_data"],
+            cfg["batch_size"],
+            cfg["seed"],
+            str(data_path),
+        )
+    elif dataset_name == "neu_det":
+        data_path = resolve_data_path(cfg.get("data_path", None))
+        trainloaders, validationloaders, testloader = prepare_dataset_neu_det_iid(
             num_clients,
             cfg["num_classes"],
             tplgy["clients_with_no_data"],
@@ -157,6 +178,7 @@ def main() -> None:
         torch.manual_seed(base_seed)
         base_model = LeNet(cfg["num_classes"]).to(device)
         base_state_dict = copy.deepcopy(base_model.state_dict())
+        mix_alpha = float(pretrain_cfg.get("mix_alpha", 1.0))
         log_pretraining(
             "Created a single shared LeNet base model and cloned it to all nodes before local training.",
             level="standard",
@@ -164,7 +186,12 @@ def main() -> None:
 
         for node_id in node_iterator:
             node_model = LeNet(cfg["num_classes"]).to(device)
-            node_model.load_state_dict(copy.deepcopy(base_state_dict))
+            random_state_dict = copy.deepcopy(LeNet(cfg["num_classes"]).to(device).state_dict())
+            blended_state_dict = {
+                key: mix_alpha * base_state_dict[key] + (1.0 - mix_alpha) * random_state_dict[key]
+                for key in base_state_dict
+            }
+            node_model.load_state_dict(blended_state_dict)
             node_loader = trainloaders[node_id] if node_id < len(trainloaders) else None
 
             node_dataset = getattr(node_loader, "dataset", None) if node_loader is not None else None

@@ -5,4 +5,6 @@
 \addvspace {10pt}
 \addvspace {10pt}
 \addvspace {10pt}
+\contentsline {table}{\numberline {6.1}{\ignorespaces Summary of non-adversarial baseline metrics at Round 240.}}{21}{table.caption.12}%
+\contentsline {table}{\numberline {6.2}{\ignorespaces Summary of adversarial backdoor metrics at Round 240 utilizing the continuous $\alpha =d+1$ boosting heuristic. Local ASR refers to the infection rate of the attacker's immediate neighbors or local community, while Global ASR refers to distant nodes or secondary communities.}}{26}{table.caption.13}%
 \addvspace {10pt}

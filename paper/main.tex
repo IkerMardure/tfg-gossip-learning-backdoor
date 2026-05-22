@@ -1,11 +1,10 @@
-\documentclass[a4page, 11pt, showtrims]{memoir}
+\documentclass[a4paper, 11pt, showtrims]{memoir}
 \semiisopage
 
 \chapterstyle{veelo}
-%% KAPITULU FORMATU BATZUK ARAZOAK EMATEN DITUZTE DOKUMENTUA 
-%% MOZTERAKOAN (croppedsize AUKERAREKIN, BEHEAN AGERTZEN DENA). 
-%% JARRAIAN ALTERNATIBA SGURU BATZUK DAUDE
 
+
+%% ALTERNATIBAK / ALTERNATIVAS
 %\chapterstyle{default}
 %\chapterstyle{bianchi}
 %\chapterstyle{brotherton}
@@ -16,9 +15,6 @@
 
 \pdfobjcompresslevel 0
 
-%% PAKETE HONEN AGINDUAK ERABILTZEN BADIRA, ALDATU HIZKUNTZA AUKERA %%
-%% SI SE USAN LOS COMANDOS DE ESTE PAQUETE, CAMBIAR LA OPCIÓN DE IDIOMA %%
-\usepackage[es]{ifcommands}
 
 %% INFORMAZIOA / INFORMACIÓN %%
 \newcommand{\egilea}{Iker Bereziartua Sagarna}
@@ -35,8 +31,10 @@
 
 %\newcommand{\ikasketak}{Informatika Ingeniaritzako Gradua}
 %\newcommand{\ikasketak}{Grado en Ingeniería Informática}
-\newcommand{\ikasketak}{Adimen Artifizialeko Gradua}
+%\newcommand{\ikasketak}{Degree in Informatics Engineering}
+%\newcommand{\ikasketak}{Adimen Artifizialeko Gradua}
 %\newcommand{\ikasketak}{Grado en Inteligencia Artificial}
+\newcommand{\ikasketak}{Degree in Artificial Intelligence}
 
 
 %% BAKARRIK BAT DESKOMENTATU, INGENIARITZA INFORMATIKAKOA BADA. BESTELA, DENAK KOMENTATU %%
@@ -44,11 +42,13 @@
 
 %\newcommand{\espezialitatea}{Konputazioa}
 %\newcommand{\espezialitatea}{Computación}
+%\newcommand{\espezialitatea}{Computing}
 %\newcommand{\espezialitatea}{Software Ingeniaritza}
 %\newcommand{\espezialitatea}{Ingeniería de Software}
+%\newcommand{\espezialitatea}{Software Engineering}
 %\newcommand{\espezialitatea}{Konputagailuen Ingeniaritza}
-\newcommand{\espezialitatea}{Ingeniería de Computadores}
-
+%\newcommand{\espezialitatea}{Ingeniería de Computadores}
+%\newcommand{\espezialitatea}{Computer Engineering}
 
 %% BAKARRIK BAT DESKOMENTATU MASTER AMAIERAKO LANA BADA. BESTELA, DENAK KOMENTATU%%
 %% DESCOMENTAR SOLO UNO SI ES UN TRABAJO FIN DE MASTER. SINO, COMENTAR TODOS%%
@@ -64,85 +64,109 @@
 %% memoir KLASEAREN ARGUMENTUETAN
 %\newcommand{\croppedsize}
 
-%% DOKUMENTUAREN HIZKUNTZA / IDIOMA DEL DOCUMENTO %%
-%% BAKARRIK BAT DESKOMENTATU / DESCOMENTAR SOLO UNO %%
-%\newcommand{\euskaraz}
-%\newcommand{\castellano}
-\newcommand{\english}
+%% DOKUMENTUAREN HIZKUNTZA / BAKARRIK BAT DESKOMENTATU %%
+%% IDIOMA DEL DOCUMENTO / DESCOMENTAR SOLO UNO %%
+%\newcommand{\euskaraz}{}
+%\newcommand{\castellano}{}
+\newcommand{\english}{}
+
+\ifdefined\euskaraz
+  \usepackage[eu]{ifcommands}
+\else\ifdefined\english
+  \usepackage[en]{ifcommands}
+\else
+  \usepackage[es]{ifcommands}
+\fi\fi
 
 \input config/macros
+
+
 
 \title{\izenburua}
 \author{\egilea}
 \date{\data}
 
-\begin{document}
 
+\begin{document}
+ 
 %% AZALA BEREZIRIK BADUZU (PDF FORMATUAN), DESKOMENTATU%%
 %% SI HAY UNA PORTADA ESPECIAL (EN PDF), DESCOMENTAR%%
 	
 %\includepdf[pages={1-}]{cover.pdf}
 %\cleardoublepage
-
+ 
+ 
 %% AUKERATU DAGOKIONA. AZALA BEREZIA GEHITUZ GERO, KOMENTATU DAITEKE, BETIERE HEMENGOAN AGERTZEN DEN INFORMAZIOA AGERTZEN BADA %%
 %% SELECCIONA LA QUE CORRESPONDA. EN CASO DE TENER UNA PORTADA ESPECIAL SE PUEDE COMENTAR, SIEMPRE Y CUANDO DICHA PORTADA INCLUYA LA INFORMACIÓN QUE APARECE EN ESTA%%
-
+ 
 %\input config/cover_informatika
 \input config/cover_adimen_artifiziala
 %\input config/cover_masterra
 %\input config/cover_phd_dissertation
-
+ 
 \cleardoublepage
 \frontmatter
-
+\aliaspagestyle{chapter}{plain}
+\aliaspagestyle{cleared}{plain}
+\pagestyle{plain}
+\setcounter{page}{1}
+ 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % ESKER ONAK / AGRADECIMIENTOS %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+ 
 %% KOMENTATU HIRU LERRO HAUEK ATALA NAHI EZ BADUZU
 %% COMENTA ESTAS TRES LÍNEAS SI NO QUIERES ESTE APARTADO
-\chapter*{Acknowledgments}
+\chapter*{Esker onak / Agradecimientos}
 \input chapters/acknowledgements
 \cleardoublepage
-
+ 
 %%%%%%%%%%%%%%%%%%%%%%%
 % LABURPENA / RESUMEN %
 %%%%%%%%%%%%%%%%%%%%%%%
-
-\chapter*{Abstract}
+ 
+\chapter*{Laburpena / Resumen}
 \input chapters/abstract
 \cleardoublepage
-
+ 
+\ifdefined\euskaraz
+\chapter*{Garapen Jasangarrirako Helburuak} \label{ch:GJH}
+\input chapters/GJH_ODS_SDG/GJH
+\else\ifdefined\english
+\chapter*{Sustainable Development Goals} \label{ch:SDG}
+\input chapters/GJH_ODS_SDG/SDG
+\else
+\chapter*{Objetivos de Desarrollo Sostenible} \label{ch:ODS}
+\input chapters/GJH_ODS_SDG/ODS
+\fi\fi
+ 
+\cleardoublepage
+ 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % EDUKIEN ZERRENDA / ÍNIDCES %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\tableofcontents
+ 
+\openany
+\pdfbookmark[1]{\contentsname}{toc}
+\begin{KeepFromToc}
+  \tableofcontents
+\end{KeepFromToc}
 \clearpage
 \listoffigures
 \clearpage
 \listoftables
 \clearpage
 \listofalgorithms
-\addcontentsline{toc}{chapter}{Índice de algoritmos}
-
-
+\openright
+ 
 %%%%%%%%%%%%%%%%%%%%%%
 % EDUKIA / CONTENIDO %
 %%%%%%%%%%%%%%%%%%%%%%
-
+ 
 \cleardoublepage
 \mainmatter
 \pagestyle{ruled}
-
-%\chapter{Txatiloiaren erabilera} %\label{ch:txantiloia}
-%\input chapters/chap1
-%\cleardoublepage
-
-%\chapter{Uso de la plantilla} \label{ch:plantilla}
-%\input chapters/chap2
-%\cleardoublepage
-
+ 
 \chapter{Introduction} \label{ch:introduction}
 \input chapters/Introduction 
 \cleardoublepage
@@ -167,23 +191,31 @@
 \chapter{Experimental Results and Discussion} \label{ch:results}
 \input chapters/ExperimentalResultsAndDiscussion 
 \cleardoublepage
-
+ 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% ERANSKINAK / APENDICES %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\backmatter
+ 
+\addappheadtotoc
 \appendix
-
-\chapter{Eranskina / apéndice} \label{ch:eranskina}
-\input chapters/appendix
-
+ 
+\ifdefined\euskaraz
+\chapter{AA sortzailearen erabilera deklarazioa} \label{ch:deklarazioa}
+\input chapters/appendix/deklarazioa
+\else\ifdefined\english
+\chapter{Declaration of use of generative AI} \label{ch:declaration}
+\input chapters/declaration
+\else
+\chapter{Declaración del uso de IA Generativa} \label{ch:declaracion}
+\input chapters/appendix/declaracion
+\fi\fi
+ 
+ 
 %%%%%%%%%%%%%%%%%%
 %% BIBLIOGRAFIA %%
 %%%%%%%%%%%%%%%%%%
 \bibliographystyle{unsrt}
 \bibliography{erreferentziak}
-%% ALDATU HEMEN EDUKIEN ZERRENDAN AGERTUKO DEN 
-\addcontentsline{toc}{chapter}{\bibname}
 
+ 
 \end{document}
