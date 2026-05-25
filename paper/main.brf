@@ -23,18 +23,23 @@
 \backcite {french1999catastrophic}{{9}{3.2.3}{subsection.3.2.3}}
 \backcite {bagdasaryan2020how}{{10}{3.2.3}{subsection.3.2.3}}
 \backcite {xie2020dba}{{10}{3.2.3}{subsection.3.2.3}}
-\backcite {piaseczny2025adversarial}{{10}{3.2.4}{subsection.3.2.4}}
+\backcite {piaseczny2025adversarial}{{10}{3.3}{section.3.3}}
 \backcite {xie2020dba}{{12}{4.2.1}{subsection.4.2.1}}
 \backcite {bagdasaryan2020how}{{12}{4.2.2}{subsection.4.2.2}}
-\backcite {beutel2020flower,belenguer2025glow}{{15}{5}{chapter.5}}
-\backcite {palmieri2024impact}{{15}{5.1}{section.5.1}}
-\backcite {giaretta2019gossip}{{16}{5.1}{figure.5.1}}
-\backcite {holland1983stochastic}{{16}{5.1}{figure.5.1}}
-\backcite {holland1983stochastic}{{17}{5.1}{figure.5.1}}
-\backcite {lecun1998gradient}{{17}{5.2}{section.5.2}}
-\backcite {lecun1998gradient}{{17}{5.2}{section.5.2}}
-\backcite {mills2019communication, yosinski2014how}{{17}{5.2}{section.5.2}}
-\backcite {kingma2014adam}{{18}{5.2}{section.5.2}}
-\backcite {belenguer2025glow}{{18}{5.2.1}{subsection.5.2.1}}
-\backcite {10561520}{{20}{6.1}{figure.6.3}}
-\backcite {french1999catastrophic}{{24}{6.3}{section.6.3}}
+\backcite {beutel2020flower,belenguer2025glow}{{17}{5}{chapter.5}}
+\backcite {palmieri2024impact}{{17}{5.1}{section.5.1}}
+\backcite {giaretta2019gossip}{{18}{5.1}{figure.5.1}}
+\backcite {holland1983stochastic}{{18}{5.1}{figure.5.1}}
+\backcite {holland1983stochastic}{{19}{5.1}{figure.5.1}}
+\backcite {lecun1998gradient}{{19}{5.2}{section.5.2}}
+\backcite {lecun1998gradient}{{19}{5.2}{section.5.2}}
+\backcite {mills2019communication, yosinski2014how}{{19}{5.2}{section.5.2}}
+\backcite {kingma2014adam}{{20}{5.2}{section.5.2}}
+\backcite {beutel2020flower}{{20}{5.2.1}{subsection.5.2.1}}
+\backcite {10561520}{{22}{6.1}{figure.6.3}}
+\backcite {french1999catastrophic}{{26}{6.3}{section.6.3}}
+\backcite {bagdasaryan2020how,xie2020dba}{{33}{7.1}{section.7.1}}
+\backcite {french1999catastrophic}{{33}{7.1}{section.7.1}}
+\backcite {bao2021neudet}{{34}{7.1}{section.7.1}}
+\backcite {zhao2018federated}{{35}{7.3}{section.7.3}}
+\backcite {blanchard2017machine}{{35}{7.3}{section.7.3}}

@@ -12,7 +12,7 @@ from utils.logging import log_client_training, log_data_poisoning
 
 
 BACKDOOR_POISON_RATE = 0.2
-BACKDOOR_BOOST_FACTOR = 8.0
+BACKDOOR_BOOST_FACTOR = 1.0
 
 
 class BalancedBackdoorBatchSampler(Sampler[List[int]]):
@@ -140,7 +140,7 @@ class FlowerClient(fl.client.NumPyClient):
         self.parameter_keys = list(self.model.state_dict().keys())
         self.num_classes = num_classes
         self.device = _resolve_torch_device(device)
-        self.is_malicious = int(cid) in [1]  # Client 1 is malicious
+        self.is_malicious = int(cid) in [3]  # Client 3 is malicious
 
     def _apply_attack_freeze(self, config, attack_active: bool) -> None:
         freeze_conv_layers = bool(config.get("attacker_freeze_conv_layers", True))

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.4.20)  22 MAY 2026 16:52
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.4.20)  25 MAY 2026 16:23
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -934,7 +934,7 @@ Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
  (./config/cover_adimen_artifiziala.tex
-<config/EHU_ikastegiak_INFORMATIKA_positiboa_zuribeltz_ALTUA.png, id=147, 791.3565pt x 364.2408pt>
+<config/EHU_ikastegiak_INFORMATIKA_positiboa_zuribeltz_ALTUA.png, id=167, 791.3565pt x 364.2408pt>
 File: config/EHU_ikastegiak_INFORMATIKA_positiboa_zuribeltz_ALTUA.png Graphic file (type png)
 <use config/EHU_ikastegiak_INFORMATIKA_positiboa_zuribeltz_ALTUA.png>
 Package pdftex.def Info: config/EHU_ikastegiak_INFORMATIKA_positiboa_zuribeltz_ALTUA.png  used on input line 8.
@@ -977,7 +977,7 @@ Overfull \hbox (4.45677pt too wide) in paragraph at lines 1--2
 \T1/LinuxLibertineT-TLF/m/n/10.95 (-20) This Bach-e-lor's The-sis aligns di-rectly with the Uni-ver-sity of the Basque Coun-try's (UPV/EHU)
  []
 
-<figures/SDG.jpg, id=182, 605.26125pt x 290.58563pt>
+<figures/SDG.jpg, id=202, 605.26125pt x 290.58563pt>
 File: figures/SDG.jpg Graphic file (type jpg)
 <use figures/SDG.jpg>
 Package pdftex.def Info: figures/SDG.jpg  used on input line 11.
@@ -1078,7 +1078,7 @@ Chapter 4.
 
 
 ]
-<figures/poisoned_vs_original_network.png, id=405, 578.16pt x 953.964pt>
+<figures/poisoned_vs_original_network.png, id=442, 578.16pt x 953.964pt>
 File: figures/poisoned_vs_original_network.png Graphic file (type png)
 <use figures/poisoned_vs_original_network.png>
 Package pdftex.def Info: figures/poisoned_vs_original_network.png  used on input line 20.
@@ -1086,10 +1086,12 @@ Package pdftex.def Info: figures/poisoned_vs_original_network.png  used on input
 
 Underfull \vbox (badness 5711) has occurred while \output is active []
 
- [12 <./figures/poisoned_vs_original_network.png>] [13]) [14]
+ [12 <./figures/poisoned_vs_original_network.png>] [13] [14]) [15] [16
+
+]
 Chapter 5.
 (./chapters/Experimentation.tex
-<figures/fc_8_graph.png, id=426, 715.18391pt x 570.35484pt>
+<figures/fc_8_graph.png, id=471, 715.18391pt x 570.35484pt>
 File: figures/fc_8_graph.png Graphic file (type png)
 <use figures/fc_8_graph.png>
 Package pdftex.def Info: figures/fc_8_graph.png  used on input line 15.
@@ -1098,142 +1100,172 @@ LaTeX Font Info:    Font shape `T1/LinuxLibertineT-TLF/m/n' will be
 (Font)              scaled to size 9.0pt on input line 15.
 LaTeX Font Info:    Font shape `T1/LinuxLibertineT-TLF/b/n' will be
 (Font)              scaled to size 9.0pt on input line 15.
-<figures/ring_8_graph.png, id=427, 715.18391pt x 570.35484pt>
+<figures/ring_8_graph.png, id=472, 715.18391pt x 570.35484pt>
 File: figures/ring_8_graph.png Graphic file (type png)
 <use figures/ring_8_graph.png>
 Package pdftex.def Info: figures/ring_8_graph.png  used on input line 18.
 (pdftex.def)             Requested size: 179.25114pt x 142.94518pt.
-<figures/star_8_graph.png, id=428, 715.18391pt x 570.35484pt>
+<figures/star_8_graph.png, id=473, 715.18391pt x 570.35484pt>
 File: figures/star_8_graph.png Graphic file (type png)
 <use figures/star_8_graph.png>
 Package pdftex.def Info: figures/star_8_graph.png  used on input line 25.
 (pdftex.def)             Requested size: 179.25114pt x 142.94518pt.
-<figures/EC_8_graph.png, id=429, 715.18391pt x 544.62672pt>
+<figures/EC_8_graph.png, id=474, 715.18391pt x 544.62672pt>
 File: figures/EC_8_graph.png Graphic file (type png)
 <use figures/EC_8_graph.png>
 Package pdftex.def Info: figures/EC_8_graph.png  used on input line 28.
 (pdftex.def)             Requested size: 179.25114pt x 136.49707pt.
- [15
+ [17
 
-
-] [16 <./figures/fc_8_graph.png> <./figures/ring_8_graph.png> <./figures/star_8_graph.png> <./figures/EC_8_graph.png>] [17]) [18]
+] [18 <./figures/fc_8_graph.png> <./figures/ring_8_graph.png> <./figures/star_8_graph.png> <./figures/EC_8_graph.png>] [19]) [20]
 Chapter 6.
 (./chapters/ExperimentalResultsAndDiscussion.tex
-<figures/isolated.png, id=476, 867.24pt x 722.7pt>
+<figures/isolated.png, id=522, 867.24pt x 722.7pt>
 File: figures/isolated.png Graphic file (type png)
 <use figures/isolated.png>
 Package pdftex.def Info: figures/isolated.png  used on input line 8.
 (pdftex.def)             Requested size: 159.33301pt x 132.77109pt.
-<figures/fc_clean.png, id=477, 867.24pt x 722.7pt>
+<figures/fc_clean.png, id=524, 867.24pt x 722.7pt>
 File: figures/fc_clean.png Graphic file (type png)
 <use figures/fc_clean.png>
 Package pdftex.def Info: figures/fc_clean.png  used on input line 19.
 (pdftex.def)             Requested size: 179.25114pt x 149.36748pt.
-<figures/ring_clean.png, id=478, 867.24pt x 722.7pt>
+<figures/ring_clean.png, id=525, 867.24pt x 722.7pt>
 File: figures/ring_clean.png Graphic file (type png)
 <use figures/ring_clean.png>
 Package pdftex.def Info: figures/ring_clean.png  used on input line 22.
 (pdftex.def)             Requested size: 179.25114pt x 149.36748pt.
-<figures/star_clean.png, id=479, 867.24pt x 722.7pt>
+<figures/star_clean.png, id=526, 867.24pt x 722.7pt>
 File: figures/star_clean.png Graphic file (type png)
 <use figures/star_clean.png>
 Package pdftex.def Info: figures/star_clean.png  used on input line 32.
 (pdftex.def)             Requested size: 179.25114pt x 149.36748pt.
-<figures/sbm_clean.png, id=480, 867.24pt x 722.7pt>
+<figures/sbm_clean.png, id=527, 867.24pt x 722.7pt>
 File: figures/sbm_clean.png Graphic file (type png)
 <use figures/sbm_clean.png>
 Package pdftex.def Info: figures/sbm_clean.png  used on input line 35.
 (pdftex.def)             Requested size: 179.25114pt x 149.36748pt.
+ [21
 
 
-LaTeX Warning: Reference `fig:metrics_baseline_fc_ring' on page 19 undefined on input line 41.
-
-[19
-
-
-] [20 <./figures/isolated.png> <./figures/fc_clean.png> <./figures/ring_clean.png>]
+] [22 <./figures/isolated.png> <./figures/fc_clean.png> <./figures/ring_clean.png>]
 Overfull \hbox (9.62pt too wide) in paragraph at lines 52--64
  [][] 
  []
 
 
-Underfull \vbox (badness 10000) has occurred while \output is active []
+Underfull \vbox (badness 5802) has occurred while \output is active []
 
- [21 <./figures/star_clean.png> <./figures/sbm_clean.png>]
-<figures/fc_colored.png, id=514, 289.08pt x 289.08pt>
+ [23 <./figures/star_clean.png> <./figures/sbm_clean.png>]
+<figures/fc_colored.png, id=563, 289.08pt x 289.08pt>
 File: figures/fc_colored.png Graphic file (type png)
 <use figures/fc_colored.png>
-Package pdftex.def Info: figures/fc_colored.png  used on input line 85.
+Package pdftex.def Info: figures/fc_colored.png  used on input line 87.
 (pdftex.def)             Requested size: 139.42093pt x 139.41846pt.
-<figures/ring_colored.png, id=515, 289.08pt x 289.08pt>
+<figures/ring_colored.png, id=564, 289.08pt x 289.08pt>
 File: figures/ring_colored.png Graphic file (type png)
 <use figures/ring_colored.png>
-Package pdftex.def Info: figures/ring_colored.png  used on input line 88.
+Package pdftex.def Info: figures/ring_colored.png  used on input line 90.
 (pdftex.def)             Requested size: 139.42093pt x 139.41846pt.
-<figures/metrics_per_node_fc.png, id=516, 867.24pt x 722.7pt>
+<figures/metrics_per_node_fc.png, id=565, 867.24pt x 722.7pt>
 File: figures/metrics_per_node_fc.png Graphic file (type png)
 <use figures/metrics_per_node_fc.png>
-Package pdftex.def Info: figures/metrics_per_node_fc.png  used on input line 94.
+Package pdftex.def Info: figures/metrics_per_node_fc.png  used on input line 96.
 (pdftex.def)             Requested size: 191.20082pt x 159.3253pt.
-<figures/metrics_per_node_ring.png, id=517, 867.24pt x 722.7pt>
+<figures/metrics_per_node_ring.png, id=566, 867.24pt x 722.7pt>
 File: figures/metrics_per_node_ring.png Graphic file (type png)
 <use figures/metrics_per_node_ring.png>
-Package pdftex.def Info: figures/metrics_per_node_ring.png  used on input line 97.
+Package pdftex.def Info: figures/metrics_per_node_ring.png  used on input line 99.
 (pdftex.def)             Requested size: 191.20082pt x 159.3253pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [22]
-<figures/star_colored.png, id=529, 289.08pt x 289.08pt>
+ [24]
+<figures/star_colored.png, id=578, 289.08pt x 289.08pt>
 File: figures/star_colored.png Graphic file (type png)
 <use figures/star_colored.png>
-Package pdftex.def Info: figures/star_colored.png  used on input line 114.
+Package pdftex.def Info: figures/star_colored.png  used on input line 116.
 (pdftex.def)             Requested size: 139.42093pt x 139.41846pt.
-<figures/metrics_per_node_star.png, id=530, 867.24pt x 722.7pt>
+<figures/metrics_per_node_star.png, id=579, 867.24pt x 722.7pt>
 File: figures/metrics_per_node_star.png Graphic file (type png)
 <use figures/metrics_per_node_star.png>
-Package pdftex.def Info: figures/metrics_per_node_star.png  used on input line 120.
+Package pdftex.def Info: figures/metrics_per_node_star.png  used on input line 122.
 (pdftex.def)             Requested size: 191.20082pt x 159.3253pt.
-<figures/metrics_per_node_star0.png, id=531, 867.24pt x 722.7pt>
+<figures/metrics_per_node_star0.png, id=580, 867.24pt x 722.7pt>
 File: figures/metrics_per_node_star0.png Graphic file (type png)
 <use figures/metrics_per_node_star0.png>
-Package pdftex.def Info: figures/metrics_per_node_star0.png  used on input line 123.
+Package pdftex.def Info: figures/metrics_per_node_star0.png  used on input line 125.
 (pdftex.def)             Requested size: 191.20082pt x 159.3253pt.
- [23 <./figures/fc_colored.png> <./figures/ring_colored.png> <./figures/metrics_per_node_fc.png> <./figures/metrics_per_node_ring.png>] [24 <./figures/star_colored.png> <./figures/metrics_per_node_star.png> <./figures/metrics_per_node_star0.png>]
-<figures/sbm_colored.png, id=553, 289.08pt x 289.08pt>
+ [25 <./figures/fc_colored.png> <./figures/ring_colored.png> <./figures/metrics_per_node_fc.png> <./figures/metrics_per_node_ring.png>] [26 <./figures/star_colored.png> <./figures/metrics_per_node_star.png> <./figures/metrics_per_node_star0.png>]
+<figures/sbm_colored.png, id=601, 289.08pt x 289.08pt>
 File: figures/sbm_colored.png Graphic file (type png)
 <use figures/sbm_colored.png>
-Package pdftex.def Info: figures/sbm_colored.png  used on input line 148.
+Package pdftex.def Info: figures/sbm_colored.png  used on input line 152.
 (pdftex.def)             Requested size: 139.42093pt x 139.41846pt.
-<figures/metrics_per_node_sbm.png, id=554, 867.24pt x 722.7pt>
+<figures/metrics_per_node_sbm.png, id=602, 867.24pt x 722.7pt>
 File: figures/metrics_per_node_sbm.png Graphic file (type png)
 <use figures/metrics_per_node_sbm.png>
-Package pdftex.def Info: figures/metrics_per_node_sbm.png  used on input line 155.
+Package pdftex.def Info: figures/metrics_per_node_sbm.png  used on input line 159.
 (pdftex.def)             Requested size: 191.20082pt x 159.3253pt.
-<figures/metrics_per_node_sbm_client3.png, id=555, 867.24pt x 722.7pt>
+<figures/metrics_per_node_sbm_client3.png, id=603, 867.24pt x 722.7pt>
 File: figures/metrics_per_node_sbm_client3.png Graphic file (type png)
 <use figures/metrics_per_node_sbm_client3.png>
-Package pdftex.def Info: figures/metrics_per_node_sbm_client3.png  used on input line 158.
+Package pdftex.def Info: figures/metrics_per_node_sbm_client3.png  used on input line 162.
 (pdftex.def)             Requested size: 191.20082pt x 159.3253pt.
 
-Underfull \vbox (badness 10000) has occurred while \output is active []
+Underfull \vbox (badness 6094) has occurred while \output is active []
 
- [25 <./figures/sbm_colored.png> <./figures/metrics_per_node_sbm.png> <./figures/metrics_per_node_sbm_client3.png>]) [26]
+ [27 <./figures/sbm_colored.png> <./figures/metrics_per_node_sbm.png> <./figures/metrics_per_node_sbm_client3.png>]
+Underfull \vbox (badness 4378) has occurred while \output is active []
+
+ [28]
+<figures/neudet_example.png, id=619, 338.9463pt x 859.7721pt>
+File: figures/neudet_example.png Graphic file (type png)
+<use figures/neudet_example.png>
+Package pdftex.def Info: figures/neudet_example.png  used on input line 208.
+(pdftex.def)             Requested size: 239.00558pt x 606.2706pt.
+<figures/neudet_fc.png, id=624, 867.24pt x 722.7pt>
+File: figures/neudet_fc.png Graphic file (type png)
+<use figures/neudet_fc.png>
+Package pdftex.def Info: figures/neudet_fc.png  used on input line 227.
+(pdftex.def)             Requested size: 191.20082pt x 159.3253pt.
+<figures/neudet_sbm_periph.png, id=625, 867.24pt x 722.7pt>
+File: figures/neudet_sbm_periph.png Graphic file (type png)
+<use figures/neudet_sbm_periph.png>
+Package pdftex.def Info: figures/neudet_sbm_periph.png  used on input line 230.
+(pdftex.def)             Requested size: 191.20082pt x 159.3253pt.
+<figures/neudet_sbm_gateway.png, id=626, 867.24pt x 722.7pt>
+File: figures/neudet_sbm_gateway.png Graphic file (type png)
+<use figures/neudet_sbm_gateway.png>
+Package pdftex.def Info: figures/neudet_sbm_gateway.png  used on input line 237.
+(pdftex.def)             Requested size: 191.20082pt x 159.3253pt.
+) [29] [30 <./figures/neudet_example.png>] [31 <./figures/neudet_fc.png> <./figures/neudet_sbm_periph.png> <./figures/neudet_sbm_gateway.png>] [32
+
+]
+Chapter 7.
+(./chapters/Conclusions.tex [33
+
+]
+
+LaTeX Warning: Citation `bao2021neudet' on page 34 undefined on input line 16.
+
+[34]) [35] [36
+
+]
 Appendix A.
 (./chapters/declaration.tex) (./main.bbl (./main.brf)
 \tf@brf=\write5
 \openout5 = `main.brf'.
 
- [27
+ [37
 
-
-] [28
+] [38
 
 ]
 bibitemlist
 LaTeX Font Info:    Font shape `T1/LinuxLibertineT-TLF/m/it' will be
 (Font)              scaled to size 10.0pt on input line 7.
-[29]) [30]
+[39]) [40]
 \tf@toc=\write6
 \openout6 = `main.toc'.
 
@@ -1256,22 +1288,22 @@ L3 programming layer <2020/03/25>
 LaTeX Warning: There were undefined references.
 
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: B6458640B6EE48B677AE567094EA14A5;7516.
+(rerunfilecheck)             Checksum: 5A53947E558DA0068183AF5FA8C042FE;8514.
 Package rerunfilecheck Info: File `main.brf' has not changed.
-(rerunfilecheck)             Checksum: 93AC5441A7B3D9806F91D4DEF29F12BC;2329.
+(rerunfilecheck)             Checksum: 13407CFA5DF900F1AD9D77C4F4A8DBA2;2607.
  ) 
 Here is how much of TeX's memory you used:
- 24869 strings out of 469278
- 436873 string characters out of 5462842
+ 24964 strings out of 469278
+ 438971 string characters out of 5462842
  893825 words of memory out of 5000000
- 52722 multiletter control sequences out of 15000+600000
- 781977 words of font info for 373 fonts, out of 8000000 for 9000
+ 52783 multiletter control sequences out of 15000+600000
+ 782780 words of font info for 379 fonts, out of 8000000 for 9000
  36 hyphenation exceptions out of 8191
  91i,12n,133p,1168b,736s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <c:/Users/Iker/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/libertine/LinLibertineT.pfb><c:/Users/Iker/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/libertine/LinLibertineTB.pfb><c:/Users/Iker/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/libertine/LinLibertineTI.pfb><c:/Users/Iker/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb><c:/Users/Iker/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb><c:/Users/Iker/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb><c:/Users/Iker/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb><c:/Users/Iker/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb><c:/Users/Iker/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb><c:/Users/Iker/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb><c:/Users/Iker/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb><c:/Users/Iker/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb>
-Output written on main.pdf (44 pages, 4728167 bytes).
+Output written on main.pdf (54 pages, 5554744 bytes).
 PDF statistics:
- 724 PDF objects out of 1000 (max. 8388607)
- 154 named destinations out of 1000 (max. 500000)
- 87439 words of extra memory for PDF output out of 89155 (max. 10000000)
+ 836 PDF objects out of 1000 (max. 8388607)
+ 176 named destinations out of 1000 (max. 500000)
+ 87499 words of extra memory for PDF output out of 89155 (max. 10000000)
 

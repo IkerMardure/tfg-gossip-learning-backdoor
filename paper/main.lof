@@ -6,30 +6,36 @@
 \addvspace {10pt}
 \contentsline {figure}{\numberline {4.1}{\ignorespaces The visual trigger used for the backdoor attack: a $7 \times 7$ white square patch applied to the bottom-right corner of the images.}}{12}{figure.4.1}%
 \addvspace {10pt}
-\contentsline {figure}{\numberline {5.1}{\ignorespaces Theoretical visualization of the four network topologies evaluated in this study.}}{16}{figure.5.1}%
-\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Fully Connected}}}{16}{subfigure.1.1}%
-\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Ring Topology}}}{16}{subfigure.1.2}%
-\contentsline {subfigure}{\numberline {(c)}{\ignorespaces {Star Topology}}}{16}{subfigure.1.3}%
-\contentsline {subfigure}{\numberline {(d)}{\ignorespaces {Stochastic Block Model}}}{16}{subfigure.1.4}%
+\contentsline {figure}{\numberline {5.1}{\ignorespaces Theoretical visualization of the four network topologies evaluated in this study.}}{18}{figure.5.1}%
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Fully Connected}}}{18}{subfigure.1.1}%
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Ring Topology}}}{18}{subfigure.1.2}%
+\contentsline {subfigure}{\numberline {(c)}{\ignorespaces {Star Topology}}}{18}{subfigure.1.3}%
+\contentsline {subfigure}{\numberline {(d)}{\ignorespaces {Stochastic Block Model}}}{18}{subfigure.1.4}%
 \addvspace {10pt}
-\contentsline {figure}{\numberline {6.1}{\ignorespaces Clean Accuracy and Distributed Loss over 240 rounds for the Isolated (No Communication) topology.}}{20}{figure.6.1}%
-\contentsline {figure}{\numberline {6.2}{\ignorespaces Clean Accuracy and Distributed Loss over 240 rounds for the Fully Connected and Ring topologies.}}{20}{figure.6.2}%
-\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Fully Connected}}}{20}{subfigure.2.1}%
-\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Ring Topology}}}{20}{subfigure.2.2}%
-\contentsline {figure}{\numberline {6.3}{\ignorespaces Clean Accuracy and Distributed Loss over 240 rounds for the Star and SBM topologies.}}{21}{figure.6.3}%
-\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Star Topology}}}{21}{subfigure.3.1}%
-\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {SBM Topology}}}{21}{subfigure.3.2}%
-\contentsline {figure}{\numberline {6.4}{\ignorespaces Evaluation of the Fully Connected and Ring topologies over 240 rounds. The top row illustrates the color-coded network structures, with node colors matching the individual client lines in the subsequent Clean Accuracy and ASR plots below.}}{23}{figure.6.4}%
-\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Fully Connected Topology}}}{23}{subfigure.4.1}%
-\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Ring Topology}}}{23}{subfigure.4.2}%
-\contentsline {subfigure}{\numberline {(c)}{\ignorespaces {Fully Connected Performance}}}{23}{subfigure.4.3}%
-\contentsline {subfigure}{\numberline {(d)}{\ignorespaces {Ring Performance}}}{23}{subfigure.4.4}%
-\contentsline {figure}{\numberline {6.5}{\ignorespaces Evaluation of the Star topology under two distinct attacker placements. The node colors in the top architectural map correspond strictly to the client lines in the performance plots.}}{24}{figure.6.5}%
-\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Star Topology}}}{24}{subfigure.5.1}%
-\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Star Topology — Peripheral Attacker}}}{24}{subfigure.5.2}%
-\contentsline {subfigure}{\numberline {(c)}{\ignorespaces {Star Topology — Hub Attacker}}}{24}{subfigure.5.3}%
-\contentsline {figure}{\numberline {6.6}{\ignorespaces Clean Accuracy and ASR over 240 rounds for the Stochastic Block Model. The top figure illustrates the network topology, with node colors matching the individual client lines in the subsequent plots under two distinct attacker placements.}}{25}{figure.6.6}%
-\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Stochastic Block Model Topology}}}{25}{subfigure.6.1}%
-\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {SBM Peripheral Attacker}}}{25}{subfigure.6.2}%
-\contentsline {subfigure}{\numberline {(c)}{\ignorespaces {SBM Gateway Attacker}}}{25}{subfigure.6.3}%
+\contentsline {figure}{\numberline {6.1}{\ignorespaces Clean Accuracy and Distributed Loss over 240 rounds for the Isolated (No Communication) topology.}}{22}{figure.6.1}%
+\contentsline {figure}{\numberline {6.2}{\ignorespaces Clean Accuracy and Distributed Loss over 240 rounds for the Fully Connected and Ring topologies.}}{22}{figure.6.2}%
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Fully Connected}}}{22}{subfigure.2.1}%
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Ring Topology}}}{22}{subfigure.2.2}%
+\contentsline {figure}{\numberline {6.3}{\ignorespaces Clean Accuracy and Distributed Loss over 240 rounds for the Star and SBM topologies.}}{23}{figure.6.3}%
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Star Topology}}}{23}{subfigure.3.1}%
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {SBM Topology}}}{23}{subfigure.3.2}%
+\contentsline {figure}{\numberline {6.4}{\ignorespaces Evaluation of the Fully Connected and Ring topologies over 240 rounds. The top row illustrates the color-coded network structures, with node colors matching the individual client lines in the subsequent Clean Accuracy and ASR plots below.}}{25}{figure.6.4}%
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Fully Connected Topology}}}{25}{subfigure.4.1}%
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Ring Topology}}}{25}{subfigure.4.2}%
+\contentsline {subfigure}{\numberline {(c)}{\ignorespaces {Fully Connected Performance}}}{25}{subfigure.4.3}%
+\contentsline {subfigure}{\numberline {(d)}{\ignorespaces {Ring Performance}}}{25}{subfigure.4.4}%
+\contentsline {figure}{\numberline {6.5}{\ignorespaces Evaluation of the Star topology under two distinct attacker placements. The node colors in the top architectural map correspond strictly to the client lines in the performance plots.}}{26}{figure.6.5}%
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Star Topology}}}{26}{subfigure.5.1}%
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Star Topology — Peripheral Attacker}}}{26}{subfigure.5.2}%
+\contentsline {subfigure}{\numberline {(c)}{\ignorespaces {Star Topology — Hub Attacker}}}{26}{subfigure.5.3}%
+\contentsline {figure}{\numberline {6.6}{\ignorespaces Clean Accuracy and ASR over 240 rounds for the Stochastic Block Model. The top figure illustrates the network topology, with node colors matching the individual client lines in the subsequent plots under two distinct attacker placements.}}{27}{figure.6.6}%
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Stochastic Block Model Topology}}}{27}{subfigure.6.1}%
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {SBM Peripheral Attacker}}}{27}{subfigure.6.2}%
+\contentsline {subfigure}{\numberline {(c)}{\ignorespaces {SBM Gateway Attacker}}}{27}{subfigure.6.3}%
+\contentsline {figure}{\numberline {6.7}{\ignorespaces Examples of clean and poisoned (triggered) industrial surface defect images from the NEU-DET dataset.}}{30}{figure.6.7}%
+\contentsline {figure}{\numberline {6.8}{\ignorespaces Clean Accuracy and ASR over 240 rounds for the NEU-DET dataset. The dense network (a) allows a system-wide infection. The sparse SBM topology acts as a topological firewall against peripheral attacks (b), and successfully utilizes Community B as a consensus sink to neutralize attacks originating directly from the structural bottleneck (c).}}{31}{figure.6.8}%
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Fully Connected}}}{31}{subfigure.8.1}%
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {SBM Peripheral Attacker}}}{31}{subfigure.8.2}%
+\contentsline {subfigure}{\numberline {(c)}{\ignorespaces {SBM Gateway Attacker}}}{31}{subfigure.8.3}%
+\addvspace {10pt}
 \addvspace {10pt}

@@ -1,4 +1,4 @@
-run_name: '{timestamp} - neudet - fc_8'
+run_name: '{timestamp} - mnist - fc_8 - bf1'
 topology: 'conf/topologies/analysis'
 device: cuda
 early_local_train: False
