@@ -32,7 +32,7 @@
 \contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Stochastic Block Model Topology}}}{27}{subfigure.6.1}%
 \contentsline {subfigure}{\numberline {(b)}{\ignorespaces {SBM Peripheral Attacker}}}{27}{subfigure.6.2}%
 \contentsline {subfigure}{\numberline {(c)}{\ignorespaces {SBM Gateway Attacker}}}{27}{subfigure.6.3}%
-\contentsline {figure}{\numberline {6.7}{\ignorespaces Examples of clean and poisoned (triggered) industrial surface defect images from the NEU-DET dataset.}}{30}{figure.6.7}%
+\contentsline {figure}{\numberline {6.7}{\ignorespaces Examples of clean and poisoned (triggered) industrial surface defect images from the NEU-DET dataset.}}{29}{figure.6.7}%
 \contentsline {figure}{\numberline {6.8}{\ignorespaces Clean Accuracy and ASR over 240 rounds for the NEU-DET dataset. The dense network (a) allows a system-wide infection. The sparse SBM topology acts as a topological firewall against peripheral attacks (b), and successfully utilizes Community B as a consensus sink to neutralize attacks originating directly from the structural bottleneck (c).}}{31}{figure.6.8}%
 \contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Fully Connected}}}{31}{subfigure.8.1}%
 \contentsline {subfigure}{\numberline {(b)}{\ignorespaces {SBM Peripheral Attacker}}}{31}{subfigure.8.2}%

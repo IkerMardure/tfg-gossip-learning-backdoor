@@ -33,7 +33,7 @@ def _resolve_neu_det_root(data_path: str | None = None):
 def _neu_det_transforms():
     train_transform = transforms.Compose(
         [
-            transforms.Resize((32, 32)),
+            transforms.Resize((128, 128)),
             transforms.RandomHorizontalFlip(),
             transforms.RandomRotation(10),
             transforms.RandomAffine(0, shear=10, scale=(0.8, 1.2)),
@@ -44,7 +44,7 @@ def _neu_det_transforms():
     )
     test_transform = transforms.Compose(
         [
-            transforms.Resize((32, 32)),
+            transforms.Resize((128, 128)),
             transforms.Grayscale(num_output_channels=1),
             transforms.ToTensor(),
             transforms.Normalize((0.5,), (0.5,)),

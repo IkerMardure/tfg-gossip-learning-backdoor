@@ -1,0 +1,39 @@
+\babel@toc {english}{}\relax 
+\contentsline {chapter}{Contents}{v}{chapter*.5}%
+\contentsline {chapter}{List of Figures}{vii}{chapter*.6}%
+\contentsline {chapter}{List of Tables}{viii}{chapter*.7}%
+\contentsline {chapter}{\'{I}ndice de c\'{o}digos}{ix}{chapter*.9}%
+\contentsline {chapter}{Índice de algoritmos}{ix}{chapter*.9}%
+\contentsline {chapter}{\chapternumberline {1}Introduction}{1}{chapter.1}%
+\contentsline {chapter}{\chapternumberline {2}Theoretical Framework}{3}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Federated Learning}{3}{section.2.1}%
+\contentsline {section}{\numberline {2.2}Decentralized Federated Learning (Gossip Learning)}{5}{section.2.2}%
+\contentsline {chapter}{\chapternumberline {3}Threat Landscape in Decentralized Learning}{7}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Privacy Attacks}{7}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Utility Attacks}{8}{section.3.2}%
+\contentsline {subsection}{\numberline {3.2.1}Data Poisoning Attacks}{8}{subsection.3.2.1}%
+\contentsline {subsection}{\numberline {3.2.2}Model Poisoning Attacks}{9}{subsection.3.2.2}%
+\contentsline {subsection}{\numberline {3.2.3}Backdoor Poisoning Attacks}{9}{subsection.3.2.3}%
+\contentsline {section}{\numberline {3.3}The Impact of Attacker Placement}{10}{section.3.3}%
+\contentsline {chapter}{\chapternumberline {4}Methodology}{11}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Threat Model}{11}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Backdoor Attack Implementation}{11}{section.4.2}%
+\contentsline {subsection}{\numberline {4.2.1}The Visual Trigger and Continuous Poisoning}{12}{subsection.4.2.1}%
+\contentsline {subsection}{\numberline {4.2.2}The Topological Boosting Heuristic}{12}{subsection.4.2.2}%
+\contentsline {section}{\numberline {4.3}Attacker Placement Strategy}{14}{section.4.3}%
+\contentsline {section}{\numberline {4.4}Evaluation Framework: The Utility-Security Trade-off}{15}{section.4.4}%
+\contentsline {chapter}{\chapternumberline {5}Experimentation}{17}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Evaluated Network Topologies}{17}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Experimental Setup: Dataset, Architecture, and Metrics}{19}{section.5.2}%
+\contentsline {subsection}{\numberline {5.2.1}Simulation Constraints and Execution Flow}{20}{subsection.5.2.1}%
+\contentsline {chapter}{\chapternumberline {6}Experimental Results and Discussion}{23}{chapter.6}%
+\contentsline {section}{\numberline {6.1}The Collaboration Gain: Establishing the Non-Adversarial Baseline}{23}{section.6.1}%
+\contentsline {section}{\numberline {6.2}Baseline Topologies Resilience}{26}{section.6.2}%
+\contentsline {section}{\numberline {6.3}Solving the Effectiveness vs. Stealthiness Trade-off}{29}{section.6.3}%
+\contentsline {section}{\numberline {6.4}Community Topologies and Boundary Resilience (SBM)}{29}{section.6.4}%
+\contentsline {subsection}{\numberline {6.4.1}The Topological Firewall (Peripheral Attacker)}{29}{subsection.6.4.1}%
+\contentsline {subsection}{\numberline {6.4.2}The Bottleneck Breach Attempt (Gateway Attacker)}{30}{subsection.6.4.2}%
+\contentsline {section}{\numberline {6.5}Validation on Industrial Data (NEU-DET)}{31}{section.6.5}%
+\contentsline {chapter}{Eranskina / apéndice}{35}{chapter*.13}%
+\contentsline {chapter}{Bibliography}{37}{chapter*.15}%
+\contentsline {chapter}{Bibliography}{39}{chapter*.15}%

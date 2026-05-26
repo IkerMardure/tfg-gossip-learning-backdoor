@@ -3,7 +3,7 @@ from flwr.common import NDArrays, Scalar
 
 import torch
 import flwr as fl
-from model import LeNet, train, test
+from model import build_model, train, test
 from torch.utils.data import Dataset
 from utils.logging import log_client_training, log_data_poisoning
 
@@ -22,7 +22,7 @@ class FlowerClient(fl.client.NumPyClient):
         self.trainloader = trainloader
         self.validationloader = validationloader
         self.local_acc = None
-        self.model = LeNet(num_classes)
+        self.model = build_model(num_classes)
         self.parameter_keys = list(self.model.state_dict().keys())
         self.num_classes = num_classes
         self.device = _resolve_torch_device(device)

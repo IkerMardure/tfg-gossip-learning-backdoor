@@ -20,7 +20,7 @@ from dataset import prepare_dataset_iid, prepare_dataset_mnist_iid, prepare_data
 from utils.paths import resolve_data_path, resolve_results_path
 from client import cli_eval_distr_results, cli_val_distr, generate_client_fn#, weighted_average, 
 from server import get_on_fit_config, get_evaluate_fn
-from model import LeNet, train_pretrain
+from model import build_model, train_pretrain
 
 from flwr.client import ClientFn
 from flwr.server.client_manager import ClientManager, SimpleClientManager
@@ -183,7 +183,7 @@ def main():
         node_iterator = tqdm(range(num_clients), desc="Pretraining nodes") if show_progress_bar else range(num_clients)
 
         torch.manual_seed(base_seed)
-        base_model = LeNet(cfg['num_classes']).to(device)
+        base_model = build_model(cfg['num_classes']).to(device)
         # Try to load a global pretrained model if provided, otherwise keep random base
         pretrain_save = pretrain_cfg.get('save_path', None)
         if pretrain_save:
@@ -218,8 +218,8 @@ def main():
         )
 
         for node_id in node_iterator:
-            node_model = LeNet(cfg['num_classes']).to(device)
-            random_state_dict = copy.deepcopy(LeNet(cfg['num_classes']).to(device).state_dict())
+            node_model = build_model(cfg['num_classes']).to(device)
+            random_state_dict = copy.deepcopy(build_model(cfg['num_classes']).to(device).state_dict())
             blended_state_dict = {
                 key: mix_alpha * base_state_dict[key] + (1.0 - mix_alpha) * random_state_dict[key]
                 for key in base_state_dict

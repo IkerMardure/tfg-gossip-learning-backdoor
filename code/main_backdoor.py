@@ -20,7 +20,7 @@ from client_backdoor import (
     generate_client_fn,
 )
 from server import get_on_fit_config, get_evaluate_fn
-from model import LeNet, train_pretrain
+from model import build_model, train_pretrain
 from flwr.server.client_manager import SimpleClientManager
 from flwr.common import ndarrays_to_parameters
 from custom_strategies.topology_based_GL import topology_based_Avg
@@ -176,17 +176,17 @@ def main() -> None:
         node_iterator = tqdm(range(num_clients), desc="Pretraining nodes") if show_progress_bar else range(num_clients)
 
         torch.manual_seed(base_seed)
-        base_model = LeNet(cfg["num_classes"]).to(device)
+        base_model = build_model(cfg["num_classes"]).to(device)
         base_state_dict = copy.deepcopy(base_model.state_dict())
         mix_alpha = float(pretrain_cfg.get("mix_alpha", 1.0))
         log_pretraining(
-            "Created a single shared LeNet base model and cloned it to all nodes before local training.",
+            "Created a single shared base model and cloned it to all nodes before local training.",
             level="standard",
         )
 
         for node_id in node_iterator:
-            node_model = LeNet(cfg["num_classes"]).to(device)
-            random_state_dict = copy.deepcopy(LeNet(cfg["num_classes"]).to(device).state_dict())
+            node_model = build_model(cfg["num_classes"]).to(device)
+            random_state_dict = copy.deepcopy(build_model(cfg["num_classes"]).to(device).state_dict())
             blended_state_dict = {
                 key: mix_alpha * base_state_dict[key] + (1.0 - mix_alpha) * random_state_dict[key]
                 for key in base_state_dict

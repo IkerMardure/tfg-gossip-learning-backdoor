@@ -42,7 +42,7 @@ Before introducing the adversarial threat, it is essential to quantify the funda
 
 \textbf{Ring Topology:} When structural constraints are introduced, the physical shape of the network becomes visible in the learning metrics (Figure \ref{fig:metrics_ring_clean}). The Ring Topology displays a distinct step patterns in its loss curve. However, as demonstrated by the final loss of approximately 0.3, this sparsity actually provides a massive optimization advantage in an asynchronous environment. Because a node only averages its weights with two neighbors (d=2), it retains 33.3\% of its own freshly optimized parameters. By limiting its exposure to stale models, the Ring topology minimizes the staleness penalty, allowing it to break past the consensus drag of denser networks.
 
-\textbf{Star Topology:} The Star topology (Figure \ref{fig:metrics_star_clean}) demonstrates the raw efficiency of localized centralization in an asynchronous environment, achieving the fastest convergence and the lowest final loss (~0.25). This exceptional performance is due to its highly asymmetic distribution of the staleness penalty. The peripheral nodes, which make up the vast majority of the network, possess a topological degree of only one. Consequently, they retain 50\% of their own optimized parameters during each round, suffering minimal staleness. While the central hub (Client 0) absorbs the collective staleness of the entire network, it acts as a highly refined global regularizer for the peripherals. This unique dynamic allows the Star topology to achieve a powerful balance between local optimization and global consensus, resulting in superior convergence behavior.
+\textbf{Star Topology:} The Star topology (Figure \ref{fig:metrics_star_clean}) demonstrates the raw efficiency of localized centralization in an asynchronous environment, achieving the fastest convergence and the lowest final loss (~0.25). This exceptional performance is due to its highly asymmetic distribution of the staleness penalty. The peripheral nodes, which make up the majority of the network, possess a topological degree of only one, so they retain 50\% of their own optimized parameters during each round, suffering minimal staleness. While the central hub (Client 0) absorbs the collective staleness of the entire network, it acts as a highly refined global regularizer for the peripherals. This unique dynamic allows the Star topology to achieve a powerful balance between local optimization and global consensus, resulting in superior convergence behavior.
 
 \textbf{SBM Topology:} Finally, the SBM topology (Figure \ref{fig:metrics_sbm_clean}) acts as the perfect mathematical middle ground for our staleness hypothesis. The loss curve displays a hybrid behavior: it benefits from a rapid local convergence within the communities, punctuated by smaller drops representing the bottlenecked knowledge transfer across the single gateway link. Its finall loss stabilized around 0.4, exactly between the sparse Star/Ring topologies and the dense Fully Connected network. This empirically proves that the staleness penalty scales with local network density. The SBM nodes suffer from local consensus drag within their communities (d=3), but the structural bottleneck effectively shields them from the massive, network-wide over-averaging that restricts the Fully Connected topology.
 
@@ -167,13 +167,13 @@ This proves that a sparse gateway link natively functions as a physical, topolog
 \subsection{The Bottleneck Breach Attempt (Gateway Attacker)}
 To push the network to its absolute limit, the final experiment shifted the compromised node to the structural bottleneck itself. In this scenario (Figure \ref{fig:plot_sbm_gateway}), Client 3 (the gateway node of Community A) acts as the adversary, utilizing a higher dynamic boosting factor ($\alpha = d+1$) commensurate with its higher connectivity.
 
-The change in attacker placement yielded two profound discoveries:
+The change in attacker placement yielded two meaningfull discoveries:
 \begin{itemize}
     \item \textbf{Amplified Local Infection:} Because the attacker was positioned at a highly central point within Community A, the local infection rate skyrocketed. Clients 0, 1, and 2 experienced an ASR surge to roughly 0.60, which issignificantly higher than the peripheral attack. Controlling the gateway allowed the adversary to dominate its own community.
     \item \textbf{The "Consensus Sink" Defense:} Remarkably, despite the attacker having a direct edge to Community B and continuously broadcasting for 240 rounds, the broader network still survived. The ASR for Clients 4 through 7 was heavily suppressed, plateauing below 0.15. 
 \end{itemize}
 
-This ultimate failure to bridge the gap highlights the profound defensive power of Decentralized Federated Learning. When the gateway node of Community B (Client 4) received the highly poisoned parameters from Client 3, it immediately aggregated them with the clean updates from its internal neighbors (Clients 5, 6, and 7). 
+This ultimate failure to bridge the gap highlights the defensive power of Decentralized Federated Learning. When the gateway node of Community B (Client 4) received the highly poisoned parameters from Client 3, it immediately aggregated them with the clean updates from its internal neighbors (Clients 5, 6, and 7). 
 
 Community B effectively acted as a massive "consensus sink," structurally washing out the backdoor before it could achieve a viable success rate. 
 
@@ -205,7 +205,7 @@ To ensure that the observed topological vulnerabilities are not merely an artifa
 
 \begin{figure}[t]
     \centering
-    \includegraphics[width=0.6\textwidth]{figures/neudet_example.png}\caption{Examples of clean and poisoned (triggered) industrial surface defect images from the NEU-DET dataset.}
+    \includegraphics[width=0.4\textwidth]{figures/neudet_example.png}\caption{Examples of clean and poisoned (triggered) industrial surface defect images from the NEU-DET dataset.}
     \label{fig:neudet_samples}
 \end{figure}
 

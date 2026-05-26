@@ -165,14 +165,4 @@ Sheng Sun, Zengqi Zhang, Quyang Pan, Min Liu, Yuwei Wang, Tianliu He, Yali Chen,
 \newblock Staleness-controlled asynchronous federated learning: Accuracy and efficiency tradeoff.
 \newblock {\em IEEE Transactions on Mobile Computing}, 23(12):12621--12634, 2024.
 
-\bibitem{zhao2018federated}
-Yue Zhao, Meng Li, Liangzhen Lai, Naveen Suda, Damon Civin, and Vikas Chandra.
-\newblock Federated learning with non-iid data.
-\newblock {\em arXiv preprint arXiv:1806.00582}, 2018.
-
-\bibitem{blanchard2017machine}
-Peva Blanchard, El~Mahdi El~Mghari, Rachid Guerraoui, and Julien Stainer.
-\newblock Machine learning with adversaries: Byzantine tolerant gradient descent.
-\newblock In {\em Advances in Neural Information Processing Systems}, volume~30, 2017.
-
 \end{thebibliography}

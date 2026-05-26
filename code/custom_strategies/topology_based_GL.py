@@ -22,7 +22,7 @@ import flwr
 import numpy as np
 from collections import OrderedDict
 import torch
-from model import LeNet
+from model import build_model
 
 
 
@@ -245,7 +245,7 @@ class topology_based_Avg(Strategy):
         param_path = self.save_path + 'parameters/'
         os.makedirs(param_path, exist_ok=True)
         for cli_ID in range(self.min_available_clients):
-            net = LeNet(self.num_classes)
+            net = build_model(self.num_classes)
             cli_params_ndarrays = parameters_to_ndarrays(self.pool_parameters[self.selected_pool])
             # Convert `List[np.ndarray]` to PyTorch`state_dict`
             params_dict = zip(net.state_dict().keys(), cli_params_ndarrays)

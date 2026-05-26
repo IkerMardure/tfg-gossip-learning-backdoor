@@ -60,6 +60,10 @@
 \newlabel{alg:gossip_learning}{{2.2}{6}{Standard Decentralized Federated Learning (Gossip Learning) Loop}{ifalgorithm.2.2}{}}
 \newlabel{alg:gossip_learning@cref}{{[ifalgorithm][2][2]2.2}{[1][6][]6}{}{}{}}
 \citation{hallaji2024decentralized}
+\citation{fredrikson2015model}
+\citation{zhang2020secret}
+\citation{ateniese2015hacking}
+\citation{ganju2018property}
 \citation{han2023reinforcement}
 \citation{bouacida2021vulnerabilities}
 \citation{xie2024survey}
@@ -70,8 +74,12 @@
 \newlabel{ch:threat landscape@cref}{{[chapter][3][]3}{[1][7][]7}{}{}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {3.1}Privacy Attacks}{7}{section.3.1}\protected@file@percent }
 \@writefile{brf}{\backcite{hallaji2024decentralized}{{7}{3.1}{section.3.1}}}
+\@writefile{brf}{\backcite{fredrikson2015model, zhang2020secret}{{7}{3.1}{section.3.1}}}
+\@writefile{brf}{\backcite{ateniese2015hacking, ganju2018property}{{7}{3.1}{section.3.1}}}
 \citation{bouacida2021vulnerabilities}
 \citation{xia2023poisoning}
+\citation{shafahi2018poison}
+\citation{zhu2019transferable}
 \citation{xia2023poisoning}
 \@writefile{brf}{\backcite{han2023reinforcement}{{8}{3.1}{section.3.1}}}
 \@writefile{brf}{\backcite{bouacida2021vulnerabilities}{{8}{3.1}{section.3.1}}}
@@ -80,6 +88,7 @@
 \@writefile{toc}{\contentsline {section}{\numberline {3.2}Utility Attacks}{8}{section.3.2}\protected@file@percent }
 \@writefile{brf}{\backcite{xia2023poisoning}{{8}{3.2}{section.3.2}}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.2.1}Data Poisoning Attacks}{8}{subsection.3.2.1}\protected@file@percent }
+\@writefile{brf}{\backcite{shafahi2018poison, zhu2019transferable}{{8}{3.2.1}{subsection.3.2.1}}}
 \@writefile{brf}{\backcite{xia2023poisoning}{{8}{3.2.1}{subsection.3.2.1}}}
 \citation{bagdasaryan2020how}
 \citation{bagdasaryan2020how}
@@ -244,19 +253,19 @@
 \newlabel{tab:adversarial_metrics_summary}{{6.2}{28}{Summary of adversarial backdoor metrics at Round 240. Local ASR refers to the infection rate of the attacker's immediate neighbors or local community, while Global ASR refers to distant nodes or secondary communities}{table.caption.13}{}}
 \newlabel{tab:adversarial_metrics_summary@cref}{{[table][2][6]6.2}{[1][28][]28}{}{}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {6.4.2}The Bottleneck Breach Attempt (Gateway Attacker)}{28}{subsection.6.4.2}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {6.7}{\ignorespaces Examples of clean and poisoned (triggered) industrial surface defect images from the NEU-DET dataset.}}{29}{figure.6.7}\protected@file@percent }
+\newlabel{fig:neudet_samples}{{6.7}{29}{Examples of clean and poisoned (triggered) industrial surface defect images from the NEU-DET dataset}{figure.6.7}{}}
+\newlabel{fig:neudet_samples@cref}{{[figure][7][6]6.7}{[1][29][]29}{}{}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {6.5}Validation on Industrial Data (NEU-DET)}{29}{section.6.5}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {6.7}{\ignorespaces Examples of clean and poisoned (triggered) industrial surface defect images from the NEU-DET dataset.}}{30}{figure.6.7}\protected@file@percent }
-\newlabel{fig:neudet_samples}{{6.7}{30}{Examples of clean and poisoned (triggered) industrial surface defect images from the NEU-DET dataset}{figure.6.7}{}}
-\newlabel{fig:neudet_samples@cref}{{[figure][7][6]6.7}{[1][29][]30}{}{}{}}
 \newlabel{fig:neudet_fc}{{6.8a}{31}{Validation on Industrial Data (NEU-DET)}{subfigure.6.8.1}{}}
-\newlabel{fig:neudet_fc@cref}{{[subfigure][1][6,8]6.8a}{[1][29][]31}{}{}{}}
+\newlabel{fig:neudet_fc@cref}{{[subfigure][1][6,8]6.8a}{[1][30][]31}{}{}{}}
 \newlabel{fig:neudet_sbm_periph}{{6.8b}{31}{Validation on Industrial Data (NEU-DET)}{subfigure.6.8.2}{}}
-\newlabel{fig:neudet_sbm_periph@cref}{{[subfigure][2][6,8]6.8b}{[1][29][]31}{}{}{}}
+\newlabel{fig:neudet_sbm_periph@cref}{{[subfigure][2][6,8]6.8b}{[1][30][]31}{}{}{}}
 \newlabel{fig:neudet_sbm_gateway}{{6.8c}{31}{Validation on Industrial Data (NEU-DET)}{subfigure.6.8.3}{}}
-\newlabel{fig:neudet_sbm_gateway@cref}{{[subfigure][3][6,8]6.8c}{[1][29][]31}{}{}{}}
+\newlabel{fig:neudet_sbm_gateway@cref}{{[subfigure][3][6,8]6.8c}{[1][30][]31}{}{}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {6.8}{\ignorespaces Clean Accuracy and ASR over 240 rounds for the NEU-DET dataset. The dense network (a) allows a system-wide infection. The sparse SBM topology acts as a topological firewall against peripheral attacks (b), and successfully utilizes Community B as a consensus sink to neutralize attacks originating directly from the structural bottleneck (c).}}{31}{figure.6.8}\protected@file@percent }
 \newlabel{fig:neudet_results}{{6.8}{31}{Clean Accuracy and ASR over 240 rounds for the NEU-DET dataset. The dense network (a) allows a system-wide infection. The sparse SBM topology acts as a topological firewall against peripheral attacks (b), and successfully utilizes Community B as a consensus sink to neutralize attacks originating directly from the structural bottleneck (c)}{figure.6.8}{}}
-\newlabel{fig:neudet_results@cref}{{[figure][8][6]6.8}{[1][29][]31}{}{}{}}
+\newlabel{fig:neudet_results@cref}{{[figure][8][6]6.8}{[1][30][]31}{}{}{}}
 \@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Fully Connected}}}{31}{subfigure.8.1}\protected@file@percent }
 \@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {SBM Peripheral Attacker}}}{31}{subfigure.8.2}\protected@file@percent }
 \@writefile{lof}{\contentsline {subfigure}{\numberline{(c)}{\ignorespaces {SBM Gateway Attacker}}}{31}{subfigure.8.3}\protected@file@percent }
@@ -271,8 +280,8 @@
 \@writefile{toc}{\contentsline {section}{\numberline {7.1}Summary of Contributions}{33}{section.7.1}\protected@file@percent }
 \@writefile{brf}{\backcite{bagdasaryan2020how,xie2020dba}{{33}{7.1}{section.7.1}}}
 \@writefile{brf}{\backcite{french1999catastrophic}{{33}{7.1}{section.7.1}}}
-\citation{bao2021neudet}
-\@writefile{brf}{\backcite{bao2021neudet}{{34}{7.1}{section.7.1}}}
+\citation{bao2019neudet}
+\@writefile{brf}{\backcite{bao2019neudet}{{34}{7.1}{section.7.1}}}
 \@writefile{toc}{\contentsline {section}{\numberline {7.2}Limitations of the Study}{34}{section.7.2}\protected@file@percent }
 \citation{zhao2018federated}
 \citation{blanchard2017machine}
@@ -299,24 +308,30 @@
 \bibcite{vanhaesebrouck2017decentralized}{10}
 \bibcite{palmieri2024impact}{11}
 \bibcite{hallaji2024decentralized}{12}
-\bibcite{han2023reinforcement}{13}
-\bibcite{bouacida2021vulnerabilities}{14}
-\bibcite{xie2024survey}{15}
+\bibcite{fredrikson2015model}{13}
+\bibcite{zhang2020secret}{14}
 \@writefile{toc}{\contentsline {chapter}{Bibliography}{39}{chapter*.16}\protected@file@percent }
-\bibcite{xia2023poisoning}{16}
-\bibcite{bagdasaryan2020how}{17}
-\bibcite{xie2020dba}{18}
-\bibcite{beutel2020flower}{19}
-\bibcite{belenguer2025glow}{20}
-\bibcite{giaretta2019gossip}{21}
-\bibcite{holland1983stochastic}{22}
-\bibcite{lecun1998gradient}{23}
-\bibcite{mills2019communication}{24}
-\bibcite{yosinski2014how}{25}
-\bibcite{kingma2014adam}{26}
-\bibcite{10561520}{27}
-\bibcite{zhao2018federated}{28}
-\bibcite{blanchard2017machine}{29}
-\memsetcounter{lastsheet}{54}
-\memsetcounter{lastpage}{40}
-\gdef \@abspage@last{54}
+\bibcite{ateniese2015hacking}{15}
+\bibcite{ganju2018property}{16}
+\bibcite{han2023reinforcement}{17}
+\bibcite{bouacida2021vulnerabilities}{18}
+\bibcite{xie2024survey}{19}
+\bibcite{xia2023poisoning}{20}
+\bibcite{shafahi2018poison}{21}
+\bibcite{zhu2019transferable}{22}
+\bibcite{bagdasaryan2020how}{23}
+\bibcite{xie2020dba}{24}
+\bibcite{beutel2020flower}{25}
+\bibcite{belenguer2025glow}{26}
+\bibcite{giaretta2019gossip}{27}
+\bibcite{holland1983stochastic}{28}
+\bibcite{lecun1998gradient}{29}
+\bibcite{mills2019communication}{30}
+\bibcite{yosinski2014how}{31}
+\bibcite{kingma2014adam}{32}
+\bibcite{10561520}{33}
+\bibcite{zhao2018federated}{34}
+\bibcite{blanchard2017machine}{35}
+\memsetcounter{lastsheet}{55}
+\memsetcounter{lastpage}{41}
+\gdef \@abspage@last{55}

@@ -91,7 +91,7 @@ def main() -> None:
         ylabel="Accuracy",
         title="Clean Accuracy per node",
         marker="auto",
-        ymin=0.80,
+        ymin=0.20,
     )
     axes[0].set_yscale("log")
 

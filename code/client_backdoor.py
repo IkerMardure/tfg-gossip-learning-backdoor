@@ -7,12 +7,13 @@ import torch
 import flwr as fl
 from torch.utils.data import Dataset, DataLoader, Sampler
 # Make sure to import your model, train, and test functions
-from model import LeNet, train, test
+from model import build_model, train, test
 from utils.logging import log_client_training, log_data_poisoning 
 
 
 BACKDOOR_POISON_RATE = 0.2
-BACKDOOR_BOOST_FACTOR = 1.0
+BACKDOOR_BOOST_FACTOR = 8.0
+BACKDOOR_TRIGGER_SIZE = 28
 
 
 class BalancedBackdoorBatchSampler(Sampler[List[int]]):
@@ -79,9 +80,9 @@ class BackdoorDataset(Dataset):
         x, y = self.dataset[index]
         
         if index in self.poisoned_indices:
-            # Apply the visual trigger (7x7 white square in bottom right)
+            # Apply the visual trigger (28x28 white square in bottom right)
             x_poisoned = x.clone()
-            x_poisoned[0, 25:, 25:] = 1.0 # Max pixel value for white
+            x_poisoned[0, -BACKDOOR_TRIGGER_SIZE:, -BACKDOOR_TRIGGER_SIZE:] = 1.0 # Max pixel value for white
             
             # Change the label to the target class
             y = self.target_class
@@ -111,7 +112,7 @@ def test_asr(model, dataloader, target_class, device):
             images = images[mask]
             
             # Apply the trigger to the validation images
-            images[:, 0, 25:, 25:] = 1.0
+            images[:, 0, -BACKDOOR_TRIGGER_SIZE:, -BACKDOOR_TRIGGER_SIZE:] = 1.0
             images = images.to(device)
             
             # Get predictions
@@ -136,11 +137,11 @@ class FlowerClient(fl.client.NumPyClient):
         self.poisoned_trainloader = None
         self.validationloader = validationloader
         self.local_acc = None
-        self.model = LeNet(num_classes)
+        self.model = build_model(num_classes)
         self.parameter_keys = list(self.model.state_dict().keys())
         self.num_classes = num_classes
         self.device = _resolve_torch_device(device)
-        self.is_malicious = int(cid) in [3]  # Client 3 is malicious
+        self.is_malicious = int(cid) in [1]  # Client 1 is malicious
 
     def _apply_attack_freeze(self, config, attack_active: bool) -> None:
         freeze_conv_layers = bool(config.get("attacker_freeze_conv_layers", True))

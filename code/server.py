@@ -1,4 +1,4 @@
-from model import LeNet, test
+from model import build_model, test
 import torch
 
 
@@ -18,7 +18,7 @@ def get_on_fit_config(config):
     return fit_config_fn
 
 def get_evaluate_fn(num_classes: int, testloader):
-    model = LeNet(num_classes)
+    model = build_model(num_classes)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model.to(device)
     parameter_keys = list(model.state_dict().keys())

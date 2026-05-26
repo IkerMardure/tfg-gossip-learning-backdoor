@@ -1,6 +1,7 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+from torchvision.models import resnet18
 
 try:
     from tqdm.auto import tqdm
@@ -54,6 +55,37 @@ class LeNet(nn.Module):
       x = self.dropout1(x) # Applying dropout b/t layers which exchange highest parameters. This is a good practice
       x = self.fc2(x)
       return x
+
+
+class ResNet18(nn.Module):
+    def __init__(self, num_classes: int) -> None:
+        super().__init__()
+        backbone = resnet18(weights=None)
+
+        old_conv1 = backbone.conv1
+        backbone.conv1 = nn.Conv2d(
+            1,
+            old_conv1.out_channels,
+            kernel_size=old_conv1.kernel_size,
+            stride=old_conv1.stride,
+            padding=old_conv1.padding,
+            bias=old_conv1.bias is not None,
+        )
+        nn.init.kaiming_normal_(backbone.conv1.weight, mode="fan_out", nonlinearity="relu")
+        if backbone.conv1.bias is not None:
+            nn.init.zeros_(backbone.conv1.bias)
+
+        backbone.fc = nn.Linear(backbone.fc.in_features, num_classes)
+        self.backbone = backbone
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        return self.backbone(x)
+
+
+def build_model(num_classes: int) -> nn.Module:
+    if num_classes == 6:
+        return ResNet18(num_classes)
+    return LeNet(num_classes)
     
 def train(net, trainloader, validationloader, optimizer, epochs, num_classes, device, show_progress=False, progress_desc="train"):
     """Train the network on the training set.

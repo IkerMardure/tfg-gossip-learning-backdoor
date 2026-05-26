@@ -1,4 +1,4 @@
-run_name: '{timestamp} - mnist - fc_8 - bf1'
+run_name: '{timestamp} - neudet - fc_8'
 topology: 'conf/topologies/analysis'
 device: cuda
 early_local_train: False
@@ -11,7 +11,7 @@ balance_data: False
 seed: 2001
 
 # dataset options: 'cifar', 'mnist', or 'neu_det'
-dataset: mnist
+dataset: neu_det
 # data_path used by torchvision datasets (if non-default)
 # MNIST/CIFAR/NEU-DET use the shared datasets root in data/datasets.
 data_path: "data/datasets"
@@ -24,14 +24,14 @@ simulation:
   num_gpus_per_client: "auto"
 
 config_fit:
-  lr: 0.0005
+  lr: 0.0001
   momentum: 0.9 # Momentum is commonly used with SGD to accelerate convergence and improve training stability. A value of 0.9 is a common default that provides a good balance between speed and stability for many tasks, including image classification with CNNs. It helps the optimizer build up speed in directions with consistent gradients while dampening oscillations in directions with noisy gradients, which can lead to faster convergence and better final accuracy.
   local_epochs: 2
   enable_tqdm: false
   # Backdoor simulation controls for the adaptive attacker.
   # Round numbers start at 1, so 4 means "benign for rounds 1-3, active from round 4".
-  attacker_activation_round: 16
-  attacker_lr: 0.0005
+  attacker_activation_round: 64
+  attacker_lr: 0.0001
   attacker_lr_decay: 0.99 # Decay factor per round after activation (0.95 means 5% decay each round)
   attacker_lr_min: 0.0001
   attacker_batch_mixing: true
@@ -39,8 +39,8 @@ config_fit:
 
 pretraining:
   enabled: true
-  epochs: 2
-  lr: 0.0005
+  epochs: 20
+  lr: 0.0001
   save_path:
   enable_tqdm: false
   # Mix pretrained parameters with random initialization (0.0-1.0)
