@@ -1,0 +1,29 @@
+{
+  "run_id": "neudet_test",
+  "run_name": "2026-05-26 - 20_07 - neudet - fc_8",
+  "timestamp": "2026-05-26 20:24:14",
+  "config": {
+    "dataset": "neu_det",
+    "num_clients": 8,
+    "num_rounds": 240,
+    "batch_size": 32,
+    "num_classes": 6,
+    "learning_rate": 0.0001,
+    "local_epochs": 2,
+    "device": "cuda",
+    "early_local_train": false,
+    "pretraining_enabled": true
+  },
+  "results": {
+    "execution_time_seconds": 993.0926601886749,
+    "final_centralized_accuracy": [
+      240,
+      0.8666666666666667
+    ],
+    "num_rounds_completed": 241
+  },
+  "output_files": {
+    "raw_metrics": "neudet_test_raw.out",
+    "accuracy_distribution": "neudet_test_acc_distr.out"
+  }
+}

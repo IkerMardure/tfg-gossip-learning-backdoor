@@ -1,0 +1,38 @@
+{
+  "run_id": "neudet_test",
+  "run_name": "2026-05-27 - 10_17 - neudet - sbm_8 - client3",
+  "timestamp": "2026-05-27 10:34:13",
+  "config": {
+    "dataset": "neu_det",
+    "num_clients": 8,
+    "num_rounds": 240,
+    "batch_size": 32,
+    "num_classes": 6,
+    "learning_rate": 0.0001,
+    "local_epochs": 2,
+    "attacker_activation_round": 16,
+    "attacker_lr": 0.0001,
+    "attacker_lr_decay": 0.99,
+    "attacker_lr_min": 0.0001,
+    "attacker_batch_mixing": true,
+    "attacker_freeze_conv_layers": false,
+    "device": "cuda",
+    "poison_rate": 0.2,
+    "boost_factor": 5.0,
+    "early_local_train": false,
+    "pretraining_enabled": true
+  },
+  "results": {
+    "execution_time_seconds": 983.825516462326,
+    "final_centralized_accuracy": [
+      240,
+      0.8333333333333334
+    ],
+    "final_asr": 240.0,
+    "num_rounds_completed": 241
+  },
+  "output_files": {
+    "raw_metrics": "neudet_test_raw.out",
+    "accuracy_distribution": "neudet_test_acc_distr.out"
+  }
+}

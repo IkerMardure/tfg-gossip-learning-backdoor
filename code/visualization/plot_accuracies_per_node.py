@@ -89,11 +89,10 @@ def main() -> None:
         axes[0],
         node_acc,
         ylabel="Accuracy",
-        title="Clean Accuracy per node",
+        title="Clean Accuracy per Node",
         marker="auto",
-        ymin=0.20,
+        ymin=0.50,
     )
-    axes[0].set_yscale("log")
 
     if node_asr:
         plot_metric(

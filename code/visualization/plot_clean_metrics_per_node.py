@@ -61,14 +61,12 @@ def main():
             alpha=0.8
         )
     
-    # Aplicar escala logarítmica y zoom (0.9 a 1.0) para notar la curva
-    ax1.set_yscale("log")
-    ax1.set_ylim(0.9, 1.0) 
-    ax1.yaxis.set_major_formatter(ScalarFormatter())
-    ax1.set_yticks([0.9, 0.92, 0.94, 0.96, 0.98, 1.0])
-    
+    # Usar escala lineal y ajustar rango para observar la evolución
+    ax1.set_ylim(0.6, 1.0)
+    ax1.set_yticks([0.6, 0.7, 0.8, 0.9, 1.0])
+
     ax1.set_ylabel("Accuracy")
-    ax1.set_title("Evolution of Clean Accuracy per Node (Log Scale Zoom)")
+    ax1.set_title("Evolution of Clean Accuracy per Node")
     ax1.legend(loc="lower right", ncol=3, fontsize='small')
     ax1.grid(True, which="both", ls="-", alpha=0.3)
 
