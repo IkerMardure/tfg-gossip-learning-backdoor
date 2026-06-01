@@ -39,10 +39,12 @@
 \backcite {mills2019communication, yosinski2014how}{{19}{5.2}{section.5.2}}
 \backcite {kingma2014adam}{{20}{5.2}{section.5.2}}
 \backcite {beutel2020flower}{{20}{5.2.1}{subsection.5.2.1}}
-\backcite {10561520}{{22}{6.1}{figure.6.3}}
-\backcite {french1999catastrophic}{{26}{6.3}{section.6.3}}
-\backcite {bagdasaryan2020how,xie2020dba}{{33}{7.1}{section.7.1}}
-\backcite {french1999catastrophic}{{33}{7.1}{section.7.1}}
-\backcite {bao2019neudet}{{34}{7.1}{section.7.1}}
-\backcite {zhao2018federated}{{35}{7.3}{section.7.3}}
-\backcite {blanchard2017machine}{{35}{7.3}{section.7.3}}
+\backcite {bao2019neudet}{{20}{5.3}{section.5.3}}
+\backcite {he2016deep}{{21}{5.3}{section.5.3}}
+\backcite {10561520}{{24}{6.1}{figure.6.3}}
+\backcite {french1999catastrophic}{{28}{6.3}{section.6.3}}
+\backcite {bagdasaryan2020how,xie2020dba}{{35}{7.1}{section.7.1}}
+\backcite {french1999catastrophic}{{35}{7.1}{section.7.1}}
+\backcite {bao2019neudet}{{36}{7.1}{section.7.1}}
+\backcite {zhao2018federated}{{37}{7.3}{section.7.3}}
+\backcite {blanchard2017machine}{{37}{7.3}{section.7.3}}

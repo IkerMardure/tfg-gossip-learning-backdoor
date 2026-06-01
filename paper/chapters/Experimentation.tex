@@ -74,3 +74,17 @@ In our experimental setup using the Flower framework \cite{beutel2020flower}, th
 This discrete-event approach provides a highly controlled baseline for evaluating topological flow. By isolating the parameter dissemination from the unpredictable network noise, latency, and packet drops inherent to real-world peer-to-peer environments, we can precisely track the mathematical dilution of the backdoor payload. 
 
 To ensure a fair and balanced evaluation, it was imperative that every node in the network received an equal amount of training exposure. Therefore, the total number of communication rounds was scaled linearly based on the network size to achieve 30 full network training cycles.
+
+\section{Industrial Validation Setup: NEU-DET}
+To bridge the gap between theoretical insights and practical applicability, a secondary experimental setup was implemented using the NEU-DET dataset \cite{bao2019neudet}. This dataset consists of 1800 grayscale images of size $200 \times 200$ pixels, categorized into six classes representing different types of surface defects in steel manufacturing. The classification task is to identify the specific type of defect present in each image, providing a complex, real-world scenario for evaluating the resilience of decentralized networks.
+
+To accomodate the increased visual complexity of industrial defects, a more sophisticated architecture was implemented. The local model is based on a ResNet-18 \cite{he2016deep} architecture, which is well-suited for capturing intricate spatial features. The network was modified to accept single-channel grayscale images and to output six classes corresponding to the defect types. Similar to the MNIST setup, all parameters were set to be trainable to allow the backdoor attack to effectively learn the new visual trigger.
+
+The input images were scaled to 128 $\times$ 128 pixels to balance computational efficiency with the need for sufficient resolution to capture defect details. The visual backdoor trigger was also scaled to a 28 $\times$ 28 white patch to maintain a consistent relative size compared to the original MNIST trigger. 
+
+To manage the increased memory overhead of the ResNet-18 architecture, the training batch size was adjusted to 16, and the learning rate was calibrated to 0.0001 to ensure stable convergence during the 240 communication rounds. The same metrics of Clean Accuracy and Attack Success Rate were used to evaluate the attack's performance and stealthiness in this more complex, real-world scenario.
+
+\subsection{Experimental Scenarios}
+The NEU-DET validation specifically targeted the two structural extremes evaluated in our theoretical framework: the Fully Connected topology and the Stochastic Block Model. The Fully Connected topology serves as a stress test for the attack's maximum potential, while the Stochastic Block Model provides insights into how community structures can naturally impede the spread of malicious payloads in real-world industrial networks.
+
+By utilizing the same continuous $\alpha = d + 1$ topological heuristic, this industrial validation isolated the network topology as the primary variable, demonstrating that the structural vulnerabilities identified in the baseline experiments are inherent to Decentralized Federated Learning and not merely artifacts of simplified datasets or architectures.

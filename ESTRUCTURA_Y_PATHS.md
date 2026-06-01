@@ -5,8 +5,7 @@ El proyecto ha sido reorganizado en 4 carpetas principales:
 
 ```
 GLow_TFG/
-├── code/                    # Código fuente (GLow-master)
-│   └── GLow-master/
+├── code/                    # Código fuente
 │       ├── client.py
 │       ├── client_backdoor.py
 │       ├── main_backdoor.py

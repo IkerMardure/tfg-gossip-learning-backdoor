@@ -1,0 +1,48 @@
+This is BibTeX, Version 0.99e (TeX Live 2026)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: main.aux
+The style file: unsrt.bst
+Database file #1: erreferentziak.bib
+Warning--I didn't find a database entry for ""
+You've used 35 entries,
+            1791 wiz_defined-function locations,
+            638 strings with 10904 characters,
+and the built_in function-call counts, 9970 in all, are:
+= -- 858
+> -- 537
+< -- 13
++ -- 191
+- -- 156
+* -- 697
+:= -- 1538
+add.period$ -- 107
+call.type$ -- 35
+change.case$ -- 35
+chr.to.int$ -- 0
+cite$ -- 35
+duplicate$ -- 441
+empty$ -- 901
+format.name$ -- 156
+if$ -- 2236
+int.to.chr$ -- 0
+int.to.str$ -- 35
+missing$ -- 35
+newline$ -- 178
+num.names$ -- 35
+pop$ -- 115
+preamble$ -- 1
+purify$ -- 0
+quote$ -- 0
+skip$ -- 251
+stack$ -- 0
+substring$ -- 717
+swap$ -- 151
+text.length$ -- 13
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 0
+warning$ -- 0
+while$ -- 87
+width$ -- 37
+write$ -- 379
+(There was 1 warning)
