@@ -1,11 +1,19 @@
-The main objective of this experimental setup is to explore the vulnerabilities explained previously, specifically backdoor attacks. By simulating a targeted backdoor attacks across different network structures, this research aims to understand how the lack of centralization affects the security of the learning process and how different communication topologies might naturally slow down or accelerate the spread of this type of attacks. All experiments were done using a custom Flower environment \cite{beutel2020flower,belenguer2025glow}. The source code and configuration files used to reproduce all the experiments are publicly available at: https://github.com/IkerMardure/tfg-gossip-learning-backdoor
+This chapter details the experimental framework deployed to evaluate decentralized network resilience against targeted backdoor exploits. By simulating continuous poisoning attacks across diverse graph architectures, this setup empirically isolates how different communication geometries naturally accelerate or impede malicious parameter propagation. All experiments were conducted using a custom Flower environment \cite{beutel2020flower,belenguer2025glow}. The source code and configuration files used to reproduce all the experiments are publicly available at: \url{https://github.com/IkerMardure/tfg-gossip-learning-backdoor}
 
+\subsection{The Flower Federated Learning Framework}
+\label{sec:flower_framework}
 
-\section{Evaluated Network Topologies} \label{sec:evaluated_topologies}
+To implement and evaluate the proposed decentralized backdoor attacks, all experiments were conducted using a highly customized environment built upon the Flower (\texttt{Flwr}) framework \cite{beutel2020flower}. Flower is a widely adopted, open-source framework designed for FL at scale. It abstracts the complex low-level mechanics of distributed communication, allowing researchers to focus on algorithmic design while providing robust tools for simulating thousands of clients on limited hardware through its Virtual Client Engine.
 
-In Decentralized Federated Learning, the communication infrastructure is modeled mathematically as a graph $\mathcal{G} = (\mathcal{V}, \mathcal{E})$, where $\mathcal{V}$ represents the set of participating nodes (clients) and $\mathcal{E}$ represents the set of communication edges (links) between them \cite{palmieri2024impact}. Because nodes only aggregate models from their direct neighbors, the structural properties of $\mathcal{G}$ dictate the flow of parameters, the speed of global convergence, and the network's inherent resilience to malicious injections. 
+However, it is crucial to note that Flower natively operates under a strict, centralized client-server architecture (e.g., standard FL). Because this thesis explicitly investigates purely DFL, the standard Flower orchestrator could not be directly used. 
 
-To evaluate these dynamics and establish a comprehensive baseline, decentralized networks were analyzed across a spectrum of connectivity, ranging from highly sparse to fully dense structures. The four topologies evaluated in this research are visualized theoretically in Figure \ref{fig:topologies_theory} and defined as follows:
+To bridge this gap, we utilized GLow \cite{belenguer2025glow}, a simulation strategy built upon Flower that leverages its robust node abstraction and local training execution while fundamentally overriding its global aggregation logic. Instead of clients sending updates to a central server, GLow forces the framework to simulate peer-to-peer parameter diffusion based on predefined graph topologies. This architectural adaptation by Belenguer et al. was essential to our project: it allowed us to harness Flower's efficient PyTorch integrations and hardware resource management, while successfully simulating the exact topological constraints and  neighborhood averaging. It also allowed us to implement the adversarial boosting required to evaluate decentralized backdoor propagation.
+
+\section{Experimental Network Instantiation}
+\label{sec:experimental_topologies}
+While the theoretical properties and adversarial placement objectives for each graph configuration were established in Section \ref{sec:attacker_placement}, this section details their concrete technical instantiation within our simulation framework. To isolate network geometry as the sole independent variable, all evaluated topologies are modeled as static graphs $\mathcal{G}=(\mathcal{V},\mathcal{E})$ containing a uniform scale of $|\mathcal{V}| = 8$ participating clients. This controlled size allows for a precise, step-by-step observation of localized parameter dilution.
+
+The four architectures are visualized in Figure \ref{fig:topologies_theory} and are instantiated deterministically within the Flower environment using the following exact topological parameters:
 
 \begin{figure}[t]
     \centering
@@ -24,67 +32,71 @@ To evaluate these dynamics and establish a comprehensive baseline, decentralized
         \includegraphics[width=0.45\textwidth]{figures/star_8_graph.png}%
     }\hfill
     \subfloat[Stochastic Block Model\label{fig:sbm_theory}]{%
-        \includegraphics[width=0.45\textwidth]{figures/EC_8_graph.png}%
+        \includegraphics[width=0.45\textwidth]{figures/SBM_8_graph.png}%
     }
-    \caption{Theoretical visualization of the four network topologies evaluated in this study.}
+    \caption{Visualization of the four network topologies evaluated in this study.}
     \label{fig:topologies_theory}
 \end{figure}
 
 \begin{itemize}
-    \item \textbf{Fully Connected Topology:} A Fully Connected (FC) or complete graph is a topology where every node shares a direct edge with every other node in the network (Figure \ref{fig:fc}). The topological distance (network diameter) is strictly one hop. This structure represents the maximum possible density in a peer-to-peer network, allowing for immediate, unimpeded dissemination of knowledge. In these experiments, it is expected that denser networks will accelerate the backdoor attack due to direct peer-to-peer exposure. 
-    
-    \item \textbf{Ring Topology:} A Ring topology represents a highly sparse, constrained network configuration (Figure \ref{fig:ring}). Each node is connected to exactly two immediate neighbors, forming a single closed loop where information travels slowly \cite{giaretta2019gossip}. Because there are no cross-network shortcuts, information must propagate sequentially. This structural bottleneck significantly delays the spread of both legitimate knowledge and potential adversarial payloads, naturally delaying the backdoor infection.
-    
-    \item \textbf{Star Topology:} A Star topology is characterized by a single central node (the hub) connected to multiple peripheral nodes, while the peripheral nodes remain completely isolated from one another (Figure \ref{fig:star}). In a DFL context, this localizes the centralized FL paradigm. The central hub acts as a powerful aggregator, continuously absorbing and averaging updates from all peripherals to create a strong "consensus wall" capable of diluting anomalous updates originating from the periphery.
-    
-    \item \textbf{Stochastic Block Model (SBM):} Real-world decentralized networks rarely follow perfectly uniform shapes; instead, they naturally form communities. To mathematically capture this, Holland et al. \cite{holland1983stochastic} introduced the Stochastic Block Model, where nodes are partitioned into distinct blocks with a higher probability of intra-community edges than inter-community edges. This creates dense local clusters connected by sparse "gateway" links, trapping information in local echo chambers.
+    \item \textbf{Fully Connected Topology:} Instantiated as a complete graph where every node maintains a degree of $d_i = 7$, establishing a network diameter of exactly one hop and maximizing consensus drag.
+    \item \textbf{Ring Topology:} Configured as a uniform closed loop where every client is strictly bounded to a topological degree of $d_i = 2$, forcing multi-hop sequential propagation.
+    \item \textbf{Star Topology:} Structured as a highly asymmetric central-hub framework, consisting of one central coordinator node with a degree of $d_0 = 7$ and seven peripheral leaf nodes restricted to $d_i = 1$.
+    \item \textbf{Stochastic Block Model (SBM):} Implemented as a deterministic two-community graph. Community A (Nodes 0--3) and Community B (Nodes 4--7) are internally complete clusters. The sub-graphs are bridged exclusively by a single, static inter-community edge linking Node 3 and Node 4, assigning them a degree of $d_3 = d_4 = 4$, while the remaining peripheral nodes maintain $d_i = 3$.
 \end{itemize}
+This structural mapping provides the experimental infrastructure required to evaluate the utility-security trade-off detailed in the following sections.
+
 
 \textbf{Deterministic SBM Implementation}
 
 It is important to note that while the theoretical Stochastic Block Model \cite{holland1983stochastic} is a probabilistic framework relying on random edge generation, our experimental methodology requires a controlled, deterministic environment to accurately isolate and measure the attack's propagation.
 
-As shown in Figure \ref{fig:sbm_theory}, the implemented network consists of two distinct communities containing three nodes each. Within each community, the nodes are fully connected to ensure rapid local consensus. However, the two communities are bridged by exactly one fixed gateway connection. To execute our comparative placement strategy (as defined in Section 4.4), we evaluate two distinct attack scenarios within this structure:
+As shown in Figure \ref{fig:sbm_theory}, the implemented network consists of two distinct communities containing three nodes each. Within each community, the nodes are fully connected to ensure rapid local consensus. However, the two communities are bridged by exactly one fixed gateway connection. To execute our comparative placement strategy (as defined in Section \ref{sec:attacker_placement}), we evaluate two distinct attack scenarios within this structure:
 
 \begin{itemize}
     \item \textbf{Scenario 1 (Peripheral Attacker):} The designated malicious node is Client 1, embedded deep within Community A.
     \item \textbf{Scenario 2 (Gateway Attacker):} The designated malicious node is Client 2, which acts as the direct structural bottleneck bridging Community A and Community B.
 \end{itemize}
 
-This deterministic design guarantees that we can directly quantify the natural firewall capabilities of a community boundary versus the devastating potential of a compromised structural bottleneck.
+This deterministic design guarantees that we can directly quantify the natural firewall capabilities of a community boundary versus the potential of a compromised structural bottleneck.
 
 
 \section{Experimental Setup: Dataset, Architecture, and Metrics}
-The primary experiment was conducted using the MNIST dataset \cite{lecun1998gradient}. To align with the architectural requirements of the model, all images were resized to $32 \times 32$ pixels. The classification task used all 10 classes of the MNIST dataset. To establish a controlled and uniform baseline, the dataset was partitioned in an Independent and Identically Distributed (IID) manner among the clients. This ensures that each node starts with a statistically similar subset of the data.
+
+The primary experiment was conducted using the MNIST dataset \cite{lecun1998gradient}. To align with the architectural requirements of the model, all images were resized to $32 \times 32$ pixels. The classification task used all 10 classes of the MNIST dataset. To establish a controlled and uniform baseline, the global dataset was evenly divided into strictly disjoint partitions and distributed in an Independent and Identically Distributed (IID) manner among the clients. This guarantees that each node is assigned an equally sized, mutually exclusive, and statistically similar subset of the training data, preventing any sample overlap between peers.
 
 A modified LeNet \cite{lecun1998gradient} architecture was used as the local model across all nodes. The network is composed of three convolutional layers of 16, 32, and 64 filters, respectively, each with $3 \times 3$ kernels and a padding of 1. Each convolutional operation is followed by a ReLU activation function and a $2 \times 2$ Max Pooling operation. The resulting feature maps are processed through two fully connected layers, the first containing 128 units and the last one containing as many units as the classes used (in this case, 10). A dropout layer with a 0.2 probability was also inserted prior to the final classification layer to mitigate overfitting during the training.
 
-To reduce computational costs and communication overhead, prior literature in Federated Learning frequently proposes freezing the convolutional feature extractors and only updating the fully connected classification layers during local training \cite{mills2019communication, yosinski2014how}. However, for our work, we deliberately chose not to implement this technique. During the local optimization phase, all parameters across the entire LeNet architecture were set to be actively trainable. Initial empirical testing demonstrated that freezing the convolutional layers yielded strictly inferior results for the adversary. Because the backdoor attack relies on the introduction of a distinct visual trigger (the $7 \times 7$ white patch), the convolutional layers must remain unfrozen to properly learn and encode the new spatial geometries of the malicious payload.
-
-To accurately evaluate the long-term assimilation of the continuous backdoor attack, the global training process spanned 240 communication rounds. During each round, the active clients performed local training for 2 epochs using a batch size of 128. This extended timeframe is essential for observing the slow, steady displacement of the global consensus boundary without triggering anomaly detection. The local optimization was handled by the Adam optimizer \cite{kingma2014adam} with a learning rate set to 0.0001 and a momentum of 0.9.
+To accurately evaluate the long-term assimilation of the continuous backdoor attack, the global training process spanned 240 communication rounds. The first 16 communication rounds were executed under strictly non-adversarial conditions, establishing a brief warm-up phase. This configuration allows the decentralized local models to initially synchronize and begin converging on legitimate data features before facing adversarial interference. Following this stabilization period, the continuous poisoning attack is actively triggered from round 16 onward. During each subsequent round, the active clients performed local training for 2 epochs using a batch size of 128. This extended timeframe is essential for observing the slow, steady displacement of the global performance.
 
 To evaluate the attack, two primary metrics were used: Clean Accuracy and Attack Success Rate (ASR). Clean Accuracy measures how well each node classifies the unmodified test data, which is critical for observing how undetectable (stealthy) the attack remains during normal operation. In contrast, the ASR is calculated using modified test data to indicate the spread and effectiveness of the backdoor payload through the network.
 
-\subsection{Simulation Constraints and Execution Flow}
+\textbf{Simulation Constraints and Execution Flow:}
+While the theoretical framework of GL often assumes fully parallel, asynchronous execution across all participating nodes (as outlined in Algorithm \ref{alg:gossip_learning}), simulating such a decentralized network on centralized hardware requires specific implementation constraints.
 
-While the theoretical framework of Gossip Learning often assumes fully parallel, asynchronous execution across all participating nodes (as outlined in Algorithm \ref{alg:gossip_learning}), simulating such a decentralized network on centralized hardware requires specific implementation constraints.
-
-In our experimental setup using the Flower framework \cite{beutel2020flower}, the execution flow was implemented as a discrete-event sequential simulation rather than a truly parallel asynchronous environment. Specifically, a single communication round is strictly defined as the local training and subsequent parameter broadcast of exactly one client. During its designated round, the active client performs local optimization and immediately sends its updated model to its topological neighbors, who aggregate it into their own local state.
+In our experimental setup using the Flower framework \cite{beutel2020flower}, the execution flow was implemented as a discrete-event sequential simulation rather than a truly parallel asynchronous environment. Specifically, a single communication round is strictly defined as the local training and subsequent parameter broadcast of exactly one client. During its designated round, the active client performs local optimization and immediately sends its updated model to its topological neighbors, who aggregate it into their own local state. Consistent with the standard decentralized protocols established in our threat model, this aggregation applies a uniform topological weighting; the incoming model is scaled by a factor of $\alpha_{ij} = \frac{1}{d_i + 1}$, meaning all neighboring updates are treated equally based on the receiving node's topological degree.
 
 This discrete-event approach provides a highly controlled baseline for evaluating topological flow. By isolating the parameter dissemination from the unpredictable network noise, latency, and packet drops inherent to real-world peer-to-peer environments, we can precisely track the mathematical dilution of the backdoor payload. 
 
-To ensure a fair and balanced evaluation, it was imperative that every node in the network received an equal amount of training exposure. Therefore, the total number of communication rounds was scaled linearly based on the network size to achieve 30 full network training cycles.
+To ensure a fair and balanced evaluation, it was imperative that every node in the network received an equal amount of training exposure. Therefore, the total number of communication rounds was scaled linearly based on the network size to achieve 30 full network training cycles. A complete breakdown of the hardware specifications, software frameworks, and runtime metrics associated with these simulations is detailed in Appendix \ref{app:hardware_software}.
 
 \section{Industrial Validation Setup: NEU-DET}
-To bridge the gap between theoretical insights and practical applicability, a secondary experimental setup was implemented using the NEU-DET dataset \cite{bao2019neudet}. This dataset consists of 1800 grayscale images of size $200 \times 200$ pixels, categorized into six classes representing different types of surface defects in steel manufacturing. The classification task is to identify the specific type of defect present in each image, providing a complex, real-world scenario for evaluating the resilience of decentralized networks.
+To bridge the gap between theoretical insights and practical applicability, a secondary experimental setup was implemented using the NEU-DET dataset \cite{bao2019neudet}. This dataset consists of 1800 grayscale images of size $200 \times 200$ pixels, categorized into six classes representing different types of surface defects in steel manufacturing. The classification task is to identify the specific type of defect present in each image, providing a complex, real-world scenario for evaluating the resilience of decentralized networks. Consistent with the primary MNIST baseline, the global dataset was evenly divided into strictly disjoint partitions and distributed in an Independent and Identically Distributed (IID) manner. This ensures that the structural evaluation remains unaffected by data redundancy between peers.
 
-To accomodate the increased visual complexity of industrial defects, a more sophisticated architecture was implemented. The local model is based on a ResNet-18 \cite{he2016deep} architecture, which is well-suited for capturing intricate spatial features. The network was modified to accept single-channel grayscale images and to output six classes corresponding to the defect types. Similar to the MNIST setup, all parameters were set to be trainable to allow the backdoor attack to effectively learn the new visual trigger.
+To accommodate the increased visual complexity of industrial defects, a more sophisticated architecture was implemented. The local model is based on a ResNet-18 \cite{he2016deep} architecture, which is well-suited for capturing intricate spatial features. The network was modified to accept single-channel grayscale images and to output six classes corresponding to the defect types. Similar to the MNIST setup, all parameters were set to be trainable to allow the backdoor attack to effectively learn the new visual trigger.
 
-The input images were scaled to 128 $\times$ 128 pixels to balance computational efficiency with the need for sufficient resolution to capture defect details. The visual backdoor trigger was also scaled to a 28 $\times$ 28 white patch to maintain a consistent relative size compared to the original MNIST trigger. 
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.4\textwidth]{figures/neudet_example.png}\caption{Examples of clean and poisoned (triggered) industrial surface defect images from the NEU-DET dataset.}
+    \label{fig:neudet_samples}
+\end{figure}
+
+The input images were scaled to 128 $\times$ 128 pixels to balance computational efficiency with the need for sufficient resolution to capture defect details. The visual backdoor trigger was also scaled to a 28 $\times$ 28 white patch to maintain a consistent relative size compared to the original MNIST trigger (see Figure \ref{fig:neudet_samples}).
+
 
 To manage the increased memory overhead of the ResNet-18 architecture, the training batch size was adjusted to 16, and the learning rate was calibrated to 0.0001 to ensure stable convergence during the 240 communication rounds. The same metrics of Clean Accuracy and Attack Success Rate were used to evaluate the attack's performance and stealthiness in this more complex, real-world scenario.
 
-\subsection{Experimental Scenarios}
+\textbf{Experimental Scenarios:}
 The NEU-DET validation specifically targeted the two structural extremes evaluated in our theoretical framework: the Fully Connected topology and the Stochastic Block Model. The Fully Connected topology serves as a stress test for the attack's maximum potential, while the Stochastic Block Model provides insights into how community structures can naturally impede the spread of malicious payloads in real-world industrial networks.
 
-By utilizing the same continuous $\alpha = d + 1$ topological heuristic, this industrial validation isolated the network topology as the primary variable, demonstrating that the structural vulnerabilities identified in the baseline experiments are inherent to Decentralized Federated Learning and not merely artifacts of simplified datasets or architectures.
+By utilizing the same continuous $\alpha = d + 1$ topological heuristic, this industrial validation isolated the network topology as the primary variable, demonstrating that the structural vulnerabilities identified in the baseline experiments are inherent to DFL and not merely artifacts of simplified datasets or architectures.

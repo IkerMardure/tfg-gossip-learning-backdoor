@@ -109,11 +109,11 @@ def plot_series(ax, series: Sequence[Tuple[int, float]], label: str, color: str,
         color=color,
         marker=marker,
         linestyle=linestyle,
-        linewidth=2.0,
-        markersize=5.5,
+        linewidth=4.0,           
+        markersize=12.0,         
         markevery=markevery,
         markerfacecolor="white",
-        markeredgewidth=1.2,
+        markeredgewidth=2.0,     
     )
 
 
@@ -146,7 +146,7 @@ def build_parser() -> argparse.ArgumentParser:
         dest="sbm_gateway",
         required=True,
         type=Path,
-        help="Raw log file for the SBM gateway topology",
+        help="Raw log file for the SBM Gateway topology",
     )
     parser.add_argument(
         "--sbm-periph",
@@ -154,12 +154,12 @@ def build_parser() -> argparse.ArgumentParser:
         dest="sbm_periph",
         required=True,
         type=Path,
-        help="Raw log file for the SBM peripheral topology",
+        help="Raw log file for the SBM Peripheral topology",
     )
     parser.add_argument(
         "--output",
         type=Path,
-        default=Path("mean_asr_mnist_comparison_all.png"),
+        default=Path("mean_asr_mnist_comparison.png"),
         help="Output image path for the comparison plot",
     )
     return parser
@@ -175,13 +175,15 @@ def main() -> None:
     ring_series = load_mean_asr(args.ring)
     star_hub_series = load_mean_asr(args.star_hub)
     star_periph_series = load_mean_asr(args.star_periph)
+    
+    # Actually loading the SBM files now
     sbm_gateway_series = load_mean_asr(args.sbm_gateway)
     sbm_periph_series = load_mean_asr(args.sbm_periph)
 
     if not any((fc_series, ring_series, star_hub_series, star_periph_series, sbm_gateway_series, sbm_periph_series)):
         raise SystemExit("No valid **asr: data found in any input file.")
 
-    fig, ax = plt.subplots(figsize=(11.5, 6.5))
+    fig, ax = plt.subplots(figsize=(14, 8))
 
     plot_series(
         ax,
@@ -232,14 +234,19 @@ def main() -> None:
         linestyle=":",
     )
 
-    ax.set_title("Evolution of Mean Attack Success Rate across Topologies", pad=12)
-    ax.set_xlabel("Communication Round")
-    ax.set_ylabel("Mean Attack Success Rate (ASR)")
+    ax.set_title("Evolution of Mean Attack Success Rate across Topologies", pad=20, fontsize=28, fontweight='bold')
+    ax.set_xlabel("Communication Round", fontsize=24, labelpad=15)
+    ax.set_ylabel("Mean Attack Success Rate (ASR)", fontsize=24, labelpad=15)
+    
     ax.set_xlim(0, 240)
     ax.set_ylim(0.0, 1.0)
     ax.set_xticks(range(0, 241, 20))
+    
+    ax.tick_params(axis='both', which='major', labelsize=20)
+    
     ax.grid(True, which="major", linestyle="--", alpha=0.4)
-    ax.legend(loc="best", frameon=True)
+    
+    ax.legend(loc="best", frameon=True, fontsize=20)
 
     fig.tight_layout()
     args.output.parent.mkdir(parents=True, exist_ok=True)

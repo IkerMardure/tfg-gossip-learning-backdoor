@@ -1,50 +1,58 @@
 \backcite {mcmahan2017communication}{{1}{1}{chapter.1}}
+\backcite {hegedus2019gossip,vanhaesebrouck2017decentralized}{{1}{1}{chapter.1}}
 \backcite {ormandi2013gossip}{{1}{1}{chapter.1}}
-\backcite {yang2025stealthy, syros2024backdoor}{{1}{1}{chapter.1}}
-\backcite {french1999catastrophic}{{1}{1}{chapter.1}}
-\backcite {piaseczny2025adversarial}{{2}{1}{chapter.1}}
-\backcite {bao2019neudet}{{2}{1}{chapter.1}}
-\backcite {mcmahan2017communication}{{3}{2.1}{section.2.1}}
-\backcite {yuan2024decentralized}{{4}{2.1}{equation.2.1}}
-\backcite {hegedus2019gossip}{{5}{2.2}{section.2.2}}
-\backcite {vanhaesebrouck2017decentralized}{{5}{2.2}{section.2.2}}
-\backcite {ormandi2013gossip,hegedus2019gossip}{{5}{2.2}{equation.2.2}}
-\backcite {palmieri2024impact}{{5}{2.2}{equation.2.2}}
-\backcite {hallaji2024decentralized}{{7}{3.1}{section.3.1}}
-\backcite {fredrikson2015model, zhang2020secret}{{7}{3.1}{section.3.1}}
-\backcite {ateniese2015hacking, ganju2018property}{{7}{3.1}{section.3.1}}
-\backcite {han2023reinforcement}{{8}{3.1}{section.3.1}}
-\backcite {bouacida2021vulnerabilities}{{8}{3.1}{section.3.1}}
-\backcite {xie2024survey}{{8}{3.1}{section.3.1}}
-\backcite {bouacida2021vulnerabilities}{{8}{3.1}{section.3.1}}
-\backcite {xia2023poisoning}{{8}{3.2}{section.3.2}}
-\backcite {shafahi2018poison, zhu2019transferable}{{8}{3.2.1}{subsection.3.2.1}}
-\backcite {xia2023poisoning}{{8}{3.2.1}{subsection.3.2.1}}
-\backcite {bagdasaryan2020how}{{9}{3.2.3}{subsection.3.2.3}}
-\backcite {bagdasaryan2020how}{{9}{3.2.3}{subsection.3.2.3}}
-\backcite {yang2025stealthy}{{9}{3.2.3}{subsection.3.2.3}}
-\backcite {french1999catastrophic}{{9}{3.2.3}{subsection.3.2.3}}
-\backcite {bagdasaryan2020how}{{10}{3.2.3}{subsection.3.2.3}}
-\backcite {xie2020dba}{{10}{3.2.3}{subsection.3.2.3}}
-\backcite {piaseczny2025adversarial}{{10}{3.3}{section.3.3}}
-\backcite {xie2020dba}{{12}{4.2.1}{subsection.4.2.1}}
-\backcite {bagdasaryan2020how}{{12}{4.2.2}{subsection.4.2.2}}
-\backcite {beutel2020flower,belenguer2025glow}{{17}{5}{chapter.5}}
-\backcite {palmieri2024impact}{{17}{5.1}{section.5.1}}
-\backcite {giaretta2019gossip}{{18}{5.1}{figure.5.1}}
-\backcite {holland1983stochastic}{{18}{5.1}{figure.5.1}}
-\backcite {holland1983stochastic}{{19}{5.1}{figure.5.1}}
-\backcite {lecun1998gradient}{{19}{5.2}{section.5.2}}
-\backcite {lecun1998gradient}{{19}{5.2}{section.5.2}}
-\backcite {mills2019communication, yosinski2014how}{{19}{5.2}{section.5.2}}
-\backcite {kingma2014adam}{{20}{5.2}{section.5.2}}
-\backcite {beutel2020flower}{{20}{5.2.1}{subsection.5.2.1}}
-\backcite {bao2019neudet}{{20}{5.3}{section.5.3}}
-\backcite {he2016deep}{{21}{5.3}{section.5.3}}
-\backcite {10561520}{{24}{6.1}{figure.6.3}}
-\backcite {french1999catastrophic}{{28}{6.3}{section.6.3}}
-\backcite {bagdasaryan2020how,xie2020dba}{{35}{7.1}{section.7.1}}
-\backcite {french1999catastrophic}{{35}{7.1}{section.7.1}}
-\backcite {bao2019neudet}{{36}{7.1}{section.7.1}}
-\backcite {zhao2018federated}{{37}{7.3}{section.7.3}}
-\backcite {blanchard2017machine}{{37}{7.3}{section.7.3}}
+\backcite {yang2025stealthy, syros2024backdoor}{{1}{1}{figure.1.1}}
+\backcite {bagdasaryan2020how}{{2}{1}{figure.1.1}}
+\backcite {french1999catastrophic}{{2}{1}{figure.1.1}}
+\backcite {piaseczny2025adversarial}{{2}{1}{figure.1.1}}
+\backcite {lecun1998gradient}{{2}{1}{figure.1.1}}
+\backcite {bao2019neudet}{{2}{1}{figure.1.1}}
+\backcite {mcmahan2017communication}{{5}{2.1}{section.2.1}}
+\backcite {mcmahan2017communication}{{5}{2.1}{ifalgorithm.2.1}}
+\backcite {yuan2024decentralized}{{6}{2.1}{equation.2.1}}
+\backcite {hegedus2019gossip}{{7}{2.2}{section.2.2}}
+\backcite {vanhaesebrouck2017decentralized}{{7}{2.2}{section.2.2}}
+\backcite {mcmahan2017communication}{{7}{2.2}{section.2.2}}
+\backcite {yuan2024decentralized}{{7}{2.2}{section.2.2}}
+\backcite {ormandi2013gossip,hegedus2019gossip}{{8}{2.2}{equation.2.2}}
+\backcite {palmieri2024impact}{{8}{2.2}{equation.2.2}}
+\backcite {mcmahan2017communication}{{8}{2.2}{equation.2.2}}
+\backcite {melis2019exploiting}{{11}{3.1}{section.3.1}}
+\backcite {hallaji2024decentralized}{{11}{3.1}{section.3.1}}
+\backcite {fredrikson2015model, zhang2020secret}{{11}{3.1}{section.3.1}}
+\backcite {ateniese2015hacking, ganju2018property}{{11}{3.1}{section.3.1}}
+\backcite {han2023reinforcement}{{12}{3.1}{section.3.1}}
+\backcite {bouacida2021vulnerabilities}{{12}{3.1}{section.3.1}}
+\backcite {xie2024survey}{{12}{3.1}{section.3.1}}
+\backcite {bouacida2021vulnerabilities}{{12}{3.1}{section.3.1}}
+\backcite {xia2023poisoning}{{12}{3.2}{section.3.2}}
+\backcite {shafahi2018poison, zhu2019transferable}{{12}{3.2.1}{subsection.3.2.1}}
+\backcite {xia2023poisoning}{{13}{3.2.1}{subsection.3.2.1}}
+\backcite {bagdasaryan2020how}{{13}{3.2.2}{subsection.3.2.2}}
+\backcite {bagdasaryan2020how}{{13}{3.2.2}{subsection.3.2.2}}
+\backcite {yang2025stealthy}{{13}{3.2.2}{subsection.3.2.2}}
+\backcite {french1999catastrophic}{{13}{3.2.2}{subsection.3.2.2}}
+\backcite {xia2023poisoning}{{13}{3.2.2}{subsection.3.2.2}}
+\backcite {fung2020mitigating}{{14}{3.2.2}{subsection.3.2.2}}
+\backcite {yin2018byzantine}{{14}{3.2.2}{subsection.3.2.2}}
+\backcite {guerraoui2018hidden}{{14}{3.2.2}{subsection.3.2.2}}
+\backcite {bagdasaryan2020how}{{14}{3.2.2}{subsection.3.2.2}}
+\backcite {xie2020dba}{{14}{3.2.2}{subsection.3.2.2}}
+\backcite {mcmahan2017communication}{{14}{3.3}{figure.3.1}}
+\backcite {piaseczny2025adversarial}{{14}{3.3}{figure.3.1}}
+\backcite {piaseczny2025adversarial}{{14}{3.3}{figure.3.1}}
+\backcite {hallaji2024decentralized,xia2023poisoning,blanchard2017machine}{{15}{3.4}{section.3.4}}
+\backcite {syros2024backdoor,palmieri2024impact}{{15}{3.4}{section.3.4}}
+\backcite {gu2017badnets}{{18}{4.2.1}{subsection.4.2.1}}
+\backcite {xie2020dba}{{18}{4.2.1}{subsection.4.2.1}}
+\backcite {bagdasaryan2020how}{{19}{4.2.2}{subsection.4.2.2}}
+\backcite {beutel2020flower,belenguer2025glow}{{23}{5}{chapter.5}}
+\backcite {beutel2020flower}{{23}{5.0.1}{subsection.5.0.1}}
+\backcite {belenguer2025glow}{{23}{5.0.1}{subsection.5.0.1}}
+\backcite {holland1983stochastic}{{25}{5.1}{figure.5.1}}
+\backcite {lecun1998gradient}{{25}{5.2}{section.5.2}}
+\backcite {lecun1998gradient}{{25}{5.2}{section.5.2}}
+\backcite {beutel2020flower}{{26}{5.2}{section.5.2}}
+\backcite {bao2019neudet}{{27}{5.3}{section.5.3}}
+\backcite {he2016deep}{{27}{5.3}{section.5.3}}
+\backcite {10561520}{{30}{6.1}{figure.6.2}}

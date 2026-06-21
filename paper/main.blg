@@ -5,42 +5,42 @@ The style file: unsrt.bst
 Database file #1: erreferentziak.bib
 You've used 36 entries,
             1791 wiz_defined-function locations,
-            644 strings with 11109 characters,
-and the built_in function-call counts, 10354 in all, are:
-= -- 894
+            644 strings with 11322 characters,
+and the built_in function-call counts, 10794 in all, are:
+= -- 956
 > -- 551
-< -- 14
+< -- 15
 + -- 196
 - -- 160
-* -- 719
-:= -- 1587
-add.period$ -- 110
+* -- 742
+:= -- 1627
+add.period$ -- 112
 call.type$ -- 36
 change.case$ -- 36
 chr.to.int$ -- 0
 cite$ -- 36
-duplicate$ -- 462
-empty$ -- 939
+duplicate$ -- 486
+empty$ -- 978
 format.name$ -- 160
-if$ -- 2330
+if$ -- 2452
 int.to.chr$ -- 0
 int.to.str$ -- 36
 missing$ -- 36
 newline$ -- 183
 num.names$ -- 36
-pop$ -- 121
+pop$ -- 124
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 267
+skip$ -- 289
 stack$ -- 0
-substring$ -- 749
-swap$ -- 162
-text.length$ -- 14
+substring$ -- 821
+swap$ -- 182
+text.length$ -- 15
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
 warning$ -- 0
-while$ -- 91
+while$ -- 97
 width$ -- 38
-write$ -- 390
+write$ -- 393

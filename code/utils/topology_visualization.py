@@ -77,6 +77,23 @@ def _compute_layout(graph: nx.Graph, layout: str, seed: int):
     raise ValueError("Unsupported layout. Use: spring, circular, kamada_kawai, shell")
 
 
+def _is_sbm_topology(yaml_path: Path) -> bool:
+    return any(part.lower() == "sbm" for part in yaml_path.parts) or yaml_path.stem.upper().startswith("SBM_")
+
+
+def _get_sbm_communities(num_clients: int, yaml_path: Path) -> Tuple[List[int], List[int]]:
+    if not _is_sbm_topology(yaml_path):
+        return [], []
+
+    if num_clients < 2 or num_clients % 2 != 0:
+        return [], []
+
+    split_index = num_clients // 2
+    community_a = list(range(0, split_index))
+    community_b = list(range(split_index, num_clients))
+    return community_a, community_b
+
+
 def visualize_topology_from_yaml(
     yaml_path: str,
     output_path: str = None,
@@ -102,7 +119,7 @@ def visualize_topology_from_yaml(
     connected_nodes = [node for node in graph.nodes() if node not in set(isolated_nodes)]
 
     pos = _compute_layout(graph, layout, seed)
-    plt.figure(figsize=(10, 8))
+    plt.figure(figsize=(14, 11))
 
     nx.draw_networkx_edges(graph, pos, width=1.5, alpha=0.7, edge_color="#546E7A")
 
@@ -111,10 +128,10 @@ def visualize_topology_from_yaml(
             graph,
             pos,
             nodelist=connected_nodes,
-            node_size=460,
+            node_size=4800,
             node_color="#2A9D8F",
             edgecolors="white",
-            linewidths=1.2,
+            linewidths=2.0,
         )
 
     if isolated_nodes:
@@ -122,16 +139,61 @@ def visualize_topology_from_yaml(
             graph,
             pos,
             nodelist=isolated_nodes,
-            node_size=500,
+            node_size=5600,
             node_color="#E76F51",
             edgecolors="white",
-            linewidths=1.2,
+            linewidths=2.0,
         )
 
     if show_labels:
-        nx.draw_networkx_labels(graph, pos, font_size=9, font_color="#1B1F23")
+        nx.draw_networkx_labels(
+            graph,
+            pos,
+            font_size=22,
+            font_color="#111827",
+            font_weight="bold",
+            bbox=dict(boxstyle="round,pad=0.36", facecolor="white", edgecolor="none", alpha=0.92),
+        )
 
-    plt.title(f"Topology Graph: {yaml_file.stem}")
+        community_a, community_b = _get_sbm_communities(num_clients, yaml_file)
+        if community_a and community_b:
+            ax = plt.gca()
+
+            def _community_bounds(nodes: List[int]) -> Tuple[float, float, float, float]:
+                xs = [pos[node][0] for node in nodes]
+                ys = [pos[node][1] for node in nodes]
+                return min(xs), max(xs), sum(xs) / len(xs), sum(ys) / len(ys)
+
+            min_a_x, max_a_x, center_a_x, center_a_y = _community_bounds(community_a)
+            min_b_x, max_b_x, center_b_x, center_b_y = _community_bounds(community_b)
+            x_pad_a = max((max_a_x - min_a_x) * 0.35, 0.25)
+            x_pad_b = max((max_b_x - min_b_x) * 0.35, 0.25)
+
+            ax.text(
+                min_a_x - x_pad_a,
+                center_a_y - 0.42,
+                "Community A",
+                ha="right",
+                va="center",
+                fontsize=30,
+                fontweight="bold",
+                color="#111827",
+                bbox=dict(boxstyle="round,pad=0.45", facecolor="white", edgecolor="#2A9D8F", linewidth=1.4, alpha=0.78),
+                zorder=1,
+            )
+            ax.text(
+                max_b_x + x_pad_b,
+                center_b_y + 0.42,
+                "Community B",
+                ha="left",
+                va="center",
+                fontsize=30,
+                fontweight="bold",
+                color="#111827",
+                bbox=dict(boxstyle="round,pad=0.45", facecolor="white", edgecolor="#E76F51", linewidth=1.4, alpha=0.78),
+                zorder=1,
+            )
+
     plt.axis("off")
     plt.tight_layout()
     plt.savefig(output_file, format=output_file.suffix.lstrip("."), dpi=dpi, bbox_inches="tight")

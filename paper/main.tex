@@ -3,7 +3,8 @@
 
 \chapterstyle{veelo}
 
-
+\usepackage{tikz}
+\usetikzlibrary{positioning, arrows.meta}
 %% ALTERNATIBAK / ALTERNATIVAS
 %\chapterstyle{default}
 %\chapterstyle{bianchi}
@@ -19,8 +20,8 @@
 %% INFORMAZIOA / INFORMACIÓN %%
 \newcommand{\egilea}{Iker Bereziartua Sagarna}
 \newcommand{\zuzendariak}{
-	Zuzendaria 1 / Director(a) 1\\
-	Zuzendaria 2 / Director(a) 2
+	Jon Vadillo Jueguen\\
+	Unai Garciarena Hualde
 }
 \newcommand{\izenburua}{Evaluating the Impact of Network Topology on Backdoor Attacks in Decentralized Federated Learning}
 \newcommand{\data}{\today}
@@ -117,7 +118,7 @@
  
 %% KOMENTATU HIRU LERRO HAUEK ATALA NAHI EZ BADUZU
 %% COMENTA ESTAS TRES LÍNEAS SI NO QUIERES ESTE APARTADO
-\chapter*{Esker onak / Agradecimientos}
+\chapter*{Acknowledgements}
 \input chapters/acknowledgements
 \cleardoublepage
  
@@ -125,7 +126,7 @@
 % LABURPENA / RESUMEN %
 %%%%%%%%%%%%%%%%%%%%%%%
  
-\chapter*{Laburpena / Resumen}
+\chapter*{Abstract}
 \input chapters/abstract
 \cleardoublepage
  
@@ -166,12 +167,12 @@
 \cleardoublepage
 \mainmatter
 \pagestyle{ruled}
- 
+
 \chapter{Introduction} \label{ch:introduction}
 \input chapters/Introduction 
 \cleardoublepage
 
-\chapter{Theoretical Framework} \label{ch:theoretical framewrk}
+\chapter{Theoretical Framework} \label{ch:theoretical framework}
 \input chapters/TheoreticalFramework
 \cleardoublepage
 
@@ -183,7 +184,7 @@
 \input chapters/Methodology 
 \cleardoublepage
 
-\chapter{Experimentation}
+\chapter{Experimental Design and Setup}
 \label{ch:experimentation}
 \input{chapters/Experimentation}
 \cleardoublepage
@@ -203,6 +204,15 @@
 \addappheadtotoc
 \appendix
  
+\chapter{Detailed Individual Node Plots} \label{app:detailed_plots}
+\input chapters/appendix
+\cleardoublepage
+
+\chapter{Hardware and Software Environment} \label{app:hardware_software}
+\input chapters/Reproducibility
+\cleardoublepage
+
+
 \ifdefined\euskaraz
 \chapter{AA sortzailearen erabilera deklarazioa} \label{ch:deklarazioa}
 \input chapters/appendix/deklarazioa

@@ -106,7 +106,8 @@ def plot_series(ax, series: Sequence[Tuple[int, float]], label: str, color: str,
         return
 
     rounds, values = zip(*series)
-    markevery = max(1, len(rounds) // 12)
+    # Adjust markevery to match the visual density of the provided image
+    markevery = max(1, len(rounds) // 20)
     ax.plot(
         rounds,
         values,
@@ -114,11 +115,11 @@ def plot_series(ax, series: Sequence[Tuple[int, float]], label: str, color: str,
         color=color,
         marker=marker,
         linestyle=linestyle,
-        linewidth=2.0,
-        markersize=5.5,
+        linewidth=3.5,
+        markersize=12.0,
         markevery=markevery,
-        markerfacecolor="white",
-        markeredgewidth=1.2,
+        markerfacecolor="white", # Keeps the inside of the markers empty like the image
+        markeredgewidth=2.0,
     )
 
 
@@ -127,6 +128,7 @@ def build_parser() -> argparse.ArgumentParser:
         description="Generate a publication-ready Mean distributed accuracy comparison plot for MNIST topologies.",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
+    # Replaced inputs to exactly match requested names
     parser.add_argument("--isolated", required=True, type=Path, help="Raw log file for the Isolated topology")
     parser.add_argument("--ring", required=True, type=Path, help="Raw log file for the Ring topology")
     parser.add_argument("--star", required=True, type=Path, help="Raw log file for the Star topology")
@@ -156,63 +158,75 @@ def main() -> None:
     if not any((isolated_series, ring_series, star_series, fc_series, sbm_series)):
         raise SystemExit("No valid **acc_distr: data found in any input file.")
 
-    all_values = [value for series in (isolated_series, ring_series, star_series, fc_series, sbm_series) for _, value in series]
-    min_value = min(all_values)
-    max_value = max(all_values)
-    y_padding = max(0.02, (max_value - min_value) * 0.08)
+    all_values = [value for series in (isolated_series, ring_series, star_series, fc_series, sbm_series) for _, value in series if series]
+    if all_values:
+        min_value = min(all_values)
+        max_value = max(all_values)
+        y_padding = max(0.02, (max_value - min_value) * 0.08)
+    else:
+        min_value, max_value, y_padding = 0.0, 1.0, 0.1
 
-    fig, ax = plt.subplots(figsize=(11.5, 6.5))
+    # Using a larger figure size for poster resolution
+    fig, ax = plt.subplots(figsize=(16, 9))
 
+    # Plotted in the exact order and styling of the provided image legend
     plot_series(
         ax,
         isolated_series,
         label="Isolated",
-        color="#1f77b4",
-        marker="o",
-        linestyle="-",
+        color="#1f77b4", # blue
+        marker="o",      # circle
+        linestyle="-",   # solid
     )
     plot_series(
         ax,
         ring_series,
         label="Ring Clean",
-        color="#ff7f0e",
-        marker="s",
-        linestyle="--",
+        color="#ff7f0e", # orange
+        marker="s",      # square
+        linestyle="--",  # dashed
     )
     plot_series(
         ax,
         star_series,
         label="Star Clean",
-        color="#2ca02c",
-        marker="^",
-        linestyle=":",
+        color="#2ca02c", # green
+        marker="^",      # triangle up
+        linestyle="-.",  # dash-dot
     )
     plot_series(
         ax,
         fc_series,
         label="FC Clean",
-        color="#d62728",
-        marker="D",
-        linestyle="-.",
+        color="#d62728", # red
+        marker="D",      # diamond
+        linestyle="-.",  # dash-dot
     )
     plot_series(
         ax,
         sbm_series,
         label="SBM Clean",
-        color="#9467bd",
-        marker="v",
-        linestyle=(0, (3, 1, 1, 1)),
+        color="#9467bd", # purple
+        marker="v",      # triangle down
+        linestyle="-.",  # dash-dot
     )
 
-    ax.set_title("Evolution of Mean Distributed Accuracy across Topologies", pad=12)
-    ax.set_xlabel("Communication Round")
-    ax.set_ylabel("Mean Distributed Accuracy")
+    # Increased text sizes for all labels, titles, and ticks
+    ax.set_title("Evolution of Mean Distributed Accuracy across Topologies", pad=20, fontsize=28, fontweight='bold')
+    ax.set_xlabel("Communication Round", fontsize=24, labelpad=15)
+    ax.set_ylabel("Mean Distributed Accuracy", fontsize=24, labelpad=15)
     ax.set_yscale("linear")
+    
     ax.set_xlim(0, 240)
     ax.set_ylim(max(0.0, min_value - y_padding), min(1.0, max_value + y_padding))
     ax.set_xticks(range(0, 241, 20))
+    
+    ax.tick_params(axis='both', which='major', labelsize=20)
+    
     ax.grid(True, which="major", linestyle="--", alpha=0.4)
-    ax.legend(loc="best", frameon=True)
+    
+    # Legend positioned at the top left to match the provided image
+    ax.legend(loc="upper left", frameon=True, fontsize=20)
 
     fig.tight_layout()
     args.output.parent.mkdir(parents=True, exist_ok=True)

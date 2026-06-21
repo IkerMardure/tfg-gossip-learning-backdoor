@@ -1,0 +1,32 @@
+\section{Hardware Setup}
+\begin{itemize}
+	\item \textbf{CPU:} 12th Gen Intel(R) Core(TM) i7-12650H
+	\item \textbf{RAM:} 16 GB
+	\item \textbf{GPU:} NVIDIA GeForce RTX 3050 Ti Laptop GPU
+\end{itemize}
+
+\section{Software Frameworks}
+To ensure the full reproducibility of the experiments, the software environment was managed using virtual environments. The core frameworks and primary dependencies utilized in this research are detailed below:
+
+\begin{itemize}
+    \item \textbf{Federated Learning Framework:} Flower (\texttt{flwr}) v1.7.0.
+    \item \textbf{Deep Learning Framework:} PyTorch v2.5.1 (with CUDA 12.1 support).
+    \item \textbf{Experiment Configuration:} Hydra-Core v1.3.2.
+\end{itemize}
+
+The exhaustive list of all dependencies, environment configuration files, installation instructions, and execution scripts is publicly available in the official project repository:
+\begin{center}
+    \url{https://github.com/IkerMardure/tfg-gossip-learning-backdoor}
+\end{center}
+In this repository, the \texttt{README.md} file provides the exact commands required to replicate the development environment and run the simulations presented in this thesis.
+
+\section{Simulation Runtime}
+The experimentation involves computationally intensive simulations of 240 communication
+rounds for both MNIST and NEU-DET scenarios. Runtime is dominated by
+repeated local training, peer-to-peer aggregation, and metric logging at each round, with
+additional overhead when adversarial evaluation is enabled. On the hardware described
+above, the full 240-round in the fully connected runs required approximately 24000 seconds
+for MNIST and 4000 seconds for NEU-DET. While the NEU-DET scenario utilized
+a significantly heavier architecture (ResNet-18), its total runtime was substantially lower
+due to the massive difference in dataset volume (1,800 total images compared to the 60,000
+images processed per epoch in the MNIST baseline).

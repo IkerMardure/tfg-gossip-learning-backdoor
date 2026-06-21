@@ -5,6 +5,16 @@ Brendan McMahan, Ewan Moore, Daniel Ramage, Seth Hampson, and Blaise~Aguera y~Ar
 \newblock Communication-efficient learning of deep networks from decentralized data.
 \newblock {\em Artificial intelligence and statistics}, pages 1273--1282, 2017.
 
+\bibitem{hegedus2019gossip}
+Istv{\'a}n Heged{\"u}s, G{\'a}bor Danner, and M{\'a}rk Jelasity.
+\newblock Gossip learning as a decentralized alternative to federated learning.
+\newblock In {\em Distributed Applications and Interoperable Systems}, pages 74--90. Springer, 2019.
+
+\bibitem{vanhaesebrouck2017decentralized}
+Paul Vanhaesebrouck, Aur{\'e}lien Bellet, and Marc Tommasi.
+\newblock Decentralized collaborative learning of personalized models over networks.
+\newblock {\em arXiv preprint arXiv:1710.06175}, 2017.
+
 \bibitem{ormandi2013gossip}
 R{\'o}bert Orm{\'a}ndi, Istv{\'a}n Heged{\H{u}}s, and M{\'a}rk Jelasity.
 \newblock Gossip learning with l2-regularized linear models.
@@ -20,6 +30,11 @@ Georgios Syros, G{\"o}kberk Yar, Simona Boboila, Cristina Nita-Rotaru, and Alina
 \newblock Backdoor attacks in peer-to-peer federated learning.
 \newblock {\em arXiv preprint arXiv:2301.09732}, 2024.
 
+\bibitem{bagdasaryan2020how}
+Eugene Bagdasaryan, Andreas Veit, Yiat Chia, Maxim Fedorov, and Deborah Estrin.
+\newblock How to backdoor federated learning.
+\newblock {\em International Conference on Artificial Intelligence and Statistics}, pages 2938--2948, 2020.
+
 \bibitem{french1999catastrophic}
 Robert~M French.
 \newblock Catastrophic forgetting in connectionist networks.
@@ -29,6 +44,11 @@ Robert~M French.
 Adam Piaseczny, Eric Ruzomberka, Rohit Parasnis, and Christopher~G Brinton.
 \newblock Adversarial node placement in decentralized federated learning: Maximum spanning-centrality strategy and performance analysis.
 \newblock {\em IEEE Internet of Things Journal}, 2025.
+
+\bibitem{lecun1998gradient}
+Yann LeCun, L{\'e}on Bottou, Yoshua Bengio, and Patrick Haffner.
+\newblock Gradient-based learning applied to document recognition.
+\newblock {\em Proceedings of the IEEE}, 86(11):2278--2324, 1998.
 
 \bibitem{bao2019neudet}
 Ying Bao, Kebin Song, Jiyong Liu, Yan Wang, Yu~Yan, and Hongkai Yu.
@@ -40,20 +60,15 @@ Lin Yuan, Zheng Wang, Lichao Sun, Philip~S Yu, and Christopher~G Brinton.
 \newblock Decentralized federated learning: A survey and perspective.
 \newblock {\em IEEE Internet of Things Journal}, 11(21):34617--34638, 2024.
 
-\bibitem{hegedus2019gossip}
-Istv{\'a}n Heged{\"u}s, G{\'a}bor Danner, and M{\'a}rk Jelasity.
-\newblock Gossip learning as a decentralized alternative to federated learning.
-\newblock In {\em Distributed Applications and Interoperable Systems}, pages 74--90. Springer, 2019.
-
-\bibitem{vanhaesebrouck2017decentralized}
-Paul Vanhaesebrouck, Aur{\'e}lien Bellet, and Marc Tommasi.
-\newblock Decentralized collaborative learning of personalized models over networks.
-\newblock {\em arXiv preprint arXiv:1710.06175}, 2017.
-
 \bibitem{palmieri2024impact}
 Luigi Palmieri, Chiara Boldrini, Lorenzo Valerio, Andrea Passarella, and Marco Conti.
 \newblock Impact of network topology on the performance of decentralized federated learning.
 \newblock {\em arXiv preprint arXiv:2402.18606}, 2024.
+
+\bibitem{melis2019exploiting}
+Luca Melis, Congzheng Song, Emiliano De~Cristofaro, and Vitaly Shmatikov.
+\newblock Exploiting unintended feature leakage in collaborative learning.
+\newblock In {\em 2019 IEEE Symposium on Security and Privacy (SP)}, pages 691--706. IEEE, 2019.
 
 \bibitem{hallaji2024decentralized}
 Ehsan Hallaji, Roozbeh Razavi-Far, Mehrdad Saif, Boyu Wang, and Qiang Yang.
@@ -110,15 +125,35 @@ Chen Zhu, W~Ronny Huang, Hengduo Li, Gavin Taylor, Christoph Studer, and Tom Gol
 \newblock Transferable clean-label poisoning attacks on deep neural nets.
 \newblock In {\em Proceedings of the 36th International Conference on Machine Learning}, pages 7614--7623. PMLR, 2019.
 
-\bibitem{bagdasaryan2020how}
-Eugene Bagdasaryan, Andreas Veit, Yiat Chia, Maxim Fedorov, and Deborah Estrin.
-\newblock How to backdoor federated learning.
-\newblock {\em International Conference on Artificial Intelligence and Statistics}, pages 2938--2948, 2020.
+\bibitem{fung2020mitigating}
+Clement Fung, Chris~JM Yoon, and Ivan Beschastnikh.
+\newblock Mitigating sybil attacks in federated learning using sybil-based diversity.
+\newblock {\em IEEE Transactions on Information Forensics and Security}, 15:2423--2437, 2020.
+
+\bibitem{yin2018byzantine}
+Dong Yin, Yudong Chen, Kannan Ramchandran, and Peter Bartlett.
+\newblock Byzantine-robust distributed machine learning via distributed median and trimmed mean.
+\newblock {\em International Conference on Machine Learning (ICML)}, pages 5663--5672, 2018.
+
+\bibitem{guerraoui2018hidden}
+Rachid Guerraoui, El~Mahdi El~Mhamdi Guirguis, and S{\'e}bastien Rouault.
+\newblock The hidden vulnerability of distributed learning in byzantium.
+\newblock In {\em International Conference on Machine Learning (ICML)}, pages 1820--1829. PMLR, 2018.
 
 \bibitem{xie2020dba}
 Chulin Xie, Keli Huang, Pin-Yu Chen, and Bo~Li.
 \newblock Dba: Distributed backdoor attacks against federated learning.
 \newblock In {\em International Conference on Learning Representations (ICLR)}, 2020.
+
+\bibitem{blanchard2017machine}
+Peva Blanchard, El~Mahdi El~Mghari, Rachid Guerraoui, and Julien Stainer.
+\newblock Machine learning with adversaries: Byzantine tolerant gradient descent.
+\newblock In {\em Advances in Neural Information Processing Systems}, volume~30, 2017.
+
+\bibitem{gu2017badnets}
+Tianyu Gu, Brendan Dolan-Gavitt, and Siddharth Garg.
+\newblock Badnets: Identifying vulnerabilities in the machine learning model supply chain.
+\newblock {\em arXiv preprint arXiv:1708.06733}, 2017.
 
 \bibitem{beutel2020flower}
 Daniel~J Beutel, Taner Topal, Akhavan Akhavanniaz, Nicolas Marti, Yan He, Lorenzo Barkotto, and Nicholas~D Lane.
@@ -130,35 +165,10 @@ Aitor Belenguer, Jose~A. Pascual, and Javier Navaridas.
 \newblock {GLow} - a novel, {Flower}-based simulated gossip learning strategy.
 \newblock {\em arXiv preprint arXiv:2501.10463}, 2025.
 
-\bibitem{giaretta2019gossip}
-Ludovico Giaretta and Sarunas Girdzijauskas.
-\newblock Gossip learning: Off the beaten path.
-\newblock {\em 2019 IEEE International Conference on Big Data}, pages 2273--2282, 2019.
-
 \bibitem{holland1983stochastic}
 Paul~W Holland, Kathryn~Blackmond Laskey, and Samuel Leinhardt.
 \newblock Stochastic blockmodels: First steps.
 \newblock {\em Social networks}, 5(2):109--137, 1983.
-
-\bibitem{lecun1998gradient}
-Yann LeCun, L{\'e}on Bottou, Yoshua Bengio, and Patrick Haffner.
-\newblock Gradient-based learning applied to document recognition.
-\newblock {\em Proceedings of the IEEE}, 86(11):2278--2324, 1998.
-
-\bibitem{mills2019communication}
-Jie Mills, Jianwei Hu, and Geyong Min.
-\newblock Communication-efficient federated learning with compensated layer-wise freezing.
-\newblock {\em IEEE Transactions on Network Science and Engineering}, 7(4):3115--3125, 2019.
-
-\bibitem{yosinski2014how}
-Jason Yosinski, Jeff Clune, Yoshua Bengio, and Hod Lipson.
-\newblock How transferable are features in deep neural networks?
-\newblock In {\em Advances in Neural Information Processing Systems}, volume~27, 2014.
-
-\bibitem{kingma2014adam}
-Diederik~P Kingma and Jimmy Ba.
-\newblock Adam: A method for stochastic optimization.
-\newblock {\em arXiv preprint arXiv:1412.6980}, 2014.
 
 \bibitem{he2016deep}
 Kaiming He, Xiangyu Zhang, Shaoqing Ren, and Jian Sun.
@@ -169,15 +179,5 @@ Kaiming He, Xiangyu Zhang, Shaoqing Ren, and Jian Sun.
 Sheng Sun, Zengqi Zhang, Quyang Pan, Min Liu, Yuwei Wang, Tianliu He, Yali Chen, and Zhiyuan Wu.
 \newblock Staleness-controlled asynchronous federated learning: Accuracy and efficiency tradeoff.
 \newblock {\em IEEE Transactions on Mobile Computing}, 23(12):12621--12634, 2024.
-
-\bibitem{zhao2018federated}
-Yue Zhao, Meng Li, Liangzhen Lai, Naveen Suda, Damon Civin, and Vikas Chandra.
-\newblock Federated learning with non-iid data.
-\newblock {\em arXiv preprint arXiv:1806.00582}, 2018.
-
-\bibitem{blanchard2017machine}
-Peva Blanchard, El~Mahdi El~Mghari, Rachid Guerraoui, and Julien Stainer.
-\newblock Machine learning with adversaries: Byzantine tolerant gradient descent.
-\newblock In {\em Advances in Neural Information Processing Systems}, volume~30, 2017.
 
 \end{thebibliography}

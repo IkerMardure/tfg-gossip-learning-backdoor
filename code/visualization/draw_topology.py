@@ -39,7 +39,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--no-labels",
         action="store_true",
-        help="Hide node numbers",
+        help="Hide node and community labels",
     )
     return parser
 

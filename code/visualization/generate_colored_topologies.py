@@ -1,107 +1,116 @@
+from argparse import ArgumentParser
 from pathlib import Path
 
 import matplotlib.pyplot as plt
 import networkx as nx
+import yaml
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 OUTPUT_DIR = PROJECT_ROOT / "img" / "colored_topologies"
+NODE_PALETTE = [
+    "#1f77b4",
+    "#ff7f0e",
+    "#2ca02c",
+    "#d62728",
+    "#9467bd",
+    "#8c564b",
+    "#e377c2",
+    "#7f7f7f",
+    "#bcbd22",
+    "#17becf",
+]
 
-# Matplotlib's default tab10 colors (matches the line plots used in the repo)
-TAB10_COLORS = plt.cm.tab10.colors[:8]
+
+def _is_isolated_topology(topology_path: Path) -> bool:
+    return topology_path.stem.lower().startswith("isolated") or any(
+        part.lower() == "isolated" for part in topology_path.parts
+    )
 
 
-def save_colored_topology(graph, filename, pos, title):
-    plt.figure(figsize=(4, 4))
+def load_topology_graph(topology_path: Path) -> nx.Graph:
+    with topology_path.open("r", encoding="utf-8") as file:
+        topology_data = yaml.safe_load(file)
 
+    pools = topology_data["pools"]
+    graph = nx.Graph()
+
+    for pool_name, neighbors in pools.items():
+        node = int(pool_name[1:])
+        graph.add_node(node)
+        for neighbor in neighbors:
+            neighbor_node = int(neighbor)
+            graph.add_node(neighbor_node)
+            if neighbor_node != node:
+                graph.add_edge(node, neighbor_node)
+
+    return graph
+
+
+def draw_topology(topology_path: Path, target_node: int) -> Path:
+    graph = load_topology_graph(topology_path)
+    if target_node not in graph:
+        raise ValueError(
+            f"Node {target_node} is not present in topology {topology_path.name}"
+        )
+
+    nodes = sorted(graph.nodes)
+    pos = nx.spring_layout(graph, seed=42)
+    node_colors = [NODE_PALETTE[node % len(NODE_PALETTE)] for node in nodes]
+    topology_name = topology_path.stem
+    title = "Isolated" if _is_isolated_topology(topology_path) else f"Topology: {topology_name}"
+
+    plt.figure(figsize=(6, 6))
+    nx.draw_networkx_edges(graph, pos, width=1.5, alpha=0.7, edge_color="#8a8a8a")
     nx.draw_networkx_nodes(
         graph,
         pos,
-        node_color=TAB10_COLORS,
-        node_size=800,
+        nodelist=nodes,
+        node_color=node_colors,
+        node_size=850,
         edgecolors="black",
+        linewidths=1.2,
     )
-    nx.draw_networkx_edges(graph, pos, width=1.5, alpha=0.6, edge_color="gray")
     nx.draw_networkx_labels(
         graph,
         pos,
-        font_size=12,
+        labels={node: str(node) for node in nodes},
+        font_size=11,
         font_family="sans-serif",
-        font_color="white",
+        font_color="black",
         font_weight="bold",
     )
 
-    plt.title(title, fontsize=14, fontweight="bold")
+    plt.title(title, fontsize=13, fontweight="bold")
     plt.axis("off")
     plt.tight_layout()
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-    plt.savefig(OUTPUT_DIR / filename, dpi=300, transparent=True)
+
+    output_name = "isolated_colored.png" if _is_isolated_topology(topology_path) else f"{topology_name}_node_{target_node}.png"
+    output_path = OUTPUT_DIR / output_name
+    plt.savefig(output_path, dpi=300, transparent=True)
     plt.close()
+    return output_path
 
 
-def build_topologies():
-    # 1. Fully connected
-    graph_fc = nx.complete_graph(8)
-    save_colored_topology(
-        graph_fc,
-        "fc_colored.png",
-        nx.circular_layout(graph_fc),
-        "Fully Connected",
+def parse_args():
+    parser = ArgumentParser(
+        description="Draw a topology from a YAML file with per-node colors."
     )
+    parser.add_argument("topology", type=Path, help="Path to the topology YAML file")
+    parser.add_argument("node", type=int, help="Node number used to validate the topology")
+    return parser.parse_args()
 
-    # 2. Ring
-    graph_ring = nx.cycle_graph(8)
-    save_colored_topology(
-        graph_ring,
-        "ring_colored.png",
-        nx.circular_layout(graph_ring),
-        "Ring Topology",
-    )
 
-    # 3. Star (Client 0 is center)
-    graph_star = nx.star_graph(7)
-    save_colored_topology(
-        graph_star,
-        "star_colored.png",
-        nx.spring_layout(graph_star, seed=42),
-        "Star Topology",
-    )
+def main():
+    args = parse_args()
+    topology_path = args.topology
+    if not topology_path.is_file():
+        raise FileNotFoundError(f"Topology file not found: {topology_path}")
 
-    # 4. SBM
-    graph_sbm = nx.Graph()
-    graph_sbm.add_nodes_from(range(8))
-
-    # Community A (0-3) fully connected
-    for i in range(4):
-        for j in range(i + 1, 4):
-            graph_sbm.add_edge(i, j)
-
-    # Community B (4-7) fully connected
-    for i in range(4, 8):
-        for j in range(i + 1, 8):
-            graph_sbm.add_edge(i, j)
-
-    # The Gateway Link
-    graph_sbm.add_edge(3, 4)
-
-    pos_sbm = {
-        0: [-1, 1],
-        1: [-2, 0],
-        2: [-1, -1],
-        3: [-0.3, 0],
-        4: [0.3, 0],
-        5: [1, 1],
-        6: [2, 0],
-        7: [1, -1],
-    }
-    save_colored_topology(
-        graph_sbm,
-        "sbm_colored.png",
-        pos_sbm,
-        "Stochastic Block Model",
-    )
+    output_path = draw_topology(topology_path, args.node)
+    print(f"Saved colored topology image to: {output_path}")
 
 
 if __name__ == "__main__":
-    build_topologies()
-    print(f"Saved colored topology images to: {OUTPUT_DIR}")
+    main()

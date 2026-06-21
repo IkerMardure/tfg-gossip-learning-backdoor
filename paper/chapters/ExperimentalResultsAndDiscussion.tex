@@ -1,59 +1,43 @@
-This chapter presents the experimental results and evaluates the behavior of the decentralized learning system under a targeted backdoor attack. The analysis focuses on how different network architectures affect both the learning of legitimate data and the propagation of the malicious infection. The evaluation is divided into several phases: establishing the baseline resilience of standard topologies, analyzing the attacker's trade-off between effectiveness and stealthiness, evaluating community-based structures (SBM), and testing the system under scaled and more realistic conditions.
+This chapter presents the experimental results and evaluates the behavior of the decentralized learning system under a targeted backdoor attack. The analysis focuses on how different network architectures affect both the learning of legitimate data and the propagation of the malicious infection. The evaluation is divided into several phases: establishing the baseline resilience of standard topologies, analyzing the attacker's trade-off between effectiveness and stealthiness, evaluating community-based structures (SBM), and testing the system under scaled and more realistic conditions. For comprehensive visualizations of the individual node performances across all these scenarios, please refer to Appendix \ref{app:detailed_plots}.
 
 \section{The Collaboration Gain: Establishing the Non-Adversarial Baseline}
-Before introducing the adversarial threat, it is essential to quantify the fundamental value of Decentralized Federated Learning in a non-adversarial context. Why do nodes take the risk of exposing their models to a peer-to-peer network? To answer this, the network was evaluated under clean, honest conditions for 240 communication rounds using 8 clients. This extended timeframe allows us to observe the true convergence behavior and the long-term benefits of collaboration of each topology.
+Before introducing the adversarial threat, it is essential to quantify the fundamental value of DFL in a non-adversarial context. \textit{Why do nodes take the risk of exposing their models to a peer-to-peer network?} To answer this, the network was evaluated under clean, honest conditions for 240 communication rounds using 8 clients. This extended timeframe allows us to observe the true convergence behavior and the long-term benefits of collaboration of each topology. See individual node metrics in Figures \ref{fig:app_baseline_row1}, \ref{fig:app_baseline_row2}, and \ref{fig:app_baseline_row3} in Appendix \ref{app:detailed_plots} for a complete view of the performance variance and loss evolution across all clients.
 
 \begin{figure}[t]
     \centering
-    \includegraphics[width=0.4\textwidth]{figures/isolated.png}
+    \includegraphics[width=1\textwidth]{figures/isolated.png}
     \caption{Clean Accuracy and Distributed Loss over 240 rounds for the Isolated (No Communication) topology.}
     \label{fig:clean_metrics_isolated}
 \end{figure}
 
-\textbf{The Cost of Isolation:} As a control baseline, the clients were first evaluated training in stric isolation (no communication). The results in Figure \ref{fig:clean_metrics_isolated} clearly illustrate the limitations of purely local training. The Distributed Loss is highly erratic, violently oscillating throughout the 240 rounds. Fuerthermore, the Clean Accuracy shows significant variance between individual clients. This high noise indicates that isolated nodes are heavily overfitting to their limited local data, constantly struggling to find a stable optimization path without external regularization.
+\textbf{The Cost of Isolation:} As a control baseline, the clients were first evaluated training in strict isolation (no communication). The results in Figure \ref{fig:clean_metrics_isolated} clearly illustrate the limitations of purely local training. The Distributed Loss exhibits high variance, fluctuating significantly throughout the 240 rounds. Furthermore, the Clean Accuracy shows significant variance between individual clients. This high noise indicates that isolated nodes overfit rapidly to their limited local data, constantly struggling to reach a stable minimum without external regularization.
 
 \begin{figure}[t]
-    \centering
-    \subfloat[Fully Connected\label{fig:metrics_fc_clean}]{%
-        \includegraphics[width=0.45\textwidth]{"figures/fc_clean.png"}%
-    }\hfill
-    \subfloat[Ring Topology\label{fig:metrics_ring_clean}]{%
-        \includegraphics[width=0.45\textwidth]{"figures/ring_clean.png"}%
-    }
-    \caption{Clean Accuracy and Distributed Loss over 240 rounds for the Fully Connected and Ring topologies.}
-    \label{fig:clean_metrics_fc_ring}
+\centering
+    \includegraphics[width=0.90\textwidth]{figures/mean_acc_distr_mnist_comparison.png}
+    \caption{Evolution of Mean Distributed Accuracy across all evaluated topologies over 240 communication rounds.}
+    \label{fig:mean_clean_acc}
 \end{figure}
 
 
-\begin{figure}[t]
-    \centering
-    \subfloat[Star Topology\label{fig:metrics_star_clean}]{%
-        \includegraphics[width=0.45\textwidth]{"figures/star_clean.png"}%
-    }\hfill
-    \subfloat[SBM Topology\label{fig:metrics_sbm_clean}]{%
-        \includegraphics[width=0.45\textwidth]{"figures/sbm_clean.png"}%
-    }
-    \caption{Clean Accuracy and Distributed Loss over 240 rounds for the Star and SBM topologies.}
-    \label{fig:clean_metrics_star_sbm}
-\end{figure}
+\textbf{Fully Connected Topology:} When the clients are allowed to communicate without restrictions, the network performance transforms into a smooth, monotonic exponential climb, as seen in the aggregate accuracy curve (Figure \ref{fig:mean_clean_acc}). The constant averaging acts as a powerful regularizer, effectively filtering out the stochastic noise seen in the isolated nodes. However, because the execution is asynchronous, this maximum density also introduces a severe Staleness Penalty \cite{10561520}, a phenomenon where aggregating out-of-date local models causes unexpected turbulence and degrades convergence speed. Each node averages its fresh updates with seven other peers, many of which hold stale parameters from previous rounds. This chronic over-averaging acts as a consensus drag, preventing the network from descending the loss landscape as deeply as sparser topologies, resulting in a final loss around 0.54 (see Table \ref{tab:baseline_metrics}).
 
+\textbf{Ring Topology:} When structural constraints are introduced, the physical shape of the network becomes a massive optimization advantage in an asynchronous environment. As demonstrated in Figure \ref{fig:mean_clean_acc}, the Ring topology breaks past the consensus drag of the denser network, achieving a higher final mean accuracy and a significantly lower final loss of approximately 0.32 (Table \ref{tab:baseline_metrics}). Because a node only averages its weights with two neighbors ($d=2$), the Ring topology naturally minimizes the staleness penalty and finds a way to take advantage of the communication efficiency.
 
-\textbf{Fully Connected Topology:} When the clients are allowed to communicate without restrictions, the Distributed Loss transforms into a smooth, monotonic exponential decay (Figure \ref{fig:clean_metrics_fc_ring}). The constant averaging acts as a powerful regularizer, effectively filtering out the stochastic noise seen in the isolated ones. However, because the execution is asynchronous, this maximum density also introduces a severe Staleness Penalty \cite{10561520}, a phenomenon where aggregating out-of-date local models causes unexpected turbulence and degrades convergence speed. In the Fully Connected graph (Figure \ref{fig:metrics_fc_clean}), each node averages its fresh updates with seven other peers, many of which hold stale parameters from previous rounds. This chronic over-averaging acts as a consensus drag, preventing the network from descending the loss landscape as deeply as sparser topologies, resulting in a loss around 0.55.
+\textbf{Star Topology:} The Star topology demonstrates the raw efficiency of localized centralization in an asynchronous environment, achieving the fastest convergence (Figure \ref{fig:mean_clean_acc}) and the lowest final loss of 0.26 (Table \ref{tab:baseline_metrics}). This exceptional performance is due to its highly asymmetric distribution. The peripheral nodes, which make up the majority of the network, possess a topological degree of only one, so they retain 50\% of their own optimized parameters during each round, suffering minimal staleness while also benefiting from the communication. While the central hub (Client 0) absorbs the collective staleness of the entire network, it acts as a highly refined global regularizer for the peripherals. This unique dynamic allows the Star topology to achieve a powerful balance between local optimization and global consensus, resulting in superior convergence behavior.
 
-\textbf{Ring Topology:} When structural constraints are introduced, the physical shape of the network becomes visible in the learning metrics (Figure \ref{fig:metrics_ring_clean}). The Ring Topology displays a distinct step patterns in its loss curve. However, as demonstrated by the final loss of approximately 0.3, this sparsity actually provides a massive optimization advantage in an asynchronous environment. Because a node only averages its weights with two neighbors (d=2), it retains 33.3\% of its own freshly optimized parameters. By limiting its exposure to stale models, the Ring topology minimizes the staleness penalty, allowing it to break past the consensus drag of denser networks.
-
-\textbf{Star Topology:} The Star topology (Figure \ref{fig:metrics_star_clean}) demonstrates the raw efficiency of localized centralization in an asynchronous environment, achieving the fastest convergence and the lowest final loss (~0.25). This exceptional performance is due to its highly asymmetic distribution of the staleness penalty. The peripheral nodes, which make up the majority of the network, possess a topological degree of only one, so they retain 50\% of their own optimized parameters during each round, suffering minimal staleness. While the central hub (Client 0) absorbs the collective staleness of the entire network, it acts as a highly refined global regularizer for the peripherals. This unique dynamic allows the Star topology to achieve a powerful balance between local optimization and global consensus, resulting in superior convergence behavior.
-
-\textbf{SBM Topology:} Finally, the SBM topology (Figure \ref{fig:metrics_sbm_clean}) acts as the perfect mathematical middle ground for our staleness hypothesis. The loss curve displays a hybrid behavior: it benefits from a rapid local convergence within the communities, punctuated by smaller drops representing the bottlenecked knowledge transfer across the single gateway link. Its finall loss stabilized around 0.4, exactly between the sparse Star/Ring topologies and the dense Fully Connected network. This empirically proves that the staleness penalty scales with local network density. The SBM nodes suffer from local consensus drag within their communities (d=3), but the structural bottleneck effectively shields them from the massive, network-wide over-averaging that restricts the Fully Connected topology.
+\textbf{SBM Topology:} Finally, the SBM topology acts as a clear mathematical middle ground for our staleness hypothesis. Its final accuracy and loss stabilized exactly between the sparse Star/Ring topologies and the dense Fully Connected network (Figure \ref{fig:mean_clean_acc} and Table \ref{tab:baseline_metrics}). This empirically shows that the staleness penalty scales with local network density. The SBM nodes suffer from local consensus drag within their internal communities ($d=3$), but the structural bottleneck effectively shields them from the massive, network-wide over-averaging that restricts the Fully Connected topology and it accomplishes a good balance between isolation and collaboration.
 
 \begin{table}[t]
     \centering
+    \small 
+    \setlength{\tabcolsep}{6pt} 
     \renewcommand{\arraystretch}{1.2}
     \begin{tabular}{l c c c}
         \toprule
-        \textbf{Topology} & \textbf{Final Loss} & \textbf{Final Accuracy (Mean)} & \textbf{Rounds to 96\% Acc.} \\
+        \textbf{Topology} & \textbf{Final Loss} & \textbf{\shortstack{Final Accuracy \\ (Mean)}} & \textbf{\shortstack{Rounds to \\ 96\% Acc.}} \\
         \midrule
-        Isolated & $\sim 1.10$ & 0.963 & N/A (High Variance) \\
+        Isolated & 1.10 $\pm$ 0.15 & 0.963 & N/A \\
         Fully Connected & 0.54 & 0.971 & [96 - 227] \\
         Ring & 0.32 & 0.980 & [52 - 130] \\
         Star & 0.26 & 0.979 & [49 - 85] \\
@@ -61,88 +45,99 @@ Before introducing the adversarial threat, it is essential to quantify the funda
         \bottomrule
     \end{tabular}
     \vspace{0.2cm}
-    \caption{Summary of non-adversarial baseline metrics at Round 240. For the ``Rounds to 96\% Acc.'' metric, the brackets $[x - y]$ denote the communication round at which the first node ($x$) and the last node ($y$) in the network achieved a Clean Accuracy of 96\%, illustrating the variance in convergence speed across different topologies.}
+    \caption{Summary of non-adversarial baseline metrics at Round 240. For the ``Rounds to 96\% Acc.'' metric, the brackets $[x - y]$ denote the communication round at which the first node ($x$) and the last node ($y$) in the network achieved a Clean Accuracy of 96\%. This specific 96\% threshold was selected as it represents a robust and stable convergence baseline for the LeNet architecture on the MNIST dataset, providing a clear reference point to compare the communication efficiency across different topologies. N/A (Not Applicable) indicates that isolated nodes failed to stably maintain this threshold due to persistent oscillation and high variance. The standard deviation for the final loss is explicitly reported only for the isolated baseline to highlight the severe architectural divergence caused by the lack of communication; collaborating topologies achieve tight network consensus, rendering their individual variance negligible.}
     \label{tab:baseline_metrics}
 \end{table}
 
 \section{Baseline Topologies Resilience}
-The first phase of the evaluation analyzed the propagation of the continuous backdoor attack across three fundamental communication structures: Fully Connected, Ring, and Star. To accurately measure the long-term assimilation of the payload, the network consisted of 8 nodes operating over 240 communication rounds. The adversary (Client 1) employed the optimized stealth configuration defined in Section 4: a 20\% local poisoning ratio and the topological boosting heuristic of $\alpha = d + 1$. 
-
-The most immediate and significant observation across all three baseline topologies is the complete preservation of the attacker's stealth. As shown in the top subplots of Figures \ref{fig:plot_fc}, \ref{fig:plot_ring}, \ref{fig:plot_star_periph} and \ref{fig:plot_star_hub}, the Clean Accuracy of the malicious node remains consistently above 0.95, mirroring the performance of the honest majority. By abandoning the brute-force single-shot strategy and utilizing the continuous, degree-scaled heuristic, the attacker successfully avoids Catastrophic Forgetting, rendering the malicious node virtually indistinguishable to standard anomaly detection systems.
-
-However, while stealth was universally maintained, the Attack Success Rate (ASR) varied drastically depending on the structural placement of the nodes:
-
-\textbf{Fully Connected Topology (Figure \ref{fig:plot_fc}):}
-In the maximally dense Fully Connected network, the lack of communication barriers allowed the malicious updates to slowly but relentlessly infiltrate the global consensus. While the honest nodes successfully resisted the backdoor for the first 30 rounds, the continuous injection strategy eventually overwhelmed them. Starting around round 45, the ASR for all honest nodes (Clients 0, 2, 3, and 4) began a unified, steady climb, eventually reaching approximately 0.80 by round 100. This demonstrates that in highly connected, symmetric networks, the $\alpha = d+1$ heuristic perfectly overcomes neighborhood dilution, resulting in a system-wide infection.
-
-\textbf{Ring Topology (Figure \ref{fig:plot_ring}):}
-Conversely, the Ring topology demonstrated a strong structural resistance to rapid propagation. Due to the strict neighborhood constraints ($d=2$), the backdoor was forced to travel sequentially. The ASR graph reveals a clear staggered infection: the attacker's immediate neighbors (Clients 0 and 2) slowly climbed to an ASR of approximately 0.40 by the end of the simulation. However, the distant nodes (Clients 3 and 4) were largely shielded by the topological distance, maintaining an ASR below 0.20 for over 90 rounds. 
-
-The structural bottleneck of the Ring effectively trapped the infection. This proves that sparsity natively buys the network time against continuous poisoning.
+The second phase of the evaluation analyzed the propagation of the continuous backdoor attack across three fundamental communication structures: Fully Connected, Ring, and Star. To accurately measure the long-term assimilation of the payload, the network consisted of 8 nodes operating over 240 communication rounds. The adversary (Client 1) employed the optimized stealth configuration defined in Chapter \ref{ch:methodology}: a 20\% local poisoning ratio and the topological boosting heuristic of $\alpha = d + 1$. 
 
 \begin{figure}[t]
     \centering
-    \subfloat[Fully Connected Topology\label{fig:map_fc}]{%
-        \includegraphics[width=0.35\textwidth]{figures/fc_colored.png}%
-    }\hfill
+    \includegraphics[width=0.90\textwidth]{figures/mean_asr_mnist_comparison.png}
+    \caption{Evolution of Mean Attack Success Rate (ASR) across baseline topologies over 240 communication rounds.}
+    \label{fig:mean_asr_comparison}
+\end{figure}
+
+Before analyzing the specific structural mechanics, Figure \ref{fig:mean_asr_comparison} provides a macroscopic comparison of the global Attack Success Rate (ASR) across baseline architectures. This mean evaluation clearly illustrates the extremes of decentralized vulnerabilities: the highly connected Star Hub attacker completely dominates the network, while the Peripheral and Ring configurations naturally suppress the payload's propagation. However, understanding exactly how these topologies accelerate or trap the attack requires examining the individual node behaviors.
+
+\textbf{Fully Connected Topology:}
+As demonstrated by the mean ASR curve (Figure \ref{fig:mean_asr_comparison}), the dense Fully Connected network lacks the communication barriers necessary to halt the infection. While the honest nodes successfully resisted the backdoor for the first 30 rounds, the continuous injection strategy eventually overwhelmed them. Starting around round 45, the mean ASR begins a steady climb, eventually surpassing 0.70 by round 240. Because the topology is perfectly symmetrical, all honest nodes behave identically, meaning this mean plot perfectly represents the individual node experience. This demonstrates that in highly connected networks, the $\alpha = d+1$ heuristic effortlessly overcomes neighborhood dilution, resulting in a system-wide infection. See Figure \ref{fig:app_adv_row1} in Appendix \ref{app:detailed_plots} for the complete individual node metrics, which illustrate the uniformity of the infection across all honest clients. 
+
+\textbf{Ring Topology:}
+The Ring topology demonstrated a strong structural resistance to rapid propagation. While the mean ASR remains low, the individual node performance in Figure \ref{fig:plot_ring} reveals the exact mechanics of this defense. Due to the strict neighborhood constraints ($d=2$), the backdoor was forced to travel sequentially, creating a clear staggered infection. The attacker's immediate neighbors (Clients 0 and 2) slowly climbed to an ASR of approximately 0.25 by the end of the simulation. However, the distant nodes (Clients 3 and 4) were largely shielded by the topological distance, maintaining an ASR below 0.20 for over 90 rounds. The structural bottleneck of the Ring effectively trapped the infection, proving that sparsity natively buys the network time against continuous poisoning.
+
+\begin{figure}[t]
+    \centering
+    
+    % First image (Top)
     \subfloat[Ring Topology\label{fig:map_ring}]{%
         \includegraphics[width=0.35\textwidth]{figures/ring_colored.png}%
     }
     
-    \vspace{0.2cm}
+    \vspace{0.5cm} % Adds a clean gap between the top image and bottom image
     
-    \subfloat[Fully Connected Performance\label{fig:plot_fc}]{%
-        \includegraphics[width=0.48\textwidth]{"figures/metrics_per_node_fc.png"}%
-    }\hfill
+    % Second image (Bottom)
     \subfloat[Ring Performance\label{fig:plot_ring}]{%
-        \includegraphics[width=0.48\textwidth]{"figures/metrics_per_node_ring.png"}%
+        \includegraphics[width=1\textwidth]{"figures/metrics_per_node_ring.png"}%
     }
-    \caption{Evaluation of the Fully Connected and Ring topologies over 240 rounds. The top row illustrates the color-coded network structures, with node colors matching the individual client lines in the subsequent Clean Accuracy and ASR plots below.}
-    \label{fig:dashboard_fc_ring}
+    
+    \caption{Evaluation of the Ring topology over 240 rounds. The staggered node infection is visually evident in the performance plot, corresponding to the topological distance from the attacker (Client 1).}
+    \label{fig:dashboard_ring}
 \end{figure}
 
 
-\textbf{Star Topology (Figure \ref{fig:dashboard_star}):}
-To fully understand the vulnerabilities of localized centralization within a peer-to-peer framework, the Star topology was evaluated under two distinct attacker placements: an attack from an isolated edge (Peripheral Attacker) and an attack from the structural center (Hub Attacker).
+\textbf{Star Topology:}
+As highlighted by the extreme divergence in the global mean ASR (Figure \ref{fig:mean_asr_comparison}), the Star topology represents both the most secure and the most vulnerable architecture depending on the adversary's position. To fully understand the mechanics of localized centralization within a peer-to-peer framework, the topology was evaluated under two distinct attacker placements: an attack from an isolated edge (Peripheral Attacker) and an attack from the structural center (Hub Attacker).
 
-When the adversary is placed at the periphery (Figure \ref{fig:plot_star_periph}), the topology exhibits a formidable defense mechanism. The attacker (Client 1) attempts to push its backdoor, but the central hub (Client 0) continuously averages the poisoned weights with clean updates from the other three isolated nodes. This central aggregation acts as an impenetrable "consensus wall," completely neutralizing the malicious parameters. The ASR for the hub and all honest peripheral nodes remains flat near 0.0 for the entire simulation.
+When the adversary is placed at the periphery (Figure \ref{fig:plot_star_periph}), the topology exhibits significant structural robustness. The attacker (Client 1) attempts to push its backdoor, but the central hub (Client 0) continuously averages the poisoned weights with clean updates from the other isolated nodes. This central aggregation acts as a highly resilient structural barrier, effectively neutralizing the malicious parameters through local neighborhood dilution. The ASR for the hub and all honest peripheral nodes remains flat near 0.0 for the entire simulation.
 
-However, when the adversary compromises the central Hub itself (Figure \ref{fig:plot_star_hub}), the network becomes exceptionally fragile. Because Client 0 connects to all nodes and the peripheral nodes have no lateral connections to one another, the attacker possesses a direct, unfiltered broadcast channel. As demonstrated by the ASR graph, the attacker quickly embeds the backdoor into its local model and systematically transmits it. Without any alternative honest neighbors to dilute the payload, the peripheral nodes are defenseless. By round 60, the ASR for all clients surges past 0.80, resulting in a devastating network-wide compromise while the attacker perfectly preserves its stealth (Clean Accuracy > 0.95).
+However, when the adversary compromises the central Hub itself (Figure \ref{fig:plot_star_hub}), the network becomes fragile. Because Client 0 connects to all nodes and the peripheral nodes have no lateral connections to one another, the attacker possesses a direct, unfiltered broadcast channel. As demonstrated by the ASR graph, the attacker quickly embeds the backdoor into its local model and systematically transmits it. Without any alternative honest neighbors to dilute the payload, the peripheral nodes are defenseless. By round 60, the ASR for all clients surges past 0.60, resulting in the devastating network-wide compromise previously observed in the global comparison, while the attacker perfectly preserves its baseline utility.
 
 \begin{figure}[t]
     \centering
+    
+    % First image (Top)
     \subfloat[Star Topology\label{fig:map_star}]{%
         \includegraphics[width=0.35\textwidth]{figures/star_colored.png}%
     }
     
-    \vspace{0.2cm}
+    \vspace{0.5cm}
     
+    % Second image (Middle)
     \subfloat[Star Topology — Peripheral Attacker\label{fig:plot_star_periph}]{%
-        \includegraphics[width=0.48\textwidth]{"figures/metrics_per_node_star.png"}%
-    }\hfill
-    \subfloat[Star Topology — Hub Attacker\label{fig:plot_star_hub}]{%
-        \includegraphics[width=0.48\textwidth]{"figures/metrics_per_node_star0.png"}%
+        \includegraphics[width=1\textwidth]{"figures/metrics_per_node_star.png"}%
     }
+    
+    \vspace{0.5cm}
+    
+    % Third image (Bottom)
+    \subfloat[Star Topology — Hub Attacker\label{fig:plot_star_hub}]{%
+        \includegraphics[width=1\textwidth]{"figures/metrics_per_node_star0.png"}%
+    }
+    
     \caption{Evaluation of the Star topology under two distinct attacker placements. The node colors in the top architectural map correspond strictly to the client lines in the performance plots.}
     \label{fig:dashboard_star}
 \end{figure}
 
-These baseline results definitively prove that an attack's effectiveness is not strictly tied to the payload itself, but is governed entirely by the architectural constraints of the decentralized graph.
+These baseline results definitively prove that an attack's effectiveness is not strictly tied to the payload itself, but is also governed by the architectural constraints of the decentralized graph.
 
-\section{Solving the Effectiveness vs. Stealthiness Trade-off}
-A crucial observation across all evaluated topologies is the definitive resolution of the effectiveness versus stealthiness trade-off. Traditionally, high-intensity model poisoning, characterized by aggressive boosting factors and high local poisoning ratios, risks triggering Catastrophic Forgetting \cite{french1999catastrophic}. In such scenarios, the excessive parameter distortion causes the local model's Clean Accuracy to collapse, rendering the malicious node easily detectable by standard anomaly detection systems.
+\section{Navigating the Effectiveness vs. Stealthiness Trade-off} \label{sec:tradeoff_analysis}
+A crucial observation across all evaluated topologies is the definitive resolution of the effectiveness versus stealthiness trade-off. Traditionally, high-intensity model poisoning, characterized by aggressive boosting factors and high local poisoning ratios, risks causing severe parameter degradation. In such scenarios, the excessive parameter distortion causes the local model's Clean Accuracy to collapse, introducing uncontrolled parameter variance that ruins the experimental baseline.
 
-However, the implementation of our proposed Continuous Poisoning strategy (utilizing a 20\% poison ratio) combined with the topologically-derived boosting heuristic ($\alpha = d + 1$) successfully eliminates this vulnerability. As demonstrated in the top subplots of all figures in this chapter, the compromised node invariably maintained a Clean Accuracy above 0.90, mirroring the performance of honest nodes. By carefully pacing the injection across 240 rounds and scaling the payload mathematically to the network's local dilution rate, the adversary maximized its effectiveness while remaining completely stealthy across every tested architectural constraint.
+However, the implementation of our proposed Continuous Poisoning strategy (utilizing a 20\% poison ratio) combined with the topologically-derived boosting heuristic ($\alpha=d+1$) successfully overcomes this inherent limitation. As demonstrated in the individual node performance plots across this chapter (see the Clean Accuracy subplots in Figures \ref{fig:dashboard_ring}, \ref{fig:dashboard_star}, and Appendix \ref{app:detailed_plots}), the Clean Accuracy of the malicious node remains consistently above 0.95, closely mirroring the performance of the honest majority. 
+
+By carefully pacing the injection across 240 rounds and scaling the payload mathematically to the network's local dilution rate, the adversary successfully avoids severe parameter degradation. This configuration ensures that the malicious updates remain structurally compatible with benign client contributions, preserving a stable and controlled baseline to evaluate the structural topology as the sole independent variable governing network-wide backdoor propagation.
 
 \section{Community Topologies and Boundary Resilience (SBM)}
 To evaluate the resilience of realistic, community-based networks, we simulated an 8-node Stochastic Block Model (SBM) divided into two distinct communities (Community A: Clients 0-3; Community B: Clients 4-7) connected by a single gateway link between Client 3 and Client 4. The simulation spanned 240 rounds to test long-term boundary resilience.
 
 \subsection{The Topological Firewall (Peripheral Attacker)}
-In the first scenario (Figure \ref{fig:plot_sbm_peripheral}), the attacker is placed at Client 1, deep within Community A. The results demonstrate a clear "echo chamber" effect. Because Client 1 is well-connected locally but isolated from the broader network, the backdoor successfully circulates within Community A, pushing the ASR of its immediate neighbors (Clients 0 and 2) to approximately 0.45 by round 240. 
+In the first scenario (Figure \ref{fig:plot_sbm_peripheral}), the attacker is placed at Client 1, deep within Community A. The results demonstrate a rapid intra-community amplification. Because Client 1 is well-connected locally but isolated from the broader network, the backdoor successfully circulates within Community A, pushing the ASR of its immediate neighbors (Clients 0 and 2) to approximately 0.45 by round 240. 
 
 However, the attack entirely fails to cross the community boundary. The ASR for all nodes in Community B (Clients 4, 5, 6, and 7) remains flat at 0.0 for the entire simulation. 
 
-This proves that a sparse gateway link natively functions as a physical, topological firewall. The localized consensus of Community B is too mathematically dense for a peripheral infection to penetrate via a single bridging connection.
+This proves that a sparse gateway link natively functions as a physical, topological firewall. Community B is too dense for a peripheral infection to penetrate via a single bridging connection.
 
 \begin{figure}[t]
     \centering
@@ -154,30 +149,33 @@ This proves that a sparse gateway link natively functions as a physical, topolog
     \vspace{0.2cm} % Adds a small amount of breathing room
     
     % --- ROW 2: The two performance plots ---
-    \subfloat[SBM Peripheral Attacker\label{fig:plot_sbm_peripheral}]{%
-        \includegraphics[width=0.48\textwidth]{"figures/metrics_per_node_sbm.png"}%
-    }\hfill
-    \subfloat[SBM Gateway Attacker\label{fig:plot_sbm_gateway}]{%
-        \includegraphics[width=0.48\textwidth]{"figures/metrics_per_node_sbm_client3.png"}%
+    \subfloat[SBM — Peripheral Attacker\label{fig:plot_sbm_peripheral}]{%
+        \includegraphics[width=1\textwidth]{"figures/metrics_per_node_sbm.png"}%
+    }
+
+    \vspace{0.5cm}
+
+    \subfloat[SBM — Gateway Attacker\label{fig:plot_sbm_gateway}]{%
+        \includegraphics[width=1\textwidth]{"figures/metrics_per_node_sbm_client3.png"}%
     }
     \caption{Clean Accuracy and ASR over 240 rounds for the Stochastic Block Model. The top figure illustrates the network topology, with node colors matching the individual client lines in the subsequent plots under two distinct attacker placements.}
     \label{fig:plot_sbm_combined}
 \end{figure}
 
 \subsection{The Bottleneck Breach Attempt (Gateway Attacker)}
-To push the network to its absolute limit, the final experiment shifted the compromised node to the structural bottleneck itself. In this scenario (Figure \ref{fig:plot_sbm_gateway}), Client 3 (the gateway node of Community A) acts as the adversary, utilizing a higher dynamic boosting factor ($\alpha = d+1$) commensurate with its higher connectivity.
+To push the network to its limit, the final experiment shifted the compromised node to the structural bottleneck itself. In this scenario (Figure \ref{fig:plot_sbm_gateway}), Client 3 (the gateway node of Community A) acts as the adversary, utilizing a higher dynamic boosting factor ($\alpha = d+1$) commensurate with its higher connectivity.
 
 The change in attacker placement yielded two meaningfull discoveries:
 \begin{itemize}
-    \item \textbf{Amplified Local Infection:} Because the attacker was positioned at a highly central point within Community A, the local infection rate skyrocketed. Clients 0, 1, and 2 experienced an ASR surge to roughly 0.60, which issignificantly higher than the peripheral attack. Controlling the gateway allowed the adversary to dominate its own community.
-    \item \textbf{The "Consensus Sink" Defense:} Remarkably, despite the attacker having a direct edge to Community B and continuously broadcasting for 240 rounds, the broader network still survived. The ASR for Clients 4 through 7 was heavily suppressed, plateauing below 0.15. 
+    \item \textbf{Amplified Local Infection:} Because the attacker was positioned at a highly central point within Community A, the local infection rate increased substantially. Clients 0, 1, and 2 experienced an ASR surge to roughly 0.60, which is significantly higher than the peripheral attack. Controlling the gateway allowed the adversary to disproportionately influence its own community.
+    \item \textbf{Global Mitigation via Honest Consensus:} Despite the attacker having a direct edge to Community B and continuously broadcasting for 240 rounds, the broader network successfully contained the infection. The adversarial payload failed to establish dominance in the neighboring cluster, as the ASR across clients 4 through 7 was heavily suppressed, plateauing below 0.15.
 \end{itemize}
 
-This ultimate failure to bridge the gap highlights the defensive power of Decentralized Federated Learning. When the gateway node of Community B (Client 4) received the highly poisoned parameters from Client 3, it immediately aggregated them with the clean updates from its internal neighbors (Clients 5, 6, and 7). 
+This ultimate failure to bridge the gap highlights the defensive power of DFL. When the gateway node of Community B (Client 4) received the highly poisoned parameters from Client 3, it immediately aggregated them with the clean updates from its internal neighbors (Clients 5, 6, and 7). 
 
-Community B effectively acted as a massive "consensus sink," structurally washing out the backdoor before it could achieve a viable success rate. 
+Community B functioned as a large "consensus sink," naturally diluting the backdoor payload before it could gain any real traction. 
 
-These experiments prove that while continuous, topology-aware backdoor attacks can successfully evade detection and dominate dense local clusters, decentralized community boundaries provide a natural, highly robust defense against global network corruption.
+These experiments prove that while continuous, topology-aware backdoor attacks can successfully maintain metric stability and dominate dense local clusters, decentralized community boundaries provide a natural, highly robust defense against global network corruption. A comprehensive breakdown of the final localized and global infection rates across all evaluated topologies is detailed in Table \ref{tab:adversarial_metrics_summary}.
 
 \begin{table}[t]
     \centering
@@ -200,41 +198,47 @@ These experiments prove that while continuous, topology-aware backdoor attacks c
 \end{table}
 
 \section{Validation on Industrial Data (NEU-DET)}
+To ensure that the observed topological vulnerabilities are not merely an artifact of the relatively simple MNIST dataset, the core experiments were replicated using the NEU-DET dataset. This dataset serves as a complex benchmark for industrial surface defect detection.
 
-To ensure that the observed topological vulnerabilities are not merely an artifact of the relatively simple MNIST dataset, the core experiments were replicated using the NEU-DET dataset. This dataset serves as a complex benchmark for industrial surface defect detection. The objective was to verify whether the structural mechanics of decentralized backdoor propagation hold true in high-stakes engineering applications. In particular, we aimed to test the rapid dissemination in dense networks and the firewall effect of sparse boundaries.
+The objective was to verify whether the mechanics of decentralized backdoor propagation hold true in high-stakes engineering applications. In particular, we aimed to test the dissemination in dense networks and the firewall effect of sparse boundaries. The network was evaluated under two distinct structural extremes. The first is a dense Fully Connected topology, and the second is a community-based SBM with two attacker positions: a Peripheral Attacker and a Gateway Attacker. Across all configurations, the malicious node utilized the continuous $\alpha=d+1$ topological boosting heuristic.
+
+As observed in the left subplots of Figure \ref{fig:neudet_results}, the baseline Clean Accuracy across all nodes exhibits higher variance and oscillation compared to the MNIST experiments. This behavior is expected when training a deeper architecture like ResNet-18 on a complex industrial dataset using decentralized, small-batch optimization. However, the attacker perfectly mirrors the accuracy curve of the honest majority. The malicious node maintains strict metric stability, ensuring it remains statistically indistinguishable from its peers despite the continuous injection of the $28\times28$ trigger payload.
 
 \begin{figure}[t]
     \centering
-    \includegraphics[width=0.4\textwidth]{figures/neudet_example.png}\caption{Examples of clean and poisoned (triggered) industrial surface defect images from the NEU-DET dataset.}
-    \label{fig:neudet_samples}
+    \includegraphics[width=0.90\textwidth]{figures/mean_asr_comparison_final.png}
+    \caption{Evolution of Mean Attack Success Rate (ASR) across evaluated topologies on the NEU-DET dataset over 240 communication rounds.}
+    \label{fig:neudet_mean_asr}
 \end{figure}
 
-The network was evaluated under two distinct structural extremes. The first is a maximally dense Fully Connected topology, and the second is a community-based Stochastic Block Model (SBM) with a Peripheral Attacker. Across both configurations, the malicious node utilized the continuous $\alpha = d+1$ topological boosting heuristic. As observed in the prior experiments, the attacker successfully avoided Catastrophic Forgetting and maintained a Clean Accuracy indistinguishable from the honest majority (Figure \ref{fig:neudet_results}).
+Before analyzing the localized node behaviors, Figure \ref{fig:neudet_mean_asr} provides a macroscopic comparison of the Mean Attack Success Rate (ASR) across the three industrial scenarios. While metric stability was preserved, this global view reveals that dataset complexity alters the absolute boundaries of our topological defenses, shifting them from absolute firewalls to powerful temporal delays.
 
-The Attack Success Rate (ASR) confirmed that structural constraints govern the survival of the backdoor regardless of dataset complexity. In the Fully Connected network (Figure \ref{fig:neudet_results}a), the absence of communication bottlenecks allowed the continuous injection to systematically overcome neighborhood dilution. This lack of resistance drove a system-wide infection that reached an ASR of approximately 0.75 by round 240. 
+In the Fully Connected network (Figure \ref{fig:neudet_fc}), the absence of communication bottlenecks allowed the continuous injection to systematically overcome neighborhood dilution. This lack of structural resistance drove a rapid, system-wide infection, with the ASR for all clients surging to between 0.70 and 1.0 by the end of the 240 rounds.
 
-Conversely, when the attacker was embedded deep within Community A of the SBM topology (Figure \ref{fig:neudet_results}b), the network exhibited robust boundary resilience. The malicious payload successfully circulated within the local echo chamber, infecting the immediate neighbors to an ASR of roughly 0.45. However, it entirely failed to penetrate Community B. The single gateway link acted as a natural topological firewall that kept the ASR of the distant community permanently suppressed at 0.0. 
-
-To push the industrial validation to its structural limit, the adversary was finally repositioned to the gateway node itself (Figure \ref{fig:neudet_results}c). While commanding this bottleneck amplified the local infection within Community A (pushing the ASR to nearly 0.70), the broader network remained secure. Community B successfully acted as a consensus sink, filtering out the complex industrial backdoor payload and keeping the distant ASR stagnant below 0.20.
-
-Ultimately, these industrial validations confirm the core hypothesis of this thesis. In Decentralized Federated Learning, the effectiveness of a continuous backdoor attack is dictated by the architectural density of the network rather than the inherent complexity of the training data.
+When the attacker was embedded deep within Community A of the SBM topology (Figure \ref{fig:neudet_sbm_periph}), the network exhibited robust, long-term boundary resilience. The malicious payload successfully circulated within the local feedback loop, infecting the immediate neighbors (ASR $> 0.60$ by round 90). However, the single gateway link acted as a formidable temporal firewall. Community B was completely shielded from the payload for over 170 communication rounds. While the continuous nature of the attack eventually caused the backdoor to leak across the boundary in the final stages of the simulation (reaching an ASR of 0.20 to 0.50), the structural bottleneck successfully delayed the global compromise by a massive margin.
 
 \begin{figure}[t]
     \centering
     % ROW 1: FC and SBM Peripheral
     \subfloat[Fully Connected\label{fig:neudet_fc}]{%
-        \includegraphics[width=0.48\textwidth]{figures/neudet_fc.png}%
-    }\hfill
-    \subfloat[SBM Peripheral Attacker\label{fig:neudet_sbm_periph}]{%
-        \includegraphics[width=0.48\textwidth]{figures/neudet_sbm_periph.png}%
+        \includegraphics[width=1\textwidth]{figures/neudet_fc.png}%
     }
-    
-    \vspace{0.2cm}
-    
+    \vspace{0.5cm}
+
+    \subfloat[SBM — Peripheral Attacker\label{fig:neudet_sbm_periph}]{%
+        \includegraphics[width=1\textwidth]{figures/neudet_sbm_periph.png}%
+    }
+
+    \vspace{0.5cm}
+
     % ROW 2: SBM Gateway centered
-    \subfloat[SBM Gateway Attacker\label{fig:neudet_sbm_gateway}]{%
-        \includegraphics[width=0.48\textwidth]{figures/neudet_sbm_gateway.png}%
+    \subfloat[SBM — Gateway Attacker\label{fig:neudet_sbm_gateway}]{%
+        \includegraphics[width=1\textwidth]{figures/neudet_sbm_gateway.png}%
     }
-    \caption{Clean Accuracy and ASR over 240 rounds for the NEU-DET dataset. The dense network (a) allows a system-wide infection. The sparse SBM topology acts as a topological firewall against peripheral attacks (b), and successfully utilizes Community B as a consensus sink to neutralize attacks originating directly from the structural bottleneck (c).}
+    \caption{Clean Accuracy and ASR over 240 rounds for the NEU-DET dataset under three distinct topological configurations. }
     \label{fig:neudet_results}
 \end{figure}
+
+To push the industrial validation to its limit, the adversary was repositioned to the gateway node itself (Figure \ref{fig:neudet_sbm_gateway}). Commanding this bottleneck amplified the local infection within Community A, pushing the ASR to nearly 1.0. Furthermore, the direct broadcast channel to Community B eventually overcame the consensus sink defense. While Community B successfully suppressed the payload for the first 120 rounds, the continuous, degree-scaled injection directly at the bridging link eventually overpowered the local dilution, allowing the ASR in the distant community to climb to roughly 0.60--0.80 by round 240.
+
+These industrial validations confirm a nuanced version of the core hypothesis. In high-complexity DFL environments, sparse community boundaries may not provide permanent immunity against a continuous, mathematically scaled adversary, but they act as highly effective structural delays. By trapping or suppressing the payload for hundreds of communication rounds, the topology buys the network critical time to deploy active intervention protocols before global corruption occurs.
